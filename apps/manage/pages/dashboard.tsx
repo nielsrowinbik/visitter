@@ -46,7 +46,7 @@ const DashboardPage = ({
       {homes.length !== 0 && (
         <Stack>
           {homes.map((home) => (
-            <Link href={`/${home.id}`} passHref>
+            <Link href={`/${home.id}`} key={home.id} passHref>
               <Box
                 component="a"
                 key={home.id}
