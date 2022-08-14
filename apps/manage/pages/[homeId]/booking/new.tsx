@@ -35,8 +35,10 @@ const NewBookingPage = () => {
     const token = (await user.getIdToken()) as string;
     await fetch(`/api/homes/${homeId}/bookings`, {
       body: JSON.stringify({
-        endDate: range[1].getTime(),
-        startDate: range[0].getTime(),
+        // @ts-ignore
+        endDate: range[1].getTime(), // eslint-disable-line
+        // @ts-ignore
+        startDate: range[0].getTime(), // eslint-disable-line
       }),
       headers: { Authorization: token },
       method: "POST",

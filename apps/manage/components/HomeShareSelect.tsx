@@ -44,7 +44,7 @@ export const HomeShareSelect = ({ homeId, shared }: Props) => {
     const subscription = watch(handleSubmit(onSubmit));
     // @ts-ignore Typing error, code works
     return () => subscription.unsubscribe();
-  }, [handleSubmit, watch]);
+  }, [handleSubmit, watch]); // eslint-disable-line
 
   return (
     <>
