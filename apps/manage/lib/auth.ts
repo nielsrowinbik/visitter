@@ -23,7 +23,7 @@ const firebaseClientInitConfig = {
 
 export const initAuth = () => {
   init({
-    appPageURL: "/",
+    appPageURL: "/dashboard",
     authPageURL: "/login",
     cookies: {
       name: "Visitter",

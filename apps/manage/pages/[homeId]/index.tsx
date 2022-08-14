@@ -45,7 +45,7 @@ const ManageHomePage = ({
 
   return (
     <main>
-      <Link href="/" passHref>
+      <Link href="/dashboard" passHref>
         <Button
           compact
           component="a"
