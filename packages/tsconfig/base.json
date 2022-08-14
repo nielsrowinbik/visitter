@@ -4,8 +4,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "composite": false,
-    "declaration": true,
-    "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
