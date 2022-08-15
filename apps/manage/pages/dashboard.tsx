@@ -1,4 +1,12 @@
-import { Box, Button, Space, Stack, Text, Title } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Container,
+  Space,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import type { InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import {
@@ -17,7 +25,7 @@ const DashboardPage = ({
   const user = useAuthUser();
 
   return (
-    <main>
+    <Container>
       <Button
         compact
         onClick={() => user.signOut()}
@@ -79,7 +87,7 @@ const DashboardPage = ({
           ))}
         </Stack>
       )}
-    </main>
+    </Container>
   );
 };
 
