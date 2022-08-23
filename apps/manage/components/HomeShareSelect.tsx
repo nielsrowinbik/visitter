@@ -1,5 +1,4 @@
 import { NativeSelect } from "@mantine/core";
-import { useAuthUser } from "next-firebase-auth";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -13,28 +12,27 @@ type FormValues = {
 };
 
 export const HomeShareSelect = ({ homeId, shared }: Props) => {
-  const user = useAuthUser();
   const { handleSubmit, register, watch } = useForm<FormValues>({
     defaultValues: { sharing: shared ? "shared" : "private" },
   });
   const onSubmit = async ({ sharing }: FormValues) => {
     if (sharing === "shared") {
-      const token = (await user.getIdToken()) as string;
-      await fetch(`/api/homes/${homeId}`, {
-        body: JSON.stringify({ shared: true }),
-        headers: { Authorization: token },
-        method: "PATCH",
-      });
+      // const token = (await user.getIdToken()) as string;
+      // await fetch(`/api/homes/${homeId}`, {
+      //   body: JSON.stringify({ shared: true }),
+      //   headers: { Authorization: token },
+      //   method: "PATCH",
+      // });
       return;
     }
 
     if (sharing === "private") {
-      const token = (await user.getIdToken()) as string;
-      await fetch(`/api/homes/${homeId}`, {
-        body: JSON.stringify({ shared: false }),
-        headers: { Authorization: token },
-        method: "PATCH",
-      });
+      // const token = (await user.getIdToken()) as string;
+      // await fetch(`/api/homes/${homeId}`, {
+      //   body: JSON.stringify({ shared: false }),
+      //   headers: { Authorization: token },
+      //   method: "PATCH",
+      // });
       return;
     }
   };

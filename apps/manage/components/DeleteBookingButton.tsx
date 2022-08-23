@@ -2,7 +2,6 @@ import { ActionIcon, Button } from "@mantine/core";
 import { useCallback, useState } from "react";
 
 import { TrashIcon } from "@heroicons/react/outline";
-import { useAuthUser } from "next-firebase-auth";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -11,7 +10,6 @@ type Props = {
 
 export const DeleteBookingButton = ({ bookingId }: Props) => {
   const { asPath, replace } = useRouter();
-  const user = useAuthUser();
 
   const [isBusy, setBusy] = useState(false);
 
@@ -19,15 +17,15 @@ export const DeleteBookingButton = ({ bookingId }: Props) => {
     if (confirm("Are you sure?")) {
       setBusy(true);
 
-      const token = (await user.getIdToken()) as string;
-      await fetch(`/api/bookings/${bookingId}`, {
-        headers: { Authorization: token },
-        method: "DELETE",
-      });
-      // TODO: Fix this ugly hack to make a change show up in realtime. Probably should implement SWR on the front-end and use mutate to trigger this change.
+      // const token = (await user.getIdToken()) as string;
+      // await fetch(`/api/bookings/${bookingId}`, {
+      //   headers: { Authorization: token },
+      //   method: "DELETE",
+      // });
+      // // TODO: Fix this ugly hack to make a change show up in realtime. Probably should implement SWR on the front-end and use mutate to trigger this change.
       replace(asPath, undefined, { shallow: false });
     }
-  }, [asPath, bookingId, replace, user]);
+  }, [asPath, replace]);
 
   return (
     <Button
