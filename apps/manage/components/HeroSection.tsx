@@ -18,7 +18,7 @@ export const HeroSection = () => (
       .
     </h1>
     <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
-      We get it: your vacation home is your prized posession. You wouldn't want
+      We get it: your vacation home is your prized posession. You would not want
       to rent it out to just anyone. We put you in complete control.
     </p>
     <div className="mt-10 flex justify-center gap-x-6">
