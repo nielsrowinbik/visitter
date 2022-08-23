@@ -10,12 +10,17 @@ import {
 } from "@mantine/core";
 
 import type { GetServerSideProps } from "next/types";
+import type { Home } from "@lib/homes";
 import Link from "next/link";
 // import { findHomesByUserId } from "@lib/homes";
 import { getSession } from "@lib/auth/session";
 import { signOut } from "next-auth/react";
 
-const DashboardPage = ({ homes }) => {
+type PageProps = {
+  homes: Home[];
+};
+
+const Page = ({ homes }: PageProps) => {
   return (
     <Container>
       <Button
@@ -99,4 +104,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default DashboardPage;
+export default Page;

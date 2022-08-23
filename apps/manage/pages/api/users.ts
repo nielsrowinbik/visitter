@@ -1,6 +1,7 @@
 import prisma, { Prisma } from "@db";
 
 import type { NextApiHandler } from "next/types";
+import { getErrorMessage } from "@lib/errors";
 import { getSession } from "@lib/auth/session";
 import isEmpty from "lodash/isEmpty";
 import nc from "next-connect";
@@ -46,7 +47,9 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(200).json(users);
   } catch (error) {
     console.error("[api] user", error);
-    return res.status(500).json({ statusCode: 500, message: error.message });
+    return res
+      .status(500)
+      .json({ statusCode: 500, message: getErrorMessage(error) });
   }
 };
 

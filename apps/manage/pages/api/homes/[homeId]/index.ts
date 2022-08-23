@@ -1,7 +1,6 @@
 import { deleteHome, findHomeById, updateHome } from "@lib/homes";
 
 import type { NextApiHandler } from "next/types";
-import { verifyIdToken } from "next-firebase-auth";
 
 const handler: NextApiHandler = async (req, res) => {
   // // TODO: Move the block starting from here until the next comment into some kind of middleware

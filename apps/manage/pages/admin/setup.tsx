@@ -21,7 +21,7 @@ type PageProps = {
 const Page = ({ csrfToken }: PageProps) => {
   const [isSubmitting, setSubmitting] = React.useState(false);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<LoginFormValues>();
 
   const createAdminAccountHandler = async (data: LoginFormValues) => {
     const response = await superagent

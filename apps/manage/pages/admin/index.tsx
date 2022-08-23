@@ -61,7 +61,8 @@ const Page = () => {
           className="mt-2 divide-y divide-gray-200 overflow-hidden  sm:hidden"
         >
           {usersQuery?.data &&
-            usersQuery.data.map((user) => {
+            usersQuery.data.map((user: any) => {
+              // TODO: Add user type
               return (
                 <li key={user.email}>
                   <a className="block px-4 py-4 bg-white hover:bg-gray-50">
@@ -121,7 +122,8 @@ const Page = () => {
                 </thead>
                 <tbody className="bg-white ">
                   {usersQuery?.data &&
-                    usersQuery.data.map((user) => {
+                    usersQuery.data.map((user: any) => {
+                      // TODO: Add user type
                       return (
                         <tr key={user.email} className="bg-white">
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -153,7 +155,8 @@ const Page = () => {
                           </td>
                           <td className="px-6 py-4 text-left whitespace-nowrap text-sm text-gray-500">
                             {user?.accounts && user?.accounts?.length > 0 ? (
-                              user.accounts.map((account) => {
+                              user.accounts.map((account: any) => {
+                                // TODO: Add account type
                                 return <p>{account.provider}</p>;
                               })
                             ) : (
