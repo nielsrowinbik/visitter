@@ -7,15 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:generate": "dotenv -e .env.local -- prisma generate --schema=./lib/db/schema.prisma",
-    "db:migrate": "dotenv -e .env.local -- prisma migrate dev --schema=./lib/db/schema.prisma",
-    "db:reset": "dotenv -e .env.local -- prisma migrate reset --schema=./lib/db/schema.prisma",
-    "db:push": "dotenv -e .env.local -- prisma db push --schema=./lib/db/schema.prisma",
+    "db:generate": "dotenv -e .env.local -- prisma generate --schema=./apps/manage/lib/db/schema.prisma",
+    "db:migrate": "dotenv -e .env.local -- prisma migrate dev --schema=./apps/manage/lib/db/schema.prisma",
+    "db:reset": "dotenv -e .env.local -- prisma migrate reset --schema=./apps/manage/lib/db/schema.prisma",
+    "db:push": "dotenv -e .env.local -- prisma db push --schema=./apps/manage/lib/db/schema.prisma",
     "db:seed": "dotenv -e .env.local -- prisma db seed",
-    "db:studio": "dotenv -e .env.local -- prisma studio --schema=./lib/db/schema.prisma"
+    "db:studio": "dotenv -e .env.local -- prisma studio --schema=./apps/manage/lib/db/schema.prisma"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} ./lib/db/seed.ts"
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} ./apps/manage/lib/db/seed.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",

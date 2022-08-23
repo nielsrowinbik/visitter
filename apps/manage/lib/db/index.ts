@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-
-export * from "@prisma/client";
+export type { Prisma } from "@prisma/client";
 
 const PRISMA_PROPERTY_NAME = `__prevent-name-collision__prisma`;
 

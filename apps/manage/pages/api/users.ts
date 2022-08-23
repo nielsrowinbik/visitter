@@ -1,10 +1,10 @@
-import prisma, { Prisma } from "@db";
-
 import type { NextApiHandler } from "next/types";
+import type { Prisma } from "@db";
 import { getErrorMessage } from "@lib/errors";
 import { getSession } from "@lib/auth/session";
 import isEmpty from "lodash/isEmpty";
 import nc from "next-connect";
+import prisma from "@db";
 
 const handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
