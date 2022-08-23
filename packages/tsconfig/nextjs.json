@@ -15,7 +15,19 @@
     "module": "esnext",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@api": ["./pages/api/index"],
+      "@api/*": ["./pages/api/*"],
+      "@components": ["./components/index"],
+      "@components/*": ["./components/*"],
+      "@db": ["./lib/db/index"],
+      "@db/*": ["./lib/db/*"],
+      "@layouts": ["./layouts/index"],
+      "@layouts/*": ["./layouts/*"],
+      "@lib": ["./lib/index"],
+      "@lib/*": ["./lib/*"]
+    }
   },
   "include": ["src", "next-env.d.ts"],
   "exclude": ["node_modules"]
