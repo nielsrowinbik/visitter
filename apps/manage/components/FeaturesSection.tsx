@@ -1,5 +1,4 @@
 import { Tab } from "@headlessui/react";
-import { Fragment } from "react";
 import cn from "classnames";
 import Image from "next/image";
 
@@ -37,7 +36,7 @@ export const FeaturesSection = () => {
             Everything you need to manage your vacation home.
           </h2>
           <p className="mt-6 text-lg tracking-tight text-teal-100">
-            Managing your vacation home shouldn't feel like work. We give you
+            Managing your vacation home should not feel like work. We give you
             the right amount of control and take care of the rest.
           </p>
         </div>
@@ -54,6 +53,7 @@ export const FeaturesSection = () => {
                           ? "bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10"
                           : "hover:bg-white/10 lg:hover:bg-white/5"
                       )}
+                      key={title}
                     >
                       <h3>
                         <Tab
@@ -84,8 +84,8 @@ export const FeaturesSection = () => {
               </Tab.List>
             </div>
             <Tab.Panels className="lg:col-span-7">
-              {features.map(({ description, image }) => (
-                <Tab.Panel>
+              {features.map(({ description, image, title }) => (
+                <Tab.Panel key={title}>
                   <div className="relative sm:px-6 lg:hidden">
                     <div className="absolute -inset-x-4 top-[-6.5rem] bottom-[-4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl"></div>
                     <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
