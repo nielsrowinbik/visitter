@@ -1,3 +1,3 @@
-import { ReactNode } from "react";
+import type { FC } from "react";
 
-export const AppLayout = (page?: ReactNode) => <div>{page}</div>;
+export const AppLayout: FC = ({ children }) => <div>{children}</div>;

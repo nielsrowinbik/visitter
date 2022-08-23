@@ -1,6 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
 
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import type { FC } from "react";
 import { Fragment } from "react";
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/outline";
@@ -12,7 +13,7 @@ const navigation = [
   { name: "Help", href: "#", current: false },
 ];
 
-const AdminLayout = ({ children }) => {
+const AdminLayout: FC = ({ children }) => {
   return (
     <>
       <div className="min-h-full">
