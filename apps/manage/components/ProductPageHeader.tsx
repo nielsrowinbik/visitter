@@ -30,7 +30,7 @@ export const ProductPageHeader = () => (
         </div>
         <div className="flex items-center gap-x-5 md:gap-x-8">
           <div className="hidden md:block">
-            <Link href="/login" passHref>
+            <Link href="/sign-in" passHref>
               <a className="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">
                 Sign in
               </a>

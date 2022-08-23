@@ -1,35 +1,31 @@
-import type { AppProps as NextAppProps } from "next/app";
-import type { NextComponentType } from "next";
-import Head from "next/head";
-import type { ReactNode } from "react";
-import { initAuth } from "../lib/auth";
-
 import "../styles/globals.css";
 
-initAuth();
+import { QueryClient, QueryClientProvider } from "react-query";
 
-type GetLayoutFunction = (page: ReactNode) => ReactNode;
+import type { ExtendedAppProps } from "@lib/types";
+import { SessionProvider } from "next-auth/react";
+import WithAuth from "@lib/auth/WithAuth";
 
-type AppProps = NextAppProps & {
-  Component: NextComponentType & {
-    getLayout: GetLayoutFunction;
-  };
-};
+export const queryClient = new QueryClient();
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: ExtendedAppProps) => {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <>
-      <Head>
-        <title>Visitter</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      {getLayout(<Component {...pageProps} />)}
-    </>
+    <SessionProvider session={session} refetchInterval={5 * 60}>
+      <QueryClientProvider client={queryClient}>
+        {Component.auth ? (
+          <WithAuth options={Component.auth}>
+            {getLayout(<Component {...pageProps} />)}
+          </WithAuth>
+        ) : (
+          getLayout(<Component {...pageProps} />)
+        )}
+      </QueryClientProvider>
+    </SessionProvider>
   );
 };
 

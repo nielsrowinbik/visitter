@@ -1,6 +1,5 @@
 import type { FC } from "react";
-
-import { ProductPageHeader } from "../components/ProductPageHeader";
+import { ProductPageHeader } from "@components/ProductPageHeader";
 
 export const ProductLayout: FC = ({ children }) => (
   <>

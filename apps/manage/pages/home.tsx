@@ -1,8 +1,7 @@
+import { FeaturesSection } from "@components/FeaturesSection";
+import { HeroSection } from "@components/HeroSection";
+import { ProductLayout } from "@components/Layouts/ProductLayout";
 import type { ReactNode } from "react";
-
-import { FeaturesSection } from "../components/FeaturesSection";
-import { HeroSection } from "../components/HeroSection";
-import { ProductLayout } from "../layouts/ProductLayout";
 
 export const HomePage = () => {
   return (

@@ -1,6 +1,7 @@
-import uuid from "uuid4";
-import { deleteBookingsForHomeId } from "./bookings";
 import db, { Timestamp } from "./db";
+
+import { deleteBookingsForHomeId } from "./bookings";
+import uuid from "uuid4";
 
 export type Home = {
   created: number;

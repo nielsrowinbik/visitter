@@ -1,8 +1,9 @@
-import { TrashIcon } from "@heroicons/react/outline";
 import { ActionIcon, Button } from "@mantine/core";
+import { useCallback, useState } from "react";
+
+import { TrashIcon } from "@heroicons/react/outline";
 import { useAuthUser } from "next-firebase-auth";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
 
 type Props = {
   bookingId: string;

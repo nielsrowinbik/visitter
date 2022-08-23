@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { Tab } from "@headlessui/react";
 import cn from "classnames";
-import Image from "next/image";
 
 const features = [
   {

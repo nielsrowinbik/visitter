@@ -1,6 +1,6 @@
-import { randomUUID } from "crypto";
-
 import db, { Timestamp } from "./db";
+
+import { randomUUID } from "crypto";
 
 export type Booking = {
   created: number;

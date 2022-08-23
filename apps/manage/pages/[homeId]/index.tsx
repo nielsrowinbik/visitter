@@ -1,41 +1,30 @@
-import { ArrowLeftIcon } from "@heroicons/react/outline";
-import { format, fromUnixTime } from "date-fns";
-import {
-  Box,
-  Button,
-  CopyButton,
-  Space,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-} from "@mantine/core";
-import type { InferGetServerSidePropsType } from "next";
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
-import Link from "next/link";
-import { useRouter } from "next/router";
-
-import { DeleteBookingButton } from "../../components/DeleteBookingButton";
-import { DeleteHomeButton } from "../../components/DeleteHomeButton";
-import { HomeShareSelect } from "../../components/HomeShareSelect";
+import { Box, Button, Space, Stack, Tabs, Text, Title } from "@mantine/core";
 import {
   findCurrentAndFutureBookingsByHomeId,
   findPastBookingsByHomeId,
-} from "../../lib/bookings";
-import type { Booking } from "../../lib/bookings";
-import { findHomeById } from "../../lib/homes";
-import { rangeToDates } from "../../lib/helpers";
+} from "@lib/bookings";
+import { format, fromUnixTime } from "date-fns";
 
-const ManageHomePage = ({
-  home,
-  past,
-  upcoming,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+import { ArrowLeftIcon } from "@heroicons/react/outline";
+import type { Booking } from "@lib/bookings";
+import { DeleteBookingButton } from "@components/DeleteBookingButton";
+import { DeleteHomeButton } from "@components/DeleteHomeButton";
+import type { GetServerSideProps } from "next/types";
+import type { Home } from "@lib/homes";
+import { HomeShareSelect } from "@components/HomeShareSelect";
+import Link from "next/link";
+import { findHomeById } from "@lib/homes";
+import { getSession } from "@lib/auth/session";
+import { rangeToDates } from "@lib/helpers";
+import { useRouter } from "next/router";
+
+type PageProps = {
+  home: Home;
+  past: Booking[];
+  upcoming: Booking[];
+};
+
+const Page = ({ home, past, upcoming }: PageProps) => {
   const { query } = useRouter();
   const { homeId } = query;
 
@@ -167,36 +156,35 @@ const ManageHomePage = ({
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async (ctx) => {
-  const homeId = ctx.query.homeId as string;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
 
-  // Attempt to fetch the home from the database:
-  const home = await findHomeById(homeId);
+  if (!session) {
+    return { redirect: { permanent: false, destination: "/sign-in" } };
+  }
 
-  // If the requested home does not exist, return a 404:
-  if (!home)
-    return {
-      notFound: true,
-    };
+  // const homeId = ctx.query.homeId as string;
 
-  // Fetch all upcoming bookings:
-  const upcoming = await findCurrentAndFutureBookingsByHomeId(homeId);
-  const past = await findPastBookingsByHomeId(homeId);
+  // // Attempt to fetch the home from the database:
+  // const home = await findHomeById(homeId);
 
+  // // If the requested home does not exist, return a 404:
+  // if (!home)
   return {
-    props: {
-      home,
-      past,
-      upcoming,
-    },
+    notFound: true,
   };
-});
 
-export default withAuthUser<
-  InferGetServerSidePropsType<typeof getServerSideProps>
->({
-  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(ManageHomePage);
+  // // Fetch all upcoming bookings:
+  // const upcoming = await findCurrentAndFutureBookingsByHomeId(homeId);
+  // const past = await findPastBookingsByHomeId(homeId);
+
+  // return {
+  //   props: {
+  //     home,
+  //     past,
+  //     upcoming,
+  //   },
+  // };
+};
+
+export default Page;

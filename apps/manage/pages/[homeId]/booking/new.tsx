@@ -1,13 +1,9 @@
 import { Button, Group, Space, Title } from "@mantine/core";
+
 import { DateRangePicker } from "@mantine/dates";
-import type { InferGetServerSidePropsType } from "next";
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
+import type { GetServerSideProps } from "next/types";
 import Link from "next/link";
+import { getSession } from "@lib/auth/session";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -17,7 +13,7 @@ type FormValues = {
   period: [Date, Date];
 };
 
-const NewBookingPage = () => {
+const Page = () => {
   const router = useRouter();
   const { homeId } = router.query;
 
@@ -26,24 +22,22 @@ const NewBookingPage = () => {
 
   const [isBusy, setBusy] = useState(false);
 
-  const user = useAuthUser();
-
   const onSaveClick = async () => {
     // TODO: Error handling
     // TODO: Deal with dates possibly being null
     setBusy(true);
-    const token = (await user.getIdToken()) as string;
-    await fetch(`/api/homes/${homeId}/bookings`, {
-      body: JSON.stringify({
-        // @ts-ignore
-        endDate: range[1].getTime(), // eslint-disable-line
-        // @ts-ignore
-        startDate: range[0].getTime(), // eslint-disable-line
-      }),
-      headers: { Authorization: token },
-      method: "POST",
-    });
-    router.replace(`/${homeId}`);
+    // const token = (await user.getIdToken()) as string;
+    // await fetch(`/api/homes/${homeId}/bookings`, {
+    //   body: JSON.stringify({
+    //     // @ts-ignore
+    //     endDate: range[1].getTime(), // eslint-disable-line
+    //     // @ts-ignore
+    //     startDate: range[0].getTime(), // eslint-disable-line
+    //   }),
+    //   headers: { Authorization: token },
+    //   method: "POST",
+    // });
+    // router.replace(`/${homeId}`);
   };
 
   return (
@@ -80,16 +74,16 @@ const NewBookingPage = () => {
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  // Redirect the user to the login page when unauthed:
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
 
-export default withAuthUser<
-  InferGetServerSidePropsType<typeof getServerSideProps>
->({
-  // Wait for Firebase to have initialised before doing anything with the login state:
-  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-  // Redirect the user to the login page when unauthed:
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(NewBookingPage);
+  if (!session) {
+    return { redirect: { permanent: false, destination: "/sign-in" } };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+export default Page;

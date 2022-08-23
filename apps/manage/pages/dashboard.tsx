@@ -1,3 +1,4 @@
+import { ArrowRightIcon, LogoutIcon } from "@heroicons/react/outline";
 import {
   Box,
   Button,
@@ -7,28 +8,19 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import type { InferGetServerSidePropsType } from "next";
+
+import type { GetServerSideProps } from "next/types";
 import Link from "next/link";
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
+// import { findHomesByUserId } from "@lib/homes";
+import { getSession } from "@lib/auth/session";
+import { signOut } from "next-auth/react";
 
-import { findHomesByUserId } from "../lib/homes";
-import { ArrowRightIcon, LogoutIcon } from "@heroicons/react/outline";
-
-const DashboardPage = ({
-  homes,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const user = useAuthUser();
-
+const DashboardPage = ({ homes }) => {
   return (
     <Container>
       <Button
         compact
-        onClick={() => user.signOut()}
+        onClick={() => signOut({ callbackUrl: "/" })}
         rightIcon={<LogoutIcon height={12} width={12} />}
         variant="subtle"
       >
@@ -91,24 +83,20 @@ const DashboardPage = ({
   );
 };
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  // Redirect the user to the "about" page instead of the login page when hitting the main page unauthed:
-  authPageURL: "/about",
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({ AuthUser: user }) => {
-  const { id: userId } = user;
-  const homes = await findHomesByUserId(userId as string);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return { redirect: { permanent: false, destination: "/sign-in" } };
+  }
+
+  // const homes = await findHomesByUserId(userId as string);
 
   return {
     props: {
-      homes,
+      homes: [],
     },
   };
-});
+};
 
-export default withAuthUser<
-  InferGetServerSidePropsType<typeof getServerSideProps>
->({
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-})(DashboardPage);
+export default DashboardPage;
