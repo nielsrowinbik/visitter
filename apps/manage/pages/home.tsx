@@ -1,30 +1,18 @@
-import Link from "next/link";
-import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
-import { Button } from "ui";
+import type { ReactNode } from "react";
+
+import { FeaturesSection } from "../components/FeaturesSection";
+import { HeroSection } from "../components/HeroSection";
+import { ProductLayout } from "../layouts/ProductLayout";
 
 export const HomePage = () => {
-  const user = useAuthUser();
-
   return (
     <>
-      <nav>
-        {user.id === null && (
-          <Link href="/login" passHref>
-            <a>
-              <Button>Get started</Button>
-            </a>
-          </Link>
-        )}
-      </nav>
-      <main>
-        <h1>Visitter</h1>
-        <p>Landing page with some marketing material</p>
-      </main>
+      <HeroSection />
+      <FeaturesSection />
     </>
   );
 };
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-})(HomePage);
+HomePage.getLayout = (page: ReactNode) => <ProductLayout>{page}</ProductLayout>;
+
+export default HomePage;
