@@ -23,8 +23,8 @@
       "@components/*": ["./components/*"],
       "@db": ["./lib/db/index"],
       "@db/*": ["./lib/db/*"],
-      "@layouts": ["./layouts/index"],
-      "@layouts/*": ["./layouts/*"],
+      "@layouts": ["./components/Layouts/index"],
+      "@layouts/*": ["./components/Layouts/*"],
       "@lib": ["./lib/index"],
       "@lib/*": ["./lib/*"]
     }
