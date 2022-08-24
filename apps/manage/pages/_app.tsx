@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import type { ExtendedAppProps } from "@lib/types";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
 import WithAuth from "@lib/auth/WithAuth";
 
 export const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = ({
         ) : (
           getLayout(<Component {...pageProps} />)
         )}
+        <Toaster position="bottom-center" />
       </QueryClientProvider>
     </SessionProvider>
   );

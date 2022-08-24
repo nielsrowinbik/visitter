@@ -82,6 +82,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2
       react-hook-form: ^7.34.0
+      react-hot-toast: ^2.3.0
       react-query: ^3.39.2
       superagent: ^8.0.0
       tailwind-config: workspace:*
@@ -116,6 +117,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 7.34.1_react@17.0.2
+      react-hot-toast: 2.3.0_a3rolb2r43cxt5j5fxvpwhxlai
       react-query: 3.39.2_sfoxds7t5ydpegc3knd667wn6m
       superagent: 8.0.0
       ui: link:../../packages/ui
@@ -168,11 +170,14 @@ importers:
     specifiers:
       '@types/react': ^17.0.37
       '@types/react-dom': ^17.0.11
+      classnames: ^2.3.1
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       react: ^17.0.2
       tsconfig: workspace:*
       typescript: ^4.5.2
+    dependencies:
+      classnames: 2.3.1
     devDependencies:
       '@types/react': 17.0.48
       '@types/react-dom': 17.0.17
@@ -3270,6 +3275,14 @@ packages:
       slash: 3.0.0
     dev: false
 
+  /goober/2.1.10_csstype@3.1.0:
+    resolution: {integrity: sha512-7PpuQMH10jaTWm33sQgBQvz45pHR8N4l3Cu3WMGEWmHShAcTuuP7I+5/DwKo39fwti5A80WAjvqgz6SSlgWmGA==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dependencies:
+      csstype: 3.1.0
+    dev: false
+
   /google-auth-library/7.14.1:
     resolution: {integrity: sha512-5Rk7iLNDFhFeBYc3s8l1CqzbEBcdhwR193RlD4vSNFajIcINKI8W8P0JLmBpwymHqqWbX34pJDQu39cSy/6RsA==}
     engines: {node: '>=10'}
@@ -4569,6 +4582,20 @@ packages:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /react-hot-toast/2.3.0_a3rolb2r43cxt5j5fxvpwhxlai:
+    resolution: {integrity: sha512-/RxV+bfjld7tSJR1SCLzMAXgFuNW7fCpK6+vbYqfmbGSWcqTMz2rizrvfWKvtcPH5HK0NqxmBaC5SrAy1F42zA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      goober: 2.1.10_csstype@3.1.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    transitivePeerDependencies:
+      - csstype
     dev: false
 
   /react-is/16.13.1:
