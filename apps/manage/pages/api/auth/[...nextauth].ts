@@ -13,7 +13,7 @@ export default NextAuth({
     strategy: "jwt",
   },
   pages: {
-    signIn: "/sign-in",
+    signIn: "/login",
     // signOut: "/auth/logout",
     // error: "/auth/error", // Error code passed in query string as ?error=
   },
