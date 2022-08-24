@@ -1,28 +1,23 @@
-import { ArrowRightIcon, LogoutIcon } from "@heroicons/react/outline";
-import {
-  Box,
-  Button,
-  Container,
-  Space,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Button, Container, Space, Title } from "@mantine/core";
 
 import type { GetServerSideProps } from "next/types";
-import type { Home } from "@lib/homes";
-import Link from "next/link";
-// import { findHomesByUserId } from "@lib/homes";
+import type { Home } from "@prisma/client";
+import { HomesList } from "@components/HomesList";
+import { LogoutIcon } from "@heroicons/react/outline";
+import { SWRConfig } from "swr";
 import { getSession } from "@lib/auth/session";
+import prisma from "@db";
 import { signOut } from "next-auth/react";
 
 type PageProps = {
-  homes: Home[];
+  fallback: {
+    "/api/homes": Home[];
+  };
 };
 
-const Page = ({ homes }: PageProps) => {
+const Page = ({ fallback }: PageProps) => {
   return (
-    <Container>
+    <SWRConfig value={{ fallback }}>
       <Button
         compact
         onClick={() => signOut({ callbackUrl: "/" })}
@@ -35,56 +30,8 @@ const Page = ({ homes }: PageProps) => {
       <Space h="md" />
       <Title order={2}>Your vacation homes</Title>
       <Space h="sm" />
-      {homes.length === 0 && (
-        <>
-          <Text>
-            You do not currently have any vacation homes. Why not add one?
-          </Text>
-          <Space h="sm" />
-          <Link href="/new" passHref>
-            <Button component="a" variant="light">
-              Add your vacation home
-            </Button>
-          </Link>
-        </>
-      )}
-      {homes.length !== 0 && (
-        <Stack>
-          {homes.map((home) => (
-            <Link href={`/${home.id}`} key={home.id} passHref>
-              <Box
-                component="a"
-                key={home.id}
-                sx={(theme) => ({
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : theme.colors.gray[0],
-                  display: "block",
-                  padding: theme.spacing.xl,
-                  borderRadius: theme.radius.md,
-                  cursor: "pointer",
-                  height: "100%",
-                  textDecoration: "none",
-                  color: "inherit",
-
-                  "&:hover": {
-                    backgroundColor:
-                      theme.colorScheme === "dark"
-                        ? theme.colors.dark[5]
-                        : theme.colors.gray[1],
-                  },
-                })}
-              >
-                <Title order={3}>
-                  {home.name} <ArrowRightIcon height={16} width={16} />
-                </Title>
-              </Box>
-            </Link>
-          ))}
-        </Stack>
-      )}
-    </Container>
+      <HomesList />
+    </SWRConfig>
   );
 };
 
@@ -95,11 +42,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { redirect: { permanent: false, destination: "/login" } };
   }
 
-  // const homes = await findHomesByUserId(userId as string);
+  const homes = await prisma.home.findMany({
+    where: {
+      ownerId: { equals: session.user?.id },
+    },
+  });
 
   return {
     props: {
-      homes: [],
+      fallback: {
+        "/api/homes": JSON.parse(JSON.stringify(homes)),
+      },
     },
   };
 };
