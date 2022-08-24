@@ -121,7 +121,7 @@ const Page = ({ csrfToken, providers }: PageProps) => {
               </div>
 
               <div className="mt-6 space-y-2 flex justify-center">
-                <Button type="submit" disabled={isSubmitting} variant="light">
+                <Button type="submit" loading={isSubmitting} variant="light">
                   Sign in
                 </Button>
               </div>
