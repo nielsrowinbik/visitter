@@ -6,8 +6,6 @@ import classNames from "classnames";
 import { getSession } from "@lib/auth/session";
 import superagent from "superagent";
 import { useQuery } from "react-query";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 
 const statusStyles = {
   true: "bg-green-100 text-green-800",
@@ -15,14 +13,6 @@ const statusStyles = {
 };
 
 const Page = () => {
-  const router = useRouter();
-  const { status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push("/admin/sign-in");
-    },
-  });
-
   const usersQuery = useQuery(["users"], async () => {
     const data = await superagent.get("/api/users").send({
       select: {
@@ -43,10 +33,6 @@ const Page = () => {
 
     return data.body;
   });
-
-  if (status === "loading") {
-    return "Loading or not authenticated...";
-  }
 
   if (usersQuery.isLoading) {
     return <div>loading...</div>;
@@ -181,12 +167,16 @@ Page.getLayout = (page: ReactNode) => <AdminLayout>{page}</AdminLayout>;
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
-  if (!session || session?.user?.role !== "admin") {
-    return { redirect: { permanent: false, destination: "/" } };
+  if (!session) {
+    return { redirect: { permanent: false, destination: "/sign-in" } };
+  }
+
+  if (session?.user?.role !== "admin") {
+    return { redirect: { permanent: false, destination: "/dashboard" } };
   }
 
   return {
-    props: { session: session },
+    props: {},
   };
 }
 

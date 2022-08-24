@@ -1,6 +1,4 @@
-import { hashPassword, verifyPassword } from "@lib/auth/passwords";
-
-import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Session } from "@lib/auth/session";
@@ -18,135 +16,22 @@ export default NextAuth({
     // error: "/auth/error", // Error code passed in query string as ?error=
   },
   providers: [
-    CredentialsProvider({
-      id: "app",
-      name: "App Login",
-      credentials: {
-        email: {
-          label: "Email Address",
-          type: "email",
-          placeholder: "john.doe@example.com",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-          placeholder: "Your super secure password",
+    EmailProvider({
+      id: "email",
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        secure: true,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
-      async authorize(credentials) {
-        try {
-          let maybeUser = await prisma.user.findFirst({
-            where: {
-              email: credentials?.email,
-            },
-            select: {
-              id: true,
-              email: true,
-              password: true,
-              name: true,
-              role: true,
-            },
-          });
-
-          if (!maybeUser) {
-            if (!credentials?.password || !credentials?.email) {
-              throw new Error("Invalid Credentials");
-            }
-
-            maybeUser = await prisma.user.create({
-              data: {
-                email: credentials.email,
-                password: await hashPassword(credentials.password),
-              },
-              select: {
-                id: true,
-                email: true,
-                password: true,
-                name: true,
-                role: true,
-              },
-            });
-          } else {
-            // TODO: We should probably catch the objects `credentials` and `maybeUser`
-            // both being able to be undefined at this point
-            const isValid = await verifyPassword(
-              credentials?.password as string,
-              maybeUser.password as string
-            );
-
-            if (!isValid) {
-              throw new Error("Invalid Credentials");
-            }
-          }
-
-          return {
-            id: maybeUser.id,
-            email: maybeUser.email,
-            name: maybeUser.name,
-            role: maybeUser.role,
-          };
-        } catch (error) {
-          console.log(error);
-          throw error;
-        }
-      },
+      from: process.env.EMAIL_FROM,
     }),
-    CredentialsProvider({
-      id: "admin",
-      name: "Administrator Login",
-      credentials: {
-        email: {
-          label: "Email Address",
-          type: "email",
-          placeholder: "john.doe@example.com",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-          placeholder: "Your super secure password",
-        },
-      },
-      async authorize(credentials) {
-        let maybeUser = await prisma.user.findFirst({
-          where: {
-            email: credentials?.email,
-          },
-          select: {
-            id: true,
-            email: true,
-            password: true,
-            name: true,
-            role: true,
-          },
-        });
-
-        if (!maybeUser) {
-          throw new Error("Unauthorized.");
-        }
-
-        if (maybeUser?.role !== "admin") {
-          throw new Error("Unauthorized.");
-        }
-
-        // TODO: We should probably catch the objects `credentials` and `maybeUser`
-        // both being able to be undefined at this point
-        const isValid = await verifyPassword(
-          credentials?.password as string,
-          maybeUser.password as string
-        );
-
-        if (!isValid) {
-          throw new Error("Invalid Credentials");
-        }
-
-        return {
-          id: maybeUser.id,
-          email: maybeUser.email,
-          name: maybeUser.name,
-          role: maybeUser.role,
-        };
-      },
-    }),
+    // TODO: Add Apple provider
+    // TODO: Add Facebook provider
+    // TODO: Add Google provider
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {

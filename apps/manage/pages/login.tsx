@@ -13,7 +13,6 @@ import { useState } from "react";
 type LoginFormValues = {
   csrfToken: string;
   email: string;
-  password: string;
 };
 
 type PageProps = {
@@ -33,9 +32,8 @@ const Page = ({ csrfToken, providers }: PageProps) => {
   const onSubmit = async (data: LoginFormValues) => {
     setSubmitting(true);
     try {
-      const signInResponse = await signIn("app", {
+      const signInResponse = await signIn("email", {
         email: data.email,
-        password: data.password,
         redirect: false,
       });
 
@@ -98,28 +96,6 @@ const Page = ({ csrfToken, providers }: PageProps) => {
                 </div>
               </div>
 
-              <div>
-                <div className="mt-8">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-neutral-400"
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    type="password"
-                    autoComplete="current-password"
-                    minLength={12}
-                    required
-                    {...register("password")}
-                    className="appearance-none w-full font-medium py-3 border-b border-t-0 border-l-0 border-r-0 border-dashed outline-none text-xl text-center leading-6 bg-transparent placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 transition duration-150 ease-in-out"
-                  />
-                </div>
-              </div>
-
               <div className="mt-6 space-y-2 flex justify-center">
                 <Button type="submit" loading={isSubmitting} variant="light">
                   Sign in
@@ -169,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const csrfToken = await getCsrfToken({ req: context.req });
   const providers = filter(await getProviders(), (provider) => {
-    return provider.type !== "credentials";
+    return !["credentials", "email"].includes(provider.type);
   });
 
   return {
