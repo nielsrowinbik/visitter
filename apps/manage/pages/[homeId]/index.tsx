@@ -1,36 +1,32 @@
-import { Box, Button, Space, Stack, Tabs, Text, Title } from "@mantine/core";
-import {
-  findCurrentAndFutureBookingsByHomeId,
-  findPastBookingsByHomeId,
-} from "@lib/bookings";
-import { format, fromUnixTime } from "date-fns";
+import { Button, Space, Title } from "@mantine/core";
 
 import { ArrowLeftIcon } from "@heroicons/react/outline";
-import type { Booking } from "@lib/bookings";
-import { DeleteBookingButton } from "@components/DeleteBookingButton";
+import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import { DeleteHomeButton } from "@components/DeleteHomeButton";
 import type { GetServerSideProps } from "next/types";
-import type { Home } from "@lib/homes";
-import { HomeShareSelect } from "@components/HomeShareSelect";
 import Link from "next/link";
-import { findHomeById } from "@lib/homes";
+import { fetcher } from "@lib/fetch";
 import { getSession } from "@lib/auth/session";
-import { rangeToDates } from "@lib/helpers";
+import prisma from "@db";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 
 type PageProps = {
-  home: Home;
-  past: Booking[];
-  upcoming: Booking[];
+  // home: Home;
+  // past: Booking[];
+  // upcoming: Booking[];
 };
 
-const Page = ({ home, past, upcoming }: PageProps) => {
+const Page = ({}: PageProps) => {
   const { query } = useRouter();
   const { homeId } = query;
 
-  const unavailability = upcoming.reduce((res: Date[], booking: Booking) => {
-    return [...res, ...rangeToDates(booking.startDate, booking.endDate)];
-  }, []);
+  const { data: home } = useSWR(
+    homeId ? `/api/homes/${homeId}` : null,
+    fetcher
+  );
+
+  if (!home) return <div>Loading...</div>;
 
   return (
     <main>
@@ -48,7 +44,7 @@ const Page = ({ home, past, upcoming }: PageProps) => {
       <Space h="md" />
       <Title order={2}>Bookings</Title>
       <Space h="sm" />
-      <Tabs defaultValue="upcoming">
+      {/* <Tabs defaultValue="upcoming">
         <Tabs.List>
           <Tabs.Tab value="upcoming">Upcoming</Tabs.Tab>
           <Tabs.Tab value="past">Past bookings</Tabs.Tab>
@@ -123,7 +119,7 @@ const Page = ({ home, past, upcoming }: PageProps) => {
             ))}
           </Stack>
         </Tabs.Panel>
-      </Tabs>
+      </Tabs> */}
       <Space h="xl" />
       <Title order={2}>Settings</Title>
       {/* <Space h="md" />
@@ -156,6 +152,10 @@ const Page = ({ home, past, upcoming }: PageProps) => {
   );
 };
 
+Page.getLayout = (children: any) => (
+  <DashboardLayout>{children}</DashboardLayout>
+);
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
@@ -163,28 +163,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { redirect: { permanent: false, destination: "/login" } };
   }
 
-  // const homeId = ctx.query.homeId as string;
+  const homeId = context.params?.homeId as string;
+  const home = await prisma.home.findUnique({
+    where: {
+      id: homeId,
+    },
+  });
 
-  // // Attempt to fetch the home from the database:
-  // const home = await findHomeById(homeId);
-
-  // // If the requested home does not exist, return a 404:
-  // if (!home)
   return {
-    notFound: true,
+    props: {
+      fallback: {
+        [`/api/${homeId}`]: JSON.parse(JSON.stringify(home)),
+      },
+    },
   };
-
-  // // Fetch all upcoming bookings:
-  // const upcoming = await findCurrentAndFutureBookingsByHomeId(homeId);
-  // const past = await findPastBookingsByHomeId(homeId);
-
-  // return {
-  //   props: {
-  //     home,
-  //     past,
-  //     upcoming,
-  //   },
-  // };
 };
 
 export default Page;
