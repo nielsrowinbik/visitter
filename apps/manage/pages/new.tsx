@@ -4,6 +4,7 @@ import type { GetServerSideProps } from "next/types";
 import type { Home } from "@lib/homes";
 import Link from "next/link";
 import { getSession } from "@lib/auth/session";
+import superagent from "superagent";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -25,16 +26,11 @@ const Page = () => {
     register,
   } = useForm<FormValues>({ mode: "onChange" });
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async ({ name }) => {
     setBusy(true);
-    // TODO: Error handling
-    // const token = (await user.getIdToken()) as string;
-    const response = await fetch("/api/homes", {
-      body: JSON.stringify(data),
-      // headers: { Authorization: token },
-      method: "POST",
+    const { body: home } = await superagent.post("/api/homes").send({
+      name,
     });
-    const home = (await response.json()) as Home;
     router.replace(`/${home.id}`);
   });
 
