@@ -36,12 +36,39 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
+model Booking {
+    id          String      @id @default(cuid())
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    startDate   DateTime
+    endDate     DateTime
+    home        Home        @relation(fields: [homeId], references: [id], onDelete: Cascade)
+    homeId      String
+}
+
+model Home {
+    id          String      @id @default(cuid())
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    name        String
+    owner       User        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId     String
+    bookings    Booking[]
+    shareKey    ShareKey?
+}
+
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
+    id           String     @id @default(cuid())
+    sessionToken String     @unique
     expires      DateTime
-    user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String?
+}
+
+model ShareKey {
+    id          String      @id @default(cuid())
+    home        Home        @relation(fields: [homeId], references: [id], onDelete: Cascade)
+    homeId      String      @unique
 }
 
 model User {
@@ -56,6 +83,7 @@ model User {
     role          String?   @default("user")
     accounts      Account[]
     sessions      Session[]
+    homes         Home[]
 }
 
 model VerificationToken {

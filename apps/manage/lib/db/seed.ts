@@ -3,34 +3,48 @@ import { hash } from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  const encryptedPassword = await hash("password1234", 12);
-  await prisma.user.upsert({
-    where: { email: "a@a.com" },
+  const encryptedPassword = await hash("visittertest", 12);
+
+  const niels = await prisma.user.upsert({
+    where: { email: "hey@nielsbik.nl" },
     update: {},
     create: {
-      email: "a@a.com",
-      name: "Alice",
+      email: "hey@nielsbik.nl",
+      name: "Niels",
       password: encryptedPassword,
     },
   });
 
-  await prisma.user.upsert({
-    where: { email: "b@b.com" },
-    update: {},
-    create: {
-      email: "b@b.com",
-      name: "Bob",
-      password: encryptedPassword,
+  await prisma.home.create({
+    data: {
+      name: "Fanta Sea",
+      owner: {
+        connect: {
+          id: niels.id,
+        },
+      },
     },
   });
 
-  await prisma.user.upsert({
-    where: { email: "c@c.com" },
-    update: {},
-    create: {
-      email: "c@c.com",
-      name: "Carla",
-      password: encryptedPassword,
+  await prisma.home.create({
+    data: {
+      name: "Deja Blue",
+      owner: {
+        connect: {
+          id: niels.id,
+        },
+      },
+    },
+  });
+
+  await prisma.home.create({
+    data: {
+      name: "Slow M'Ocean",
+      owner: {
+        connect: {
+          id: niels.id,
+        },
+      },
     },
   });
 }
