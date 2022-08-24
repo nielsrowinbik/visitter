@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from "next";
+import { Page } from "./home";
 import { getSession } from "@lib/auth/session";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -13,4 +14,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default IndexPage;
+export default Page;

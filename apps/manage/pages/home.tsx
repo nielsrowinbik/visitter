@@ -3,7 +3,7 @@ import { HeroSection } from "@components/HeroSection";
 import { ProductLayout } from "@components/Layouts/ProductLayout";
 import type { ReactNode } from "react";
 
-export const HomePage = () => {
+export const Page = () => {
   return (
     <>
       <HeroSection />
@@ -12,6 +12,6 @@ export const HomePage = () => {
   );
 };
 
-HomePage.getLayout = (page: ReactNode) => <ProductLayout>{page}</ProductLayout>;
+Page.getLayout = (page: ReactNode) => <ProductLayout>{page}</ProductLayout>;
 
-export default HomePage;
+export default Page;
