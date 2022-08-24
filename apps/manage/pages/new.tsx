@@ -1,5 +1,6 @@
 import { Button, Group, Space, TextInput, Title } from "@mantine/core";
 
+import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import type { GetServerSideProps } from "next/types";
 import type { Home } from "@lib/homes";
 import Link from "next/link";
@@ -73,6 +74,10 @@ const Page = () => {
     </>
   );
 };
+
+Page.getLayout = (children: any) => (
+  <DashboardLayout>{children}</DashboardLayout>
+);
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);

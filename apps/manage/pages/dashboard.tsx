@@ -1,5 +1,6 @@
-import { Button, Container, Space, Title } from "@mantine/core";
+import { Button, Space, Title } from "@mantine/core";
 
+import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import type { GetServerSideProps } from "next/types";
 import type { Home } from "@prisma/client";
 import { HomesList } from "@components/HomesList";
@@ -15,25 +16,27 @@ type PageProps = {
   };
 };
 
-const Page = ({ fallback }: PageProps) => {
-  return (
-    <SWRConfig value={{ fallback }}>
-      <Button
-        compact
-        onClick={() => signOut({ callbackUrl: "/" })}
-        rightIcon={<LogoutIcon height={12} width={12} />}
-        variant="subtle"
-      >
-        Sign out
-      </Button>
-      <Title>Visitter</Title>
-      <Space h="md" />
-      <Title order={2}>Your vacation homes</Title>
-      <Space h="sm" />
-      <HomesList />
-    </SWRConfig>
-  );
-};
+const Page = ({ fallback }: PageProps) => (
+  <SWRConfig value={{ fallback }}>
+    <Button
+      compact
+      onClick={() => signOut({ callbackUrl: "/" })}
+      rightIcon={<LogoutIcon height={12} width={12} />}
+      variant="subtle"
+    >
+      Sign out
+    </Button>
+    <Title>Visitter</Title>
+    <Space h="md" />
+    <Title order={2}>Your vacation homes</Title>
+    <Space h="sm" />
+    <HomesList />
+  </SWRConfig>
+);
+
+Page.getLayout = (children: any) => (
+  <DashboardLayout>{children}</DashboardLayout>
+);
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
