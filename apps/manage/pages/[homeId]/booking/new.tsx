@@ -1,48 +1,35 @@
 import { Button, Group, Space, Title } from "@mantine/core";
 
+import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import { DateRangePicker } from "@mantine/dates";
 import type { GetServerSideProps } from "next/types";
 import Link from "next/link";
 import { getSession } from "@lib/auth/session";
+import { isDate } from "lodash";
+import superagent from "superagent";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
-type FormValues = {
-  startDate: Date;
-  endDate: Date;
-  period: [Date, Date];
-};
 
 const Page = () => {
   const router = useRouter();
   const { homeId } = router.query;
 
   const [range, setRange] = useState<[Date | null, Date | null]>([null, null]);
-  const isValid = range.every((val) => val !== null);
+  const isValid = range.every((val) => isDate(val));
 
   const [isBusy, setBusy] = useState(false);
 
   const onSaveClick = async () => {
-    // TODO: Error handling
-    // TODO: Deal with dates possibly being null
     setBusy(true);
-    // const token = (await user.getIdToken()) as string;
-    // await fetch(`/api/homes/${homeId}/bookings`, {
-    //   body: JSON.stringify({
-    //     // @ts-ignore
-    //     endDate: range[1].getTime(), // eslint-disable-line
-    //     // @ts-ignore
-    //     startDate: range[0].getTime(), // eslint-disable-line
-    //   }),
-    //   headers: { Authorization: token },
-    //   method: "POST",
-    // });
-    // router.replace(`/${homeId}`);
+    await superagent.post(`/api/homes/${homeId}/bookings`).send({
+      endDate: range[1],
+      startDate: range[0],
+    });
+    router.replace(`/${homeId}`);
   };
 
   return (
     <>
-      <nav></nav>
       <main>
         <Title>Add a new booking</Title>
         <Space h="sm" />
@@ -73,6 +60,8 @@ const Page = () => {
     </>
   );
 };
+
+Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
