@@ -31,9 +31,7 @@ const Page = ({ fallback }: PageProps) => (
   </SWRConfig>
 );
 
-Page.getLayout = (children: any) => (
-  <DashboardLayout>{children}</DashboardLayout>
-);
+Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
