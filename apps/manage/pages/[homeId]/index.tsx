@@ -1,9 +1,10 @@
+import type { Booking, Home } from "@prisma/client";
 import { Button, Space, Title } from "@mantine/core";
 
 import { ArrowLeftIcon } from "@heroicons/react/outline";
+import { BookingsList } from "@components/BookingsList";
 import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import type { GetServerSideProps } from "next/types";
-import type { Home } from "@prisma/client";
 import { HomeDeleteButton } from "@components/HomeDeleteButton";
 import { HomeTitle } from "@components/HomeTitle";
 import Link from "next/link";
@@ -12,7 +13,10 @@ import { getSession } from "@lib/auth/session";
 import prisma from "@db";
 
 type PageProps = {
-  fallback: Record<string, Home>;
+  fallback: {
+    ["/api/homes/homeId"]: Home;
+    ["/api/homes/homeId/bookings"]: Booking[];
+  };
   homeId: string;
 };
 
@@ -30,20 +34,14 @@ const Page = ({ fallback, homeId }: PageProps) => (
         </Button>
       </Link>
       <HomeTitle homeId={homeId} />
-      <Space h="md" />
-      <Title order={2}>Bookings</Title>
-      <Space h="sm" />
-      <Space h="md" />
-      <Title order={3}>Danger zone</Title>
-      <Space h="sm" />
+      <BookingsList homeId={homeId} />
+      <h2 className="font-bold text-2xl">Danger zone</h2>
       <HomeDeleteButton homeId={homeId} />
     </main>
   </SWRConfig>
 );
 
-Page.getLayout = (children: any) => (
-  <DashboardLayout>{children}</DashboardLayout>
-);
+Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -63,11 +61,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
+  const bookings = await prisma.booking.findMany({
+    where: {
+      homeId,
+    },
+  });
+
   return {
     props: {
       homeId,
       fallback: {
         [`/api/homes/${homeId}`]: JSON.parse(JSON.stringify(home)),
+        [`/api/homes/${homeId}/bookings`]: JSON.parse(JSON.stringify(bookings)),
       },
     },
   };
