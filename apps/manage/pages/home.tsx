@@ -1,8 +1,17 @@
-import { AuthAction, withAuthUser } from "next-firebase-auth";
+import { FeaturesSection } from "@components/FeaturesSection";
+import { HeroSection } from "@components/HeroSection";
+import { ProductLayout } from "@components/Layouts/ProductLayout";
+import type { ReactNode } from "react";
 
-import { IndexPage as HomePage } from "./index";
+export const Page = () => {
+  return (
+    <>
+      <HeroSection />
+      <FeaturesSection />
+    </>
+  );
+};
 
-export default withAuthUser({
-  whenUnauthedBeforeInit: AuthAction.RENDER,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-})(HomePage);
+Page.getLayout = (page: ReactNode) => <ProductLayout>{page}</ProductLayout>;
+
+export default Page;

@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { useAuthUser } from "next-firebase-auth";
+import superagent from "superagent";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -7,8 +7,7 @@ type Props = {
   homeId: string;
 };
 
-export const DeleteHomeButton = ({ homeId }: Props) => {
-  const user = useAuthUser();
+export const HomeDeleteButton = ({ homeId }: Props) => {
   const { replace } = useRouter();
 
   const [isBusy, setBusy] = useState(false);
@@ -16,12 +15,8 @@ export const DeleteHomeButton = ({ homeId }: Props) => {
   const onClickDelete = async () => {
     if (confirm("Are you sure?")) {
       setBusy(true);
-      const token = (await user.getIdToken()) as string;
-      await fetch(`/api/homes/${homeId}`, {
-        headers: { Authorization: token },
-        method: "DELETE",
-      });
-      replace("/");
+      await superagent.delete(`/api/homes/${homeId}`).send();
+      replace("/dashboard");
     }
   };
 

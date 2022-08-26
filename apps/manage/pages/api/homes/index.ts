@@ -1,44 +1,65 @@
-import type { NextApiHandler } from "next";
-import { verifyIdToken } from "next-firebase-auth";
+import type { NextApiHandler } from "next/types";
+import { getErrorMessage } from "@lib/errors";
+import { getSession } from "@lib/auth/session";
+import nc from "next-connect";
+import prisma from "@db";
 
-import { initAuth } from "../../../lib/auth";
-import { createHome, findHomesByUserId } from "../../../lib/homes";
+const getHandler: NextApiHandler = async (req, res) => {
+  const session = await getSession({ req });
 
-initAuth();
-
-const handler: NextApiHandler = async (req, res) => {
-  /// TODO: Move the block starting from here until the next comment into some kind of middleware
-  // Check token presence:
-  const token = req.headers?.authorization;
-  if (!token) {
-    return res.status(403).json({ error: "Unauthorized" });
+  if (!session) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
   }
 
-  // Validate token
-  const user = await verifyIdToken(token);
+  try {
+    const homes = await prisma.home.findMany({
+      where: {
+        ownerId: { equals: session.user?.id },
+      },
+    });
 
-  // If user id is null, the token was invalid:
-  if (user.id === null) {
-    return res.status(403).json({ error: "Unauthorized" });
+    return res.status(200).json(homes);
+  } catch (error) {
+    console.error("[api] homes", error);
+    return res
+      .status(500)
+      .json({ statusCode: 500, message: getErrorMessage(error) });
   }
-  // TODO: Move the code above from here until the previous comment into some kind of middleware
-
-  if (req.method === "GET") {
-    const data = await findHomesByUserId(user.id);
-    return res.status(200).json(data);
-  }
-
-  if (req.method === "POST") {
-    const { name } = JSON.parse(req.body); // TODO: Can we use bodyparser or something so we don't have to do this manually?
-    // TODO: Validate the home (omit unwanted fields, etc)
-    // TODO: Store the home, but only if there is no other home in the user's collection (multiple homes will be a paid feature)
-    const newHome = await createHome(name, user.id);
-
-    return res.status(201).json(newHome);
-  }
-
-  // TODO: Which status code should we use to indicate that the method isn't supported?
-  return res.status(400).end();
 };
 
-export default handler;
+const postHandler: NextApiHandler = async (req, res) => {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
+  try {
+    // TODO: Validate request body
+
+    const home = await prisma.home.create({
+      data: {
+        name: req.body.name,
+        owner: {
+          connect: {
+            id: session.user?.id,
+          },
+        },
+      },
+    });
+
+    if (home) return res.status(200).json(home);
+    return res.status(404).json({ message: "Not Found" });
+  } catch (error) {
+    console.error("[api] home", error);
+    return res
+      .status(500)
+      .json({ statusCode: 500, message: getErrorMessage(error) });
+  }
+};
+
+export default nc().get(getHandler).post(postHandler);

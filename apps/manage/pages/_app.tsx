@@ -1,41 +1,27 @@
-import { AppShell, Container, Header, MantineProvider } from "@mantine/core";
-import type { AppProps } from "next/app";
-import Head from "next/head";
-import { initAuth } from "../lib/auth";
+import "../styles/globals.css";
 
-initAuth();
+import { QueryClient, QueryClientProvider } from "react-query";
 
-const App = ({ Component, pageProps }: AppProps) => (
-  <>
-    <Head>
-      <title>Visitter</title>
-      <meta
-        name="viewport"
-        content="minimum-scale=1, initial-scale=1, width=device-width"
-      />
-    </Head>
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{
-        /** Put your mantine theme override here */
-        colorScheme: "light",
-      }}
-    >
-      <AppShell
-        padding="md"
-        header={
-          <Header height={60} p="xs">
-            {/* Header content */}
-          </Header>
-        }
-      >
-        <Container>
-          <Component {...pageProps} />
-        </Container>
-      </AppShell>
-    </MantineProvider>
-  </>
-);
+import type { ExtendedAppProps } from "@lib/types";
+import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
+
+export const queryClient = new QueryClient();
+
+const App = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: ExtendedAppProps) => {
+  const getLayout = Component.getLayout || ((page) => page);
+
+  return (
+    <SessionProvider session={session} refetchInterval={5 * 60}>
+      <QueryClientProvider client={queryClient}>
+        {getLayout(<Component {...pageProps} />)}
+        <Toaster position="bottom-center" />
+      </QueryClientProvider>
+    </SessionProvider>
+  );
+};
 
 export default App;

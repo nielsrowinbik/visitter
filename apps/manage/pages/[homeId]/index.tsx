@@ -1,49 +1,27 @@
+import type { Booking, Home } from "@prisma/client";
+import { Button, Space, Title } from "@mantine/core";
+
 import { ArrowLeftIcon } from "@heroicons/react/outline";
-import { format, fromUnixTime } from "date-fns";
-import {
-  Box,
-  Button,
-  CopyButton,
-  Space,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-} from "@mantine/core";
-import type { InferGetServerSidePropsType } from "next";
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth";
+import { BookingsList } from "@components/BookingsList";
+import { DashboardLayout } from "@components/Layouts/DashboardLayout";
+import type { GetServerSideProps } from "next/types";
+import { HomeDeleteButton } from "@components/HomeDeleteButton";
+import { HomeTitle } from "@components/HomeTitle";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { SWRConfig } from "swr";
+import { getSession } from "@lib/auth/session";
+import prisma from "@db";
 
-import { DeleteBookingButton } from "../../components/DeleteBookingButton";
-import { DeleteHomeButton } from "../../components/DeleteHomeButton";
-import { HomeShareSelect } from "../../components/HomeShareSelect";
-import {
-  findCurrentAndFutureBookingsByHomeId,
-  findPastBookingsByHomeId,
-} from "../../lib/bookings";
-import type { Booking } from "../../lib/bookings";
-import { findHomeById } from "../../lib/homes";
-import { rangeToDates } from "../../lib/helpers";
+type PageProps = {
+  fallback: {
+    ["/api/homes/homeId"]: Home;
+    ["/api/homes/homeId/bookings"]: Booking[];
+  };
+  homeId: string;
+};
 
-const ManageHomePage = ({
-  home,
-  past,
-  upcoming,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { query } = useRouter();
-  const { homeId } = query;
-
-  const unavailability = upcoming.reduce((res: Date[], booking: Booking) => {
-    return [...res, ...rangeToDates(booking.startDate, booking.endDate)];
-  }, []);
-
-  return (
+const Page = ({ fallback, homeId }: PageProps) => (
+  <SWRConfig value={{ fallback }}>
     <main>
       <Link href="/dashboard" passHref>
         <Button
@@ -55,148 +33,49 @@ const ManageHomePage = ({
           Back to overview
         </Button>
       </Link>
-      <Title>{home.name}</Title>
-      <Space h="md" />
-      <Title order={2}>Bookings</Title>
-      <Space h="sm" />
-      <Tabs defaultValue="upcoming">
-        <Tabs.List>
-          <Tabs.Tab value="upcoming">Upcoming</Tabs.Tab>
-          <Tabs.Tab value="past">Past bookings</Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value="upcoming" pt="xs">
-          <Stack>
-            {upcoming.map((booking: Booking) => (
-              <Box
-                sx={(theme) => ({
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : theme.colors.gray[0],
-                  padding: theme.spacing.xl,
-                  borderRadius: theme.radius.md,
-                  height: "100%",
-                })}
-                key={booking.id}
-              >
-                <Text>
-                  From{" "}
-                  <strong>
-                    {format(fromUnixTime(booking.startDate / 1000), "d MMMM y")}
-                  </strong>{" "}
-                  until{" "}
-                  <strong>
-                    {format(fromUnixTime(booking.endDate / 1000), "d MMMM y")}
-                  </strong>
-                  .
-                </Text>
-                <DeleteBookingButton bookingId={booking.id} />
-              </Box>
-            ))}
-          </Stack>
-          <Space h="sm" />
-          <Link href={`/${homeId}/booking/new`} passHref>
-            <Button component="a" variant="light">
-              Add new booking
-            </Button>
-          </Link>
-        </Tabs.Panel>
-
-        <Tabs.Panel value="past" pt="xs">
-          <Stack>
-            {past.map((booking: Booking) => (
-              <Box
-                sx={(theme) => ({
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : theme.colors.gray[0],
-                  padding: theme.spacing.xl,
-                  borderRadius: theme.radius.md,
-                  height: "100%",
-                })}
-                key={booking.id}
-              >
-                <Text>
-                  From{" "}
-                  <strong>
-                    {format(fromUnixTime(booking.startDate / 1000), "d MMMM y")}
-                  </strong>{" "}
-                  until{" "}
-                  <strong>
-                    {format(fromUnixTime(booking.endDate / 1000), "d MMMM y")}
-                  </strong>
-                  .
-                </Text>
-                <DeleteBookingButton bookingId={booking.id} />
-              </Box>
-            ))}
-          </Stack>
-        </Tabs.Panel>
-      </Tabs>
-      <Space h="xl" />
-      <Title order={2}>Settings</Title>
-      {/* <Space h="md" />
-      <Title order={3}>Sharing</Title>
-      <Space h="sm" />
-      <Text>
-        Share the availability of your vacation home by setting the below option
-        to Shared. If you no longer wish to share the availability, simply set
-        it back to Private.
-      </Text>
-      <Space h="sm" />
-      <HomeShareSelect homeId={homeId as string} shared={home.shared} />
-      <Space h="sm" />
-      <CopyButton value={`http://localhost:3000/${homeId}`}>
-        {({ copied, copy }) => (
-          <Button
-            color={copied ? "teal" : "blue"}
-            onClick={copy}
-            variant="light"
-          >
-            {copied ? "Copied!" : "Copy link"}
-          </Button>
-          )}
-        </CopyButton> */}
-      <Space h="md" />
-      <Title order={3}>Danger zone</Title>
-      <Space h="sm" />
-      <DeleteHomeButton homeId={homeId as string} />
+      <HomeTitle homeId={homeId} />
+      <BookingsList homeId={homeId} />
+      <h2 className="font-bold text-2xl">Danger zone</h2>
+      <HomeDeleteButton homeId={homeId} />
     </main>
-  );
-};
+  </SWRConfig>
+);
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async (ctx) => {
-  const homeId = ctx.query.homeId as string;
+Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
-  // Attempt to fetch the home from the database:
-  const home = await findHomeById(homeId);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
 
-  // If the requested home does not exist, return a 404:
-  if (!home)
-    return {
-      notFound: true,
-    };
+  if (!session) {
+    return { redirect: { permanent: false, destination: "/login" } };
+  }
 
-  // Fetch all upcoming bookings:
-  const upcoming = await findCurrentAndFutureBookingsByHomeId(homeId);
-  const past = await findPastBookingsByHomeId(homeId);
+  const homeId = context.params?.homeId as string;
+  const home = await prisma.home.findUnique({
+    where: {
+      id: homeId,
+    },
+  });
+
+  if (home === null) {
+    return { notFound: true };
+  }
+
+  const bookings = await prisma.booking.findMany({
+    where: {
+      homeId,
+    },
+  });
 
   return {
     props: {
-      home,
-      past,
-      upcoming,
+      homeId,
+      fallback: {
+        [`/api/homes/${homeId}`]: JSON.parse(JSON.stringify(home)),
+        [`/api/homes/${homeId}/bookings`]: JSON.parse(JSON.stringify(bookings)),
+      },
     },
   };
-});
+};
 
-export default withAuthUser<
-  InferGetServerSidePropsType<typeof getServerSideProps>
->({
-  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(ManageHomePage);
+export default Page;
