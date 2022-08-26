@@ -7,8 +7,6 @@ import useSWR from "swr";
 export const HomesList = () => {
   const { data: homes } = useSWR<Home[]>("/api/homes", fetcher);
 
-  // if (!homes) return <div>Loading...</div>;
-
   if (homes?.length === 0)
     return (
       <div className="space-y-3">
@@ -24,19 +22,20 @@ export const HomesList = () => {
     );
 
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       {homes?.map((home) => (
         <Link href={`/${home.id}`} key={home.id} passHref>
-          <a className="bg-gray-100 block p-4 rounded-lg">
-            <h3 className="font-bold">{home.name}</h3>
+          <a className="text-primary dark:ring-white/15 flex flex-col justify-between rounded-lg pt-3 shadow-md ring-1 ring-gray-400/20 transition duration-150 hover:shadow-lg dark:shadow-black/60">
+            <div className="space-y-3 p-3">
+              <div className="flex justify-between space-x-2">
+                <h2 className="pt-px text-lg font-semibold">{home.name}</h2>
+                <div className="flex space-x-1"></div>
+              </div>
+              <div className="space-y-2">{/* Space for extra info */}</div>
+            </div>
           </a>
         </Link>
       ))}
-      <Link href="/new" passHref>
-        <Button component="a" variant="light">
-          Add a vacation home
-        </Button>
-      </Link>
     </div>
   );
 };
