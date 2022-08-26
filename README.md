@@ -3,7 +3,7 @@
 # Current features
 
 - Manage your vacation homes (in)availability and bookings
-- Create a unique link to your vacation home's availability page that you can revoke at any time
+- ~~Create a unique link to your vacation home's availability page that you can revoke at any time~~ (coming soon)
 
 # Future features
 
