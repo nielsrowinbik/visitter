@@ -11,9 +11,7 @@ import prisma from "@db";
 import { signOut } from "next-auth/react";
 
 type PageProps = {
-  fallback: {
-    "/api/homes": Home[];
-  };
+  fallback: Record<string, Home[]>;
 };
 
 const Page = ({ fallback }: PageProps) => (
@@ -26,7 +24,6 @@ const Page = ({ fallback }: PageProps) => (
     >
       Sign out
     </Button>
-    <Title>Visitter</Title>
     <Space h="md" />
     <Title order={2}>Your vacation homes</Title>
     <Space h="sm" />
