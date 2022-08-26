@@ -1,51 +1,51 @@
-import type { FC } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { Logo } from "@components/Logo";
+import type { ReactNode } from "react";
+import { TabbedNavigation } from "@components/TabbedNavigation";
+import { UserMenu } from "@components/UserMenu";
 
-export const DashboardLayout: FC = ({ children }) => {
-  const session = useSession();
+const navigationItems = [
+  {
+    href: "/dashboard",
+    label: "Overview",
+  },
+  {
+    href: "/account",
+    label: "Settings",
+  },
+];
 
+type Props = {
+  children?: ReactNode;
+  title?: ReactNode;
+};
+
+export const DashboardLayout = ({ children, title }: Props) => {
   return (
-    <>
-      <header className="py-6">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <nav className="relative z-50 flex justify-between">
-            <div className="flex items-center md:gap-x-12">
-              <Link href="/#" passHref shallow>
-                <a aria-label="Home">
-                  <span>Visitter</span>
+    <div className="flex h-screen flex-col">
+      <div className="relative z-40 border-b border-zinc-50 px-6 dark:border-zinc-700 sm:px-12 lg:px-16">
+        <header className="relative mx-auto max-w-7xl">
+          <div className="flex items-center pt-6 pb-4 md:pt-8 md:pb-6">
+            <div className="mr-2 flex shrink-0 items-center">
+              <Link href="/dashboard" passHref>
+                <a className="rounded" aria-label="Go to dashboard">
+                  <Logo />
                 </a>
               </Link>
-              <div className="hidden md:flex md:gap-x-6">
-                <Link href="/dashboard" passHref shallow>
-                  <a className="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">
-                    Dashboard
-                  </a>
-                </Link>
-                <Link href="/dashboard/bookings" passHref shallow>
-                  <a className="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">
-                    Bookings
-                  </a>
-                </Link>
-                <Link href="/dashboard/schedule" passHref shallow>
-                  <a className="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">
-                    Schedule
-                  </a>
-                </Link>
-              </div>
             </div>
-            <div className="flex items-center gap-x-5 md:gap-x-8">
-              {/* TODO: Turn this into a proper avatar with fallback to initials */}
-              {/* TODO: Turn this into a menu which includes a sign-out option to log out */}
-              <img
-                className="w-10 h-10 rounded-full"
-                src="https://via.placeholder.com/150x150"
-              />
+            <div className="flex flex-grow items-center rounded p-2 text-lg font-medium leading-3 transition sm:flex">
+              {title}
             </div>
-          </nav>
+            <UserMenu />
+          </div>
+          <TabbedNavigation items={navigationItems} />
+        </header>
+      </div>
+      <main className="mx-auto w-full flex-1 px-6 py-8 sm:py-12 sm:px-12 lg:px-16">
+        <div className="mx-auto h-full max-w-7xl">
+          <div className="space-y-6">{children}</div>
         </div>
-      </header>
-      <main>{children}</main>
-    </>
+      </main>
+    </div>
   );
 };
