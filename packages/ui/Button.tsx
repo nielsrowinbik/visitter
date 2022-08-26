@@ -5,46 +5,41 @@ import classNames from "classnames";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
+  compact?: boolean;
   leftIcon?: ReactNode;
   loading?: boolean | string;
   loaderPosition?: "left" | "right";
   rightIcon?: ReactNode;
-  variant?: "filled" | "uppercase";
 }
 
 export const Button = ({
   children,
+  compact = false,
   leftIcon,
   loading = false,
   loaderPosition = "left",
   rightIcon,
-  variant = "filled",
   ...props
 }: Props) => {
   return (
     <button
-      // TODO: Make sure button can't be clicked when in loading state
       className={classNames(
-        "group rounded-md py-3 px-4 font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 w-full disabled:bg-gray-200 disabled:text-gray-400 disabled:hover:cursor-not-allowed",
-        variant === "filled" &&
-          "bg-teal-600 text-white hover:enabled:text-slate-100 hover:enabled:bg-teal-500 active:enabled:bg-teal-800 active:enabled:text-teal-100 focus-visible:outline-teal-600",
-        props.className
+        "focus-ring relative box-border inline-flex shrink-0 select-none items-center justify-center overflow-hidden whitespace-nowrap rounded border border-transparent bg-gray-800 text-center text-sm font-semibold leading-none text-gray-50 no-underline transition hover:bg-gray-900 hover:text-white dark:bg-gray-50 dark:text-gray-800 dark:hover:bg-white dark:hover:text-gray-900",
+        compact ? "h-6 py-1.5 px-2 text-xs" : "h-8 py-3 px-4 text-sm"
       )}
       {...props}
     >
       <div className="flex items-center justify-center">
         {(leftIcon || (loading && loaderPosition === "left")) && (
-          <span className="w-5 h-5 -ml-1 mr-3">
+          <span className="-ml-1 mr-3 h-4 w-4">
             {loading && loaderPosition === "left" ? <Spinner /> : leftIcon}
           </span>
         )}
 
-        <span className={classNames(variant === "uppercase" && "uppercase")}>
-          {children}
-        </span>
+        <span>{children}</span>
 
         {(rightIcon || (loading && loaderPosition === "right")) && (
-          <span className="w-5 h-5 -mr-1 ml-3">
+          <span className="-mr-1 ml-3 h-4 w-4">
             {loading && loaderPosition === "right" ? <Spinner /> : rightIcon}
           </span>
         )}
