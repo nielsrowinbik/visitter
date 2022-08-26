@@ -1,33 +1,64 @@
-import { createBooking, findAllBookingsByHomeId } from "@lib/bookings";
+import type { NextApiRequest, NextApiResponse } from "next/types";
 
-import type { NextApiHandler } from "next/types";
+import { getErrorMessage } from "@lib/errors";
+import { getSession } from "@lib/auth/session";
+import nc from "next-connect";
+import prisma from "@db";
 
-const handler: NextApiHandler = async (req, res) => {
-  // // TODO: Move the block starting from here until the next comment into some kind of middleware
-  // // Check token presence:
-  // const token = req.headers?.authorization;
-  // if (!token) {
-  //   return res.status(403).json({ error: "Unauthorized" });
-  // }
-  // // Validate token
-  // const user = await verifyIdToken(token);
-  // // If user id is null, the token was invalid:
-  // if (user.id === null) {
-  //   return res.status(403).json({ error: "Unauthorized" });
-  // }
-  // // TODO: Move the code above from here until the previous comment into some kind of middleware
-  // const homeId = req.query.homeId as string;
-  // if (req.method === "GET") {
-  //   const data = await findAllBookingsByHomeId(homeId);
-  //   return res.status(200).json(data);
-  // }
-  // if (req.method === "POST") {
-  //   const { endDate, startDate } = JSON.parse(req.body);
-  //   const data = await createBooking(homeId, startDate, endDate);
-  //   return res.status(201).json(data);
-  // }
-  // // TODO: Which status code should we use to indicate that the method isn't supported?
-  // return res.status(400).end();
-};
+const handler = nc<NextApiRequest, NextApiResponse>();
+
+handler.get(async (req, res) => {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
+  try {
+    const bookings = await prisma.booking.findMany({
+      where: {
+        homeId: { equals: req.query.homeId as string },
+      },
+    });
+
+    return res.status(200).json(bookings);
+  } catch (error) {
+    console.error("[api] bookings", error);
+    return res
+      .status(500)
+      .json({ statusCode: 500, message: getErrorMessage(error) });
+  }
+});
+
+handler.post(async (req, res) => {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
+  try {
+    // TODO: Validate request body
+
+    const booking = await prisma.booking.create({
+      data: {
+        endDate: new Date(req.body.endDate),
+        home: { connect: { id: req.query.homeId as string } },
+        startDate: new Date(req.body.startDate),
+      },
+    });
+
+    return res.status(201).json(booking);
+  } catch (error) {
+    console.error("[api] home", error);
+    return res
+      .status(500)
+      .json({ statusCode: 500, message: getErrorMessage(error) });
+  }
+});
 
 export default handler;
