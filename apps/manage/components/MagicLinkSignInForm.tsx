@@ -4,8 +4,8 @@ import {
   MailIcon,
   MailOpenIcon,
 } from "@heroicons/react/outline";
+import { Button, Input } from "ui";
 
-import { Button } from "ui";
 import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -39,9 +39,9 @@ export const MagicLinkSignInForm = () => {
 
   if (isSuccess) {
     return (
-      <div className="text-center space-y-8">
-        <MailOpenIcon className="w-16 h-16 inline text-teal-500" />
-        <h1 className="font-bold text-4xl">Check your email</h1>
+      <div className="space-y-8 text-center">
+        <MailOpenIcon className="inline h-16 w-16 text-teal-500" />
+        <h1 className="text-4xl font-bold">Check your email</h1>
         <div className="space-y-2">
           <p>
             We emailed a magic link to{" "}
@@ -66,24 +66,16 @@ export const MagicLinkSignInForm = () => {
     <>
       <form className="space-y-8 text-center" onSubmit={handleSubmit(onSubmit)}>
         {/* TODO: Replace icon below with logo */}
-        <HomeIcon className="w-16 h-16 inline text-teal-500" />{" "}
-        <h1 className="font-bold text-4xl">Login to Visitter</h1>
-        <div>
-          <label
-            htmlFor="email"
-            className="mb-3 block  font-medium text-gray-700 text-left"
-          >
-            Email address
-          </label>
-          <input
-            {...register("email", { required: true })}
-            autoComplete="email"
-            className="block w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-3 text-gray-900 placeholder-gray-400 focus:border-teal-500 focus:bg-white focus:outline-none focus:ring-teal-500 focus:ring-2"
-            id="email"
-            placeholder="hi@example.com"
-            type="email"
-          />
-        </div>
+        <HomeIcon className="inline h-16 w-16 text-teal-500" />{" "}
+        <h1 className="text-4xl font-bold">Login to Visitter</h1>
+        <Input
+          {...register("email", { required: true })}
+          autoComplete="email"
+          id="email"
+          label="Email"
+          placeholder="hi@example.com"
+          type="email"
+        />
         <div>
           <Button disabled={isSubmitting} leftIcon={<MailIcon />} type="submit">
             Continue with Email
