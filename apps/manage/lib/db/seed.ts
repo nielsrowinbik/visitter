@@ -36,18 +36,18 @@ async function main() {
   // Add a booking for `Fanta Sea` for the entire current month:
   await prisma.booking.create({
     data: {
-      endDate: startOfMonth(now),
+      endDate: endOfMonth(now),
       home: { connect: { id: fantaSea.id } },
-      startDate: endOfMonth(now),
+      startDate: startOfMonth(now),
     },
   });
 
   // Add a booking for `Fanta Sea` for the entire current week:
   await prisma.booking.create({
     data: {
-      endDate: startOfWeek(now),
+      endDate: endOfWeek(now),
       home: { connect: { id: fantaSea.id } },
-      startDate: endOfWeek(now),
+      startDate: startOfWeek(now),
     },
   });
 
