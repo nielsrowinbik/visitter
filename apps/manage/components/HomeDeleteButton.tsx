@@ -7,7 +7,7 @@ type Props = {
   homeId: string;
 };
 
-export const DeleteHomeButton = ({ homeId }: Props) => {
+export const HomeDeleteButton = ({ homeId }: Props) => {
   const { replace } = useRouter();
 
   const [isBusy, setBusy] = useState(false);
