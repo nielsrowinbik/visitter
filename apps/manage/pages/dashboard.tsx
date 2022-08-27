@@ -4,19 +4,10 @@ import { Popover, Transition } from "@headlessui/react";
 import { Button } from "ui";
 import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import { Fragment } from "react";
-import type { GetServerSideProps } from "next/types";
-import type { Home } from "@prisma/client";
 import { HomesList } from "@components/HomesList";
-import { SWRConfig } from "swr";
-import { getSession } from "@lib/auth/session";
-import prisma from "@db";
 
-type PageProps = {
-  fallback: Record<string, Home[]>;
-};
-
-const Page = ({ fallback }: PageProps) => (
-  <SWRConfig value={{ fallback }}>
+const Page = () => (
+  <>
     <div className="flex flex-col-reverse justify-end gap-y-3 space-x-6 md:flex-row md:items-end">
       {/* TODO: Extract below to separate component */}
       {/* TODO: Below should only enforce this limit once we've actually implemented the ability to upgrade */}
@@ -61,33 +52,11 @@ const Page = ({ fallback }: PageProps) => (
       </Popover>
     </div>
     <HomesList />
-  </SWRConfig>
+  </>
 );
 
 Page.getLayout = (page: any) => (
   <DashboardLayout title="Overview">{page}</DashboardLayout>
 );
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return { redirect: { permanent: false, destination: "/login" } };
-  }
-
-  const homes = await prisma.home.findMany({
-    where: {
-      ownerId: { equals: session.user?.id },
-    },
-  });
-
-  return {
-    props: {
-      fallback: {
-        "/api/homes": JSON.parse(JSON.stringify(homes)),
-      },
-    },
-  };
-};
 
 export default Page;
