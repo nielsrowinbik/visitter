@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const HomeTitle = ({ homeId }: Props) => {
-  const { data: home } = useSWR<Home>(`/api/homes/${homeId}`, fetcher);
+  const { data: home } = useSWR<Home>(() => `/api/homes/${homeId}`, fetcher);
 
   return <h1 className="text-3xl font-bold">{home?.name}</h1>;
 };
