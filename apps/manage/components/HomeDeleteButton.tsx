@@ -1,6 +1,7 @@
 import { Button } from "@mantine/core";
+import Router from "next/router";
+import { mutate } from "swr";
 import superagent from "superagent";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 type Props = {
@@ -8,15 +9,14 @@ type Props = {
 };
 
 export const HomeDeleteButton = ({ homeId }: Props) => {
-  const { replace } = useRouter();
-
   const [isBusy, setBusy] = useState(false);
 
   const onClickDelete = async () => {
     if (confirm("Are you sure?")) {
       setBusy(true);
       await superagent.delete(`/api/homes/${homeId}`).send();
-      replace("/dashboard");
+      await mutate(`/api/homes`);
+      Router.replace("/dashboard");
     }
   };
 

@@ -1,9 +1,8 @@
 import type { ClientSafeProvider } from "next-auth/react";
-import type { GetServerSideProps } from "next/types";
+import type { GetStaticProps } from "next/types";
 import { MagicLinkSignInForm } from "@components/MagicLinkSignInForm";
 import { filter } from "lodash";
 import { getProviders } from "next-auth/react";
-import { getSession } from "@lib/auth/session";
 
 type PageProps = {
   providers: ClientSafeProvider[];
@@ -11,8 +10,8 @@ type PageProps = {
 
 const Page = ({ providers }: PageProps) => {
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="w-1/4 space-y-8">
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="w-full max-w-sm space-y-8">
         <section>
           <MagicLinkSignInForm />
         </section>
@@ -24,19 +23,15 @@ const Page = ({ providers }: PageProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (session) {
-    return { redirect: { permanent: false, destination: "/dashboard" } };
-  }
-
+export const getStaticProps: GetStaticProps = async (context) => {
   const providers = filter(await getProviders(), (provider) => {
     return !["credentials", "email"].includes(provider.type);
   });
 
   return {
-    props: { providers },
+    props: {
+      providers,
+    },
   };
 };
 

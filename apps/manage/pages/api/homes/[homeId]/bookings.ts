@@ -43,14 +43,19 @@ handler.post(async (req, res) => {
 
   try {
     // TODO: Validate request body
+    const homeId = req.query.homeId as string;
 
+    // Create the booking:
     const booking = await prisma.booking.create({
       data: {
         endDate: new Date(req.body.endDate),
-        home: { connect: { id: req.query.homeId as string } },
+        home: { connect: { id: homeId } },
         startDate: new Date(req.body.startDate),
       },
     });
+
+    // Invalidate the cache on the home's detail page:
+    res.revalidate(`/${homeId}`);
 
     return res.status(201).json(booking);
   } catch (error) {

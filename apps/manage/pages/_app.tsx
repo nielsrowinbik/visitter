@@ -18,7 +18,7 @@ const App = ({
     <SessionProvider session={session} refetchInterval={5 * 60}>
       <QueryClientProvider client={queryClient}>
         {getLayout(<Component {...pageProps} />)}
-        <Toaster position="bottom-center" />
+        <Toaster position="bottom-left" />
       </QueryClientProvider>
     </SessionProvider>
   );

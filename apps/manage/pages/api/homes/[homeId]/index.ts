@@ -14,11 +14,18 @@ const deleteHandler: NextApiHandler = async (req, res) => {
   }
 
   try {
+    const homeId = req.query.homeId as string;
+
+    // Delete the home:
     await prisma.home.delete({
       where: {
-        id: req.query.homeId as string,
+        id: homeId,
       },
     });
+
+    // Invalidate the cache on the home's detail page:
+    res.revalidate(`/${homeId}`);
+
     return res.status(204).end();
   } catch (error) {
     console.error("[api] home", error);

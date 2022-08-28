@@ -12,7 +12,7 @@ export const Input = forwardRef<any, Props>(({ id, label, ...props }, ref) => (
       {label}
     </label>
     <input
-      className="h-8 w-full rounded border bg-zinc-50 px-3 text-sm shadow-sm ring-zinc-400/20 ring-offset-0 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-zinc-800"
+      className="h-8 w-full rounded-md border bg-zinc-50 px-3 text-sm shadow-sm ring-zinc-400/20 ring-offset-0 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-zinc-800"
       id={id}
       {...props}
       ref={ref}

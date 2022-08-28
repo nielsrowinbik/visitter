@@ -1,19 +1,19 @@
 import { Button, Group, Space, Title } from "@mantine/core";
+import type { GetStaticPaths, GetStaticProps } from "next/types";
 
 import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import { DateRangePicker } from "@mantine/dates";
-import type { GetServerSideProps } from "next/types";
 import Link from "next/link";
-import { getSession } from "@lib/auth/session";
+import Router from "next/router";
 import { isDate } from "lodash";
 import superagent from "superagent";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
-const Page = () => {
-  const router = useRouter();
-  const { homeId } = router.query;
+type PageProps = {
+  homeId: string;
+};
 
+const Page = ({ homeId }: PageProps) => {
   const [range, setRange] = useState<[Date | null, Date | null]>([null, null]);
   const isValid = range.every((val) => isDate(val));
 
@@ -25,7 +25,7 @@ const Page = () => {
       endDate: range[1],
       startDate: range[0],
     });
-    router.replace(`/${homeId}`);
+    Router.replace(`/${homeId}`);
   };
 
   return (
@@ -63,16 +63,14 @@ const Page = () => {
 
 Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return { redirect: { permanent: false, destination: "/login" } };
-  }
-
-  return {
-    props: {},
-  };
+export const getStaticPaths: GetStaticPaths = () => {
+  return { fallback: "blocking", paths: [] };
 };
+
+export const getStaticProps: GetStaticProps = (context) => ({
+  props: {
+    homeId: context.params?.homeId,
+  },
+});
 
 export default Page;
