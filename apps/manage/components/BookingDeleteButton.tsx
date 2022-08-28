@@ -2,8 +2,8 @@ import { useCallback, useState } from "react";
 
 import { ActionIcon } from "@mantine/core";
 import { TrashIcon } from "@heroicons/react/outline";
+import { mutate } from "swr";
 import superagent from "superagent";
-import { useSWRConfig } from "swr";
 
 type Props = {
   bookingId: string;
@@ -11,16 +11,15 @@ type Props = {
 };
 
 export const BookingDeleteButton = ({ bookingId, homeId }: Props) => {
-  const { mutate } = useSWRConfig();
   const [isBusy, setBusy] = useState(false);
 
   const onDeleteClick = useCallback(async () => {
     if (confirm("Are you sure?")) {
       setBusy(true);
       await superagent.delete(`/api/bookings/${bookingId}`).send();
-      mutate(`/api/homes/${homeId}/bookings`);
+      await mutate(`/api/homes/${homeId}/bookings`);
     }
-  }, [bookingId, homeId, mutate]);
+  }, [bookingId, homeId]);
 
   return (
     <div className="inline-block">
