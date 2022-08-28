@@ -4,10 +4,10 @@ import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import type { GetServerSideProps } from "next/types";
 import type { Home } from "@lib/homes";
 import Link from "next/link";
+import Router from "next/router";
 import { getSession } from "@lib/auth/session";
 import superagent from "superagent";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 // TODO: Get all user's homes, and show a message if it's more than one (this will be a paid feature)
@@ -17,8 +17,6 @@ type FormValues = {
 };
 
 const Page = () => {
-  const router = useRouter();
-
   const [isBusy, setBusy] = useState(false);
 
   const {
@@ -32,7 +30,7 @@ const Page = () => {
     const { body: home } = await superagent.post("/api/homes").send({
       name,
     });
-    router.replace(`/${home.id}`);
+    Router.replace(`/${home.id}`);
   });
 
   return (
@@ -78,17 +76,5 @@ const Page = () => {
 Page.getLayout = (children: any) => (
   <DashboardLayout>{children}</DashboardLayout>
 );
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return { redirect: { permanent: false, destination: "/login" } };
-  }
-
-  return {
-    props: {},
-  };
-};
 
 export default Page;

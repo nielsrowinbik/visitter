@@ -5,6 +5,7 @@ export const config = {
     "/account",
     "/admin/:path*",
     "/dashboard/:path*",
+    "/new",
     "/[homeId]/:path*",
   ],
 };
