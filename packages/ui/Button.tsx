@@ -37,7 +37,7 @@ export const Button: ButtonComponent = forwardRef(
     );
 
     return (
-      <Component className={className} ref={ref} {...props}>
+      <Component {...props} className={className} ref={ref}>
         {children}
       </Component>
     );

@@ -23,7 +23,7 @@ export const Group: GroupComponent = forwardRef(
     const className = classNames("space-x-4", props.className);
 
     return (
-      <Component className={className} ref={ref} {...props}>
+      <Component {...props} className={className} ref={ref}>
         {children}
       </Component>
     );

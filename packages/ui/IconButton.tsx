@@ -29,7 +29,7 @@ export const IconButton: IconButtonComponent = forwardRef(
     );
 
     return (
-      <Component className={className} ref={ref} {...props}>
+      <Component {...props} className={className} ref={ref}>
         {icon}
       </Component>
     );
