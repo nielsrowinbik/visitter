@@ -34,13 +34,7 @@ export default NextAuth({
     // TODO: Add Google provider
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true;
-    },
-    async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl;
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -48,7 +42,7 @@ export default NextAuth({
 
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       const sess: Session = {
         ...session,
         user: {

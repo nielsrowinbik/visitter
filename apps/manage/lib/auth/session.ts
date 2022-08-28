@@ -1,9 +1,7 @@
-import {
-  GetSessionParams,
-  getSession as getNextSession,
-} from "next-auth/react";
+import type { GetSessionParams, UseSessionOptions } from "next-auth/react";
 
 import { DefaultSession } from "next-auth";
+import { getSession as getNextSession } from "next-auth/react";
 
 type DefaultSessionUser = NonNullable<DefaultSession["user"]>;
 
@@ -16,11 +14,11 @@ export type Session = DefaultSession & {
   user?: SessionUser;
 };
 
-export async function getSession(
+export const getSession = async (
   options: GetSessionParams
-): Promise<Session | null> {
+): Promise<Session | null> => {
   const session = await getNextSession(options);
 
   // that these are equal are ensured in `[...nextauth]`'s callback
   return session as Session | null;
-}
+};
