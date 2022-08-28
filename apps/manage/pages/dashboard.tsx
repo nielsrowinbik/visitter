@@ -1,9 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/outline";
-import { Popover, Transition } from "@headlessui/react";
-
-import { Button } from "ui";
 import { DashboardLayout } from "@components/Layouts/DashboardLayout";
-import { Fragment } from "react";
 import { HomeAddButton } from "@components/HomeAddButton";
 import { HomesList } from "@components/HomesList";
 
