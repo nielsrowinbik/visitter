@@ -8,11 +8,19 @@ const handler = nc<NextApiRequest, NextApiResponse>();
 
 handler.delete(async (req, res) => {
   try {
-    await prisma.booking.delete({
-      where: {
-        id: req.query.bookingId as string,
-      },
+    const bookingId = req.query.bookingId as string;
+
+    // Fetch the booking to find out which home it belongs to:
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
     });
+    const homeId = booking?.homeId;
+
+    // Delete the booking:
+    await prisma.booking.delete({ where: { id: bookingId } });
+
+    // Invalidate the cache on the home's detail page:
+    res.revalidate(`/${homeId}`);
 
     return res.status(204).end();
   } catch (error) {
