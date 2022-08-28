@@ -28,15 +28,7 @@ const Page = ({ fallback, homeId }: PageProps) => (
 Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const homes = await prisma.home.findMany();
-
-  const paths = homes.map(({ id: homeId }) => ({
-    params: {
-      homeId,
-    },
-  }));
-
-  return { fallback: "blocking", paths };
+  return { fallback: "blocking", paths: [] };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -59,7 +51,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       },
       homeId,
     },
-    revalidate: 1,
+    revalidate: false, // This page's cache is invalidated upon certain API calls
   };
 };
 
