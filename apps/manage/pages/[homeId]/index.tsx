@@ -1,4 +1,4 @@
-import type { Booking, Home } from "@prisma/client";
+import type { Booking, Home, ShareKey } from "@prisma/client";
 import type { GetStaticPaths, GetStaticProps } from "next/types";
 
 import { BookingsList } from "@components/BookingsList";
@@ -6,12 +6,14 @@ import { DashboardLayout } from "@components/Layouts/DashboardLayout";
 import { HomeDeleteButton } from "@components/HomeDeleteButton";
 import { HomeTitle } from "@components/HomeTitle";
 import { SWRConfig } from "swr";
+import { ShareKeyList } from "@components/ShareKeyList";
 import prisma from "@db";
 
 type PageProps = {
   fallback: {
     "/api/homes/[homeId]": Home;
     "/api/homes/[homeId]/bookings": Booking[];
+    "/api/homes/[homeId]/keys": ShareKey[];
   };
   homeId: string;
 };
@@ -20,6 +22,7 @@ const Page = ({ fallback, homeId }: PageProps) => (
   <SWRConfig value={{ fallback }}>
     <HomeTitle homeId={homeId} />
     <BookingsList homeId={homeId} />
+    <ShareKeyList homeId={homeId} />
     <h2 className="text-2xl font-bold">Danger zone</h2>
     <HomeDeleteButton homeId={homeId} />
   </SWRConfig>
@@ -42,12 +45,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   const bookings = await prisma.booking.findMany({ where: { homeId } });
+  const keys = await prisma.shareKey.findMany({ where: { homeId } });
 
   return {
     props: {
       fallback: {
         [`/api/homes/${homeId}`]: JSON.parse(JSON.stringify(home)),
         [`/api/homes/${homeId}/bookings`]: JSON.parse(JSON.stringify(bookings)),
+        [`/api/homes/${homeId}/keys`]: JSON.parse(JSON.stringify(keys)),
       },
       homeId,
     },
