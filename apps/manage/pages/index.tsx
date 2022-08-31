@@ -80,7 +80,7 @@ export const Page = () => {
       </section>
       <section id="how-it-works">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-6xl font-bold">Here&apos;s how it works</h2>
+          <h2>Here&apos;s how it works</h2>
           {/* TODO: Shoot video, update link, duration below, and unhide */}
           <section className="hidden">
             <h3 className="text-5xl font-bold">Got a minute?</h3>
@@ -126,7 +126,7 @@ export const Page = () => {
       </section>
       <section id="pricing">
         <div className="mx-auto max-w-xl text-center">
-          <h2 className="text-6xl font-bold">Pricing</h2>
+          <h2>Pricing</h2>
           <p>
             We like to keep things simple, and that includes our pricing
             options.

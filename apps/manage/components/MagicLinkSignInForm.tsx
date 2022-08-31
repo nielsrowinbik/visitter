@@ -1,6 +1,7 @@
 import { Button, Input } from "ui";
 
 import { Logo } from "./Logo";
+import Router from "next/router";
 import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -12,7 +13,6 @@ type FormValues = {
 
 export const MagicLinkSignInForm = () => {
   const [isSubmitting, setSubmitting] = useState(false);
-  const [isSuccess, setSuccess] = useState(false);
 
   const { register, handleSubmit } = useForm<FormValues>();
 
@@ -20,15 +20,19 @@ export const MagicLinkSignInForm = () => {
     setSubmitting(true);
     try {
       await toast.promise(
-        signIn("email", { email, redirect: false, callbackUrl: "/dashboard" }),
+        signIn(
+          "email",
+          { email, redirect: false, callbackUrl: "/dashboard" },
+          {}
+        ),
         {
           loading: "Signing you in...",
           success: "Success! Please check your e-mail.",
           error: "Something went wrong. Please try again.",
         },
-        { duration: Infinity }
+        { duration: Infinity, position: "top-center" }
       );
-      setSuccess(true);
+      Router.push(`/login/success?email=${email}`);
     } catch (error) {
       console.error(error);
     } finally {
@@ -38,26 +42,33 @@ export const MagicLinkSignInForm = () => {
 
   return (
     <>
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <Logo />
-        <h1 className="text-2xl font-bold">Login</h1>
+      <form
+        className="flex flex-col items-center space-y-12"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <h2>
+          Welcome back.
+          <br />
+          Let&apos;s sign in.
+        </h2>
         <Input
           {...register("email", { required: true })}
           autoComplete="email"
-          disabled={isSubmitting || isSuccess}
+          className="text-center"
+          disabled={isSubmitting}
           id="email"
-          label="Email"
+          label="Enter your email address"
           placeholder="hi@example.com"
           type="email"
         />
         <div>
-          <Button
-            className="w-full"
-            disabled={isSubmitting || isSuccess}
+          <button
+            className="inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0"
+            disabled={isSubmitting}
             type="submit"
           >
-            Continue with Email
-          </Button>
+            Continue with email
+          </button>
         </div>
       </form>
     </>

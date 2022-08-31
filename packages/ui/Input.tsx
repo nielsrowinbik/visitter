@@ -1,5 +1,7 @@
 import { InputHTMLAttributes, forwardRef } from "react";
 
+import classNames from "classnames";
+
 type Props = {
   id: string;
   label: string;
@@ -7,14 +9,17 @@ type Props = {
 
 // eslint-disable-next-line react/display-name
 export const Input = forwardRef<any, Props>(({ id, label, ...props }, ref) => (
-  <div className="max-w-md">
-    <label htmlFor={id} className="mb-3 block text-left text-sm font-medium ">
+  <div className="block w-full max-w-md">
+    <label htmlFor={id} className="mb-3 block font-medium text-gray-700">
       {label}
     </label>
     <input
-      className="h-8 w-full rounded-md border bg-zinc-50 px-3 text-sm shadow-sm ring-zinc-400/20 ring-offset-0 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-zinc-800"
-      id={id}
       {...props}
+      className={classNames(
+        "w-full appearance-none rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500",
+        props.className
+      )}
+      id={id}
       ref={ref}
     />
   </div>
