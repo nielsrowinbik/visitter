@@ -41,6 +41,20 @@ const postHandler: NextApiHandler = async (req, res) => {
   try {
     // TODO: Validate request body
 
+    const homeCount = await prisma.home.count({
+      where: {
+        ownerId: { equals: session.user?.id },
+      },
+    });
+
+    // If the user already has one or more homes, don't create a new one:
+    // TODO: Remove this limit for paying customers
+    if (homeCount >= 1) {
+      return res
+        .status(422)
+        .send({ message: "Free limit of one vacation home met" });
+    }
+
     const home = await prisma.home.create({
       data: {
         name: req.body.name,
