@@ -16,7 +16,7 @@ handler.delete(async (req, res) => {
     });
     const homeId = key?.homeId;
 
-    // Delete the booking:
+    // Delete the key:
     await prisma.shareKey.delete({ where: { id: keyId } });
 
     // Invalidate the cache on the home's detail page:
