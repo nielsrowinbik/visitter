@@ -23,8 +23,8 @@ const Page = ({ fallback, homeId }: PageProps) => (
     <HomeTitle homeId={homeId} />
     <BookingsList homeId={homeId} />
     <ShareKeyList homeId={homeId} />
-    <h2 className="text-2xl font-bold">Danger zone</h2>
-    <HomeDeleteButton homeId={homeId} />
+    <hr />
+    <HomeDeleteButton id={homeId} />
   </SWRConfig>
 );
 
