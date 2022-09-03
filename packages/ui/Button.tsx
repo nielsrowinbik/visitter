@@ -12,7 +12,7 @@ type ButtonProps<C extends ElementType> = PolymorphicComponentPropWithRef<
   {
     children?: ReactNode;
     compact?: boolean;
-    variant?: "default" | "outline";
+    variant?: "default" | "outline" | "danger";
   }
 >;
 
@@ -32,7 +32,8 @@ export const Button: ButtonComponent = forwardRef(
       compact ? "h-6 py-1.5 px-2 text-xs" : "h-8 py-3 px-4 text-sm",
       variant === "default" &&
         "bg-zinc-800 text-zinc-50 hover:bg-zinc-900 hover:text-white dark:bg-zinc-50 dark:text-zinc-800 dark:hover:bg-white dark:hover:text-zinc-900",
-      variant === "outline" && "border-zinc-400/20 bg-white",
+      variant === "outline" && "border-zinc-200 bg-white",
+      variant === "danger" && "border-zinc-200 bg-white text-red-700",
       props.className
     );
 
