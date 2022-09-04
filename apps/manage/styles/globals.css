@@ -5,3 +5,46 @@
 #__next {
   min-height: 100%;
 }
+
+@layer base {
+  h1 {
+    @apply text-2xl font-semibold;
+  }
+
+  h3 {
+    @apply text-lg font-semibold;
+  }
+
+  h1 + p,
+  h2 + p,
+  h3 + p,
+  h4 + p,
+  label + p {
+    @apply text-zinc-500 dark:bg-zinc-200;
+  }
+
+  table {
+    @apply border-spacing-0 !border-separate text-base;
+  }
+
+  table thead {
+    @apply rounded-lg bg-zinc-50;
+  }
+
+  table th {
+    @apply border-y border-y-zinc-200 text-left font-medium text-zinc-500;
+  }
+
+  table th:first-child {
+    @apply rounded-l-lg border-l;
+  }
+
+  table th:last-child {
+    @apply rounded-r-lg border-r;
+  }
+
+  table th,
+  table td {
+    @apply px-4 py-2;
+  }
+}

@@ -1,10 +1,17 @@
-import type { NextApiHandler } from "next/types";
+import type {
+  NextApiHandler,
+  NextApiRequest,
+  NextApiResponse,
+} from "next/types";
+
 import { getErrorMessage } from "@lib/errors";
 import { getSession } from "@lib/auth/session";
 import nc from "next-connect";
 import prisma from "@db";
 
-const deleteHandler: NextApiHandler = async (req, res) => {
+const handler = nc<NextApiRequest, NextApiResponse>();
+
+handler.delete(async (req, res) => {
   const session = await getSession({ req });
 
   if (!session) {
@@ -33,9 +40,9 @@ const deleteHandler: NextApiHandler = async (req, res) => {
       .status(500)
       .json({ statusCode: 500, message: getErrorMessage(error) });
   }
-};
+});
 
-const getHandler: NextApiHandler = async (req, res) => {
+handler.get(async (req, res) => {
   const session = await getSession({ req });
 
   if (!session) {
@@ -59,6 +66,6 @@ const getHandler: NextApiHandler = async (req, res) => {
       .status(500)
       .json({ statusCode: 500, message: getErrorMessage(error) });
   }
-};
+});
 
-export default nc().delete(deleteHandler).get(getHandler);
+export default handler;

@@ -12,12 +12,12 @@ const App = ({
   Component,
   pageProps: { session, ...pageProps },
 }: ExtendedAppProps) => {
-  const getLayout = Component.getLayout || ((page) => page);
+  const getLayout = Component.getLayout || ((page, pageProps) => page);
 
   return (
     <SessionProvider session={session} refetchInterval={5 * 60}>
       <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
+        {getLayout(<Component {...pageProps} />, pageProps)}
         <Toaster position="bottom-left" />
       </QueryClientProvider>
     </SessionProvider>

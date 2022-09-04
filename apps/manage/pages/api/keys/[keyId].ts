@@ -19,8 +19,8 @@ handler.delete(async (req, res) => {
     // Delete the key:
     await prisma.shareKey.delete({ where: { id: keyId } });
 
-    // Invalidate the cache on the home's detail page:
-    res.revalidate(`/${homeId}`);
+    // Invalidate the cache on the home's settings page:
+    res.revalidate(`/${homeId}/settings`);
 
     return res.status(204).end();
   } catch (error) {

@@ -14,6 +14,11 @@ generator client {
     previewFeatures = ["referentialIntegrity"]
 }
 
+generator jsonSchema {
+  provider  = "prisma-json-schema-generator"
+  output    = "./"
+}
+
 model Account {
     id                       String   @id @default(cuid())
     createdAt                DateTime @default(now())

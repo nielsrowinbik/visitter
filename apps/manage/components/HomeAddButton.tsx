@@ -23,11 +23,7 @@ export const HomeAddButton = () => {
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
-  const {
-    formState: { errors, isSubmitting, isValid },
-    handleSubmit,
-    register,
-  } = useForm<FormValues>({ mode: "onChange" });
+  const { handleSubmit, register } = useForm<FormValues>({ mode: "onChange" });
 
   const onSubmit = handleSubmit(async ({ name }) => {
     try {
@@ -94,6 +90,8 @@ export const HomeAddButton = () => {
                           autoFocus
                           id="name"
                           label="Name"
+                          placeholder="Fanta Sea"
+                          required
                           type="text"
                         />
                       </form>

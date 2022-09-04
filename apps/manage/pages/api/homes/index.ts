@@ -1,10 +1,13 @@
-import type { NextApiHandler } from "next/types";
+import type { NextApiRequest, NextApiResponse } from "next/types";
+
 import { getErrorMessage } from "@lib/errors";
 import { getSession } from "@lib/auth/session";
 import nc from "next-connect";
 import prisma from "@db";
 
-const getHandler: NextApiHandler = async (req, res) => {
+const handler = nc<NextApiRequest, NextApiResponse>();
+
+handler.get(async (req, res) => {
   const session = await getSession({ req });
 
   if (!session) {
@@ -27,9 +30,9 @@ const getHandler: NextApiHandler = async (req, res) => {
       .status(500)
       .json({ statusCode: 500, message: getErrorMessage(error) });
   }
-};
+});
 
-const postHandler: NextApiHandler = async (req, res) => {
+handler.post(async (req, res) => {
   const session = await getSession({ req });
 
   if (!session) {
@@ -39,8 +42,6 @@ const postHandler: NextApiHandler = async (req, res) => {
   }
 
   try {
-    // TODO: Validate request body
-
     const homeCount = await prisma.home.count({
       where: {
         ownerId: { equals: session.user?.id },
@@ -49,10 +50,9 @@ const postHandler: NextApiHandler = async (req, res) => {
 
     // If the user already has one or more homes, don't create a new one:
     // TODO: Remove this limit for paying customers
+    // TODO: Provide proper error message that is shown in client
     if (homeCount >= 1) {
-      return res
-        .status(422)
-        .send({ message: "Free limit of one vacation home met" });
+      return res.status(422).end();
     }
 
     const home = await prisma.home.create({
@@ -74,6 +74,6 @@ const postHandler: NextApiHandler = async (req, res) => {
       .status(500)
       .json({ statusCode: 500, message: getErrorMessage(error) });
   }
-};
+});
 
-export default nc().get(getHandler).post(postHandler);
+export default handler;

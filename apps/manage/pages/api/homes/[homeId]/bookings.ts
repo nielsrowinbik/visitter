@@ -18,6 +18,9 @@ handler.get(async (req, res) => {
 
   try {
     const bookings = await prisma.booking.findMany({
+      orderBy: {
+        startDate: "asc",
+      },
       where: {
         homeId: { equals: req.query.homeId as string },
       },
@@ -54,8 +57,14 @@ handler.post(async (req, res) => {
       },
     });
 
-    // Invalidate the cache on the home's detail page:
-    res.revalidate(`/${homeId}`);
+    // Fetch the share keys belonging to the home:
+    const keys = await prisma.shareKey.findMany({ where: { homeId } });
+
+    // Invalidate the cache on the home's bookings and availability page:
+    keys.forEach(({ id }) => {
+      res.revalidate(`/availability/${id}`);
+    });
+    res.revalidate(`/${homeId}/bookings`);
 
     return res.status(201).json(booking);
   } catch (error) {

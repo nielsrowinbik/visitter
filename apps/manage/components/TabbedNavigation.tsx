@@ -24,7 +24,7 @@ const NavigationItem = ({
     <Link passHref {...props}>
       <a
         className={cn(
-          "whitespace-nowrap border-b pb-4 pt-2 text-sm leading-none transition sm:px-4",
+          "whitespace-nowrap border-b pb-4 pt-2 leading-none transition sm:px-4",
           isActive
             ? "border-blue-500 font-semibold"
             : "border-transparent hover:border-gray-400 dark:hover:border-gray-600"

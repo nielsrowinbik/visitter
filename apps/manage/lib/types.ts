@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import type { ReactNode } from "react";
 
 export type ExtendedPageProps = {
-  getLayout?: (page: ReactNode) => ReactNode;
+  getLayout?: (page: ReactNode, pageProps: ExtendedPageProps) => ReactNode;
 };
 
 export type ExtendedAppProps = AppProps & {

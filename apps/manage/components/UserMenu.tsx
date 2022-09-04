@@ -12,7 +12,7 @@ export const UserMenu = () => {
 
   return (
     <Menu as="div">
-      <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+      <Menu.Button className="flex rounded-full border border-white bg-gray-800 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-0">
         <span className="sr-only">Open user menu</span>
         {/* TODO: Convert to proper Avatar component with fallback to user initials graceful failing */}
         <Image

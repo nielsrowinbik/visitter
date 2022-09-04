@@ -10,17 +10,23 @@ handler.delete(async (req, res) => {
   try {
     const bookingId = req.query.bookingId as string;
 
+    // Delete the booking:
+    await prisma.booking.delete({ where: { id: bookingId } });
+
     // Fetch the booking to find out which home it belongs to:
     const booking = await prisma.booking.findUnique({
       where: { id: bookingId },
     });
     const homeId = booking?.homeId;
 
-    // Delete the booking:
-    await prisma.booking.delete({ where: { id: bookingId } });
+    // Fetch the share keys belonging to the home:
+    const keys = await prisma.shareKey.findMany({ where: { homeId } });
 
-    // Invalidate the cache on the home's detail page:
-    res.revalidate(`/${homeId}`);
+    // Invalidate the cache on the home's bookings and availability page:
+    keys.forEach(({ id }) => {
+      res.revalidate(`/availability/${id}`);
+    });
+    res.revalidate(`/${homeId}/bookings`);
 
     return res.status(204).end();
   } catch (error) {
