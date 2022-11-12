@@ -23,8 +23,12 @@ export const HomeBookingsSection = ({ homeId }: Props) => {
   if (bookings?.length === 0) {
     return (
       <section>
-        <h2 className="text-2xl font-bold">Bookings</h2>
-        <p>No bookings yet.</p>
+        <div className="flex h-72 w-full items-center justify-center rounded-xl border border-zinc-100">
+          <div className="text-center">
+            <h3>No bookings have been created yet.</h3>
+            <p>Once you&apos;ve create a booking, it&apos;ll show up here.</p>
+          </div>
+        </div>
       </section>
     );
   }

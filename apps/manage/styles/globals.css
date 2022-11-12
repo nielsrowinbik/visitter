@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 #__next {
-  min-height: 100%;
+  @apply flex h-full flex-col;
 }
 
 @layer base {
@@ -11,17 +11,21 @@
     @apply text-2xl font-semibold;
   }
 
+  h2 {
+    @apply text-xl font-semibold;
+  }
+
   h3 {
     @apply text-lg font-semibold;
   }
 
-  h1 + p,
+  /* h1 + p,
   h2 + p,
   h3 + p,
   h4 + p,
   label + p {
-    @apply text-zinc-500 dark:bg-zinc-200;
-  }
+    @apply text-zinc-500;
+  } */
 
   table {
     @apply border-spacing-0 !border-separate text-base;
@@ -46,5 +50,11 @@
   table th,
   table td {
     @apply px-4 py-2;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto w-full px-4 sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg;
   }
 }

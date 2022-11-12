@@ -1,5 +1,6 @@
 import type { ClientSafeProvider } from "next-auth/react";
 import { Container } from "ui";
+import { FormPageLayout } from "@components/Layouts/FormPageLayout";
 import type { GetStaticProps } from "next/types";
 import { MagicLinkSignInForm } from "@components/MagicLinkSignInForm";
 import { filter } from "lodash";
@@ -21,6 +22,10 @@ const Page = ({ providers }: PageProps) => {
     </Container>
   );
 };
+
+Page.getLayout = (page: any, pageProps: PageProps) => (
+  <FormPageLayout>{page}</FormPageLayout>
+);
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const providers = filter(await getProviders(), (provider) => {

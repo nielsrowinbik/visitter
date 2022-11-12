@@ -68,8 +68,8 @@ handler.post(async (req, res) => {
     });
 
     // Invalidate the cache on the home's settings and availability page:
-    res.revalidate(`/availability/${key.id}`);
-    res.revalidate(`/${homeId}/settings`);
+    res.revalidate(`/share/${key.id}`);
+    res.revalidate(`/${homeId}/settings/visibility`);
 
     return res.status(201).json(key);
   } catch (error) {

@@ -20,7 +20,7 @@ handler.delete(async (req, res) => {
     await prisma.shareKey.delete({ where: { id: keyId } });
 
     // Invalidate the cache on the home's settings page:
-    res.revalidate(`/${homeId}/settings`);
+    res.revalidate(`/${homeId}/settings/visibility`);
 
     return res.status(204).end();
   } catch (error) {

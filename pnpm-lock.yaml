@@ -111,7 +111,7 @@ importers:
       '@next-auth/prisma-adapter': 1.0.4_swgebyl5dvpyn7as73hupjfpya
       '@prisma/client': 4.2.1_prisma@4.2.1
       ajv: 8.11.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1_ajv@8.11.0
       bcryptjs: 2.4.3
       classnames: 2.3.1
       date-fns: 2.29.1
@@ -149,7 +149,7 @@ importers:
       prisma: 4.2.1
       prisma-json-schema-generator: 3.1.0
       tailwind-config: link:../../packages/tailwind-config
-      tailwindcss: 3.1.8_ts-node@10.9.1
+      tailwindcss: 3.1.8_57znarxsqwmnneadci5z5fd5gu
       ts-node: 10.9.1_x2utdhayajzrh747hktprshhby
       tsconfig: link:../../packages/tsconfig
       typescript: 4.7.4
@@ -1871,7 +1871,7 @@ packages:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
-      tailwindcss: 3.1.8_ts-node@10.9.1
+      tailwindcss: 3.1.8_57znarxsqwmnneadci5z5fd5gu
     dev: true
 
   /@tootallnate/once/2.0.0:
@@ -2160,8 +2160,10 @@ packages:
       indent-string: 4.0.0
     dev: true
 
-  /ajv-formats/2.1.1:
+  /ajv-formats/2.1.1_ajv@8.11.0:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependencies:
+      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -5948,10 +5950,12 @@ packages:
       - ts-node
     dev: true
 
-  /tailwindcss/3.1.8_ts-node@10.9.1:
+  /tailwindcss/3.1.8_57znarxsqwmnneadci5z5fd5gu:
     resolution: {integrity: sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g==}
     engines: {node: '>=12.13.0'}
     hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3

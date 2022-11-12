@@ -1,10 +1,20 @@
+import { Fragment, forwardRef } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { signOut, useSession } from "next-auth/react";
 
-import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import cn from "classnames";
+
+// TODO: This should be a component
+// eslint-disable-next-line react/display-name
+const LinkItem = forwardRef<any, any>(({ children, href, ...props }, ref) => (
+  <Link href={href} passHref>
+    <a ref={ref} {...props}>
+      {children}
+    </a>
+  </Link>
+));
 
 export const UserMenu = () => {
   const { data } = useSession();
@@ -32,35 +42,32 @@ export const UserMenu = () => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 text-sm text-zinc-900 shadow-lg ring-1 ring-zinc-400/20 focus:outline-none dark:bg-zinc-900 dark:text-white">
+        <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 text-sm text-zinc-900 shadow-lg ring-1 ring-zinc-400/20 focus:outline-none">
           <Menu.Item>
             {({ active }) => (
-              <div>
-                <Link href="/account" passHref>
-                  <a
-                    className={cn(
-                      active ? "bg-zinc-100 dark:bg-zinc-800" : "",
-                      "block px-4 py-2 hover:cursor-pointer"
-                    )}
-                  >
-                    Settings
-                  </a>
-                </Link>
-              </div>
+              <LinkItem
+                className={cn(
+                  active ? "bg-zinc-100" : "",
+                  "block px-4 py-2 hover:cursor-pointer"
+                )}
+                href="/account"
+              >
+                Settings
+              </LinkItem>
             )}
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <div
+              <button
                 className={cn(
-                  active ? "bg-zinc-100 dark:bg-zinc-800" : "",
-                  "block px-4 py-2 hover:cursor-pointer"
+                  active ? "bg-zinc-100" : "",
+                  "block w-full px-4 py-2 text-left hover:cursor-pointer"
                 )}
                 onClick={() => signOut()}
                 role="button"
               >
                 Sign out
-              </div>
+              </button>
             )}
           </Menu.Item>
         </Menu.Items>

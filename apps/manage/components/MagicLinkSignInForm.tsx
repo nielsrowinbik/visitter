@@ -20,11 +20,7 @@ export const MagicLinkSignInForm = () => {
     setSubmitting(true);
     try {
       await toast.promise(
-        signIn(
-          "email",
-          { email, redirect: false, callbackUrl: "/dashboard" },
-          {}
-        ),
+        signIn("email", { email, redirect: false, callbackUrl: "/homes" }, {}),
         {
           loading: "Signing you in...",
           success: "Success! Please check your e-mail.",

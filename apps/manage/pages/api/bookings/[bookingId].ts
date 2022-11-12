@@ -22,11 +22,11 @@ handler.delete(async (req, res) => {
     // Fetch the share keys belonging to the home:
     const keys = await prisma.shareKey.findMany({ where: { homeId } });
 
-    // Invalidate the cache on the home's bookings and availability page:
+    // Invalidate the cache on the home's detail and availability page:
     keys.forEach(({ id }) => {
-      res.revalidate(`/availability/${id}`);
+      res.revalidate(`/share/${id}`);
     });
-    res.revalidate(`/${homeId}/bookings`);
+    res.revalidate(`/${homeId}`);
 
     return res.status(204).end();
   } catch (error) {

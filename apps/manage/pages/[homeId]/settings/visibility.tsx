@@ -1,38 +1,31 @@
-import type { Booking, Home } from "@prisma/client";
 import type { GetStaticPaths, GetStaticProps } from "next/types";
+import type { Home, ShareKey } from "@prisma/client";
 
-import { Button } from "ui";
-import { DashboardLayout } from "@components/Layouts/DashboardLayout";
-import { HomeBookingsSection } from "@components/HomeBookingsSection";
-import { HomeSelector } from "@components/HomeSelector";
-import Link from "next/link";
+import { HomeSharingSection } from "@components/HomeSharingSection";
 import { SWRConfig } from "swr";
-import { id } from "date-fns/locale";
+import { SettingsLayout } from "@components/Layouts/SettingsLayout";
 import prisma from "@db";
 
 type PageProps = {
   fallback: {
     "/api/homes/[homeId]": Home;
-    "/api/homes/[homeId]/bookings": Booking[];
+    "/api/homes/[homeId]/keys": ShareKey[];
   };
   homeId: string;
 };
 
 const Page = ({ fallback, homeId }: PageProps) => (
   <SWRConfig value={{ fallback }}>
-    <section className="sticky top-0">
-      <div className="flex justify-between">
-        <HomeSelector />
-        <Link href={`/${homeId}/bookings/new`} passHref>
-          <Button as="a">New booking</Button>
-        </Link>
-      </div>
-    </section>
-    <HomeBookingsSection homeId={homeId} />
+    <header>
+      <h1>Visibility</h1>
+    </header>
+    <HomeSharingSection id={homeId} />
   </SWRConfig>
 );
 
-Page.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page: any, { homeId }: PageProps) => (
+  <SettingsLayout homeId={homeId}>{page}</SettingsLayout>
+);
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return { fallback: "blocking", paths: [] };
@@ -48,13 +41,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { notFound: true };
   }
 
-  const bookings = await prisma.booking.findMany({ where: { homeId } });
+  const keys = await prisma.shareKey.findMany({ where: { homeId } });
 
   return {
     props: {
       fallback: {
         [`/api/homes/${homeId}`]: JSON.parse(JSON.stringify(home)),
-        [`/api/homes/${homeId}/bookings`]: JSON.parse(JSON.stringify(bookings)),
+        [`/api/homes/${homeId}/keys`]: JSON.parse(JSON.stringify(keys)),
       },
       homeId,
     },

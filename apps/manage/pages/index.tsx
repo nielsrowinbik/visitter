@@ -18,7 +18,7 @@ export const Page = () => {
   const user = data?.user;
 
   return (
-    <Container className="prose prose-lg max-w-5xl space-y-56 prose-p:font-medium prose-ul:font-medium sm:prose-xl md:prose-2xl">
+    <Container className="prose prose-lg max-w-5xl space-y-56 prose-p:font-medium prose-ul:font-medium sm:prose-2xl md:prose-2xl">
       <nav>
         <div className="flex">
           <Logo />
@@ -26,11 +26,8 @@ export const Page = () => {
       </nav>
       <section>
         <div className="mx-auto max-w-3xl text-center">
-          {/* <div> */}
           <h1 className="mb-0 mt-32 leading-tight">
-            Your vacation home.
-            <br />
-            You&apos;re in control.
+            The easiest way to run your vacation home.
           </h1>
           <p>
             Look, we get it: your vacation home is something special. It&apos;s
@@ -47,7 +44,7 @@ export const Page = () => {
           </p>
           <div className="flex flex-col items-center justify-center space-y-3 md:flex-row md:items-start md:space-x-3 md:space-y-0">
             <div className="flex flex-col items-center space-y-1">
-              <Link href={!!user ? "/dashboard" : "/get-started"}>
+              <Link href={!!user ? "/homes" : "/get-started"}>
                 <a className="inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0">
                   {!!user ? "Go to the dashboard" : "Get started for free"}
                 </a>
@@ -76,7 +73,6 @@ export const Page = () => {
             </a>
           </div>
         </div>
-        {/* </div> */}
       </section>
       <section id="how-it-works">
         <div className="mx-auto max-w-3xl text-center">
@@ -184,7 +180,7 @@ export const Page = () => {
         <div className="mx-auto max-w-xl text-center">
           <h2>Ready to take control of your vacation home?</h2>
           <p>
-            <Link href={!!user ? "/dashboard" : "/get-started"}>
+            <Link href={!!user ? "/homes" : "/get-started"}>
               <a className="inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0">
                 {!!user ? "Go to the dashboard" : "Get started for free"}
               </a>

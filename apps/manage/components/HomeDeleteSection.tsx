@@ -5,6 +5,7 @@ import type { Home } from "@prisma/client";
 import Router from "next/router";
 import { fetcher } from "@lib/fetch";
 import superagent from "superagent";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 type Props = {
@@ -20,7 +21,10 @@ export const HomeDeleteSection = ({ id }: Props) => {
       setBusy(true);
       await superagent.delete(`/api/homes/${id}`).send();
       await mutate(`/api/homes`);
-      Router.replace("/dashboard");
+      toast.success(
+        `Successfully deleted ${home?.name} and all of its bookings.`
+      );
+      Router.replace("/homes");
     }
   };
 

@@ -66,8 +66,10 @@ handler.post(async (req, res) => {
       },
     });
 
-    if (home) return res.status(200).json(home);
-    return res.status(404).json({ message: "Not Found" });
+    // Generate the home's detail page:
+    res.revalidate(`/${home.id}`);
+
+    return res.status(200).json(home);
   } catch (error) {
     console.error("[api] home", error);
     return res

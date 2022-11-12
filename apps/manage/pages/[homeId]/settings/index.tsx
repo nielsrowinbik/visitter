@@ -1,12 +1,9 @@
 import type { GetStaticPaths, GetStaticProps } from "next/types";
 import type { Home, ShareKey } from "@prisma/client";
 
-import { HomeDeleteSection } from "@components/HomeDeleteSection";
-import { HomeLayout } from "@components/Layouts/HomeLayout";
 import { HomeSettingsSection } from "@components/HomeSettingsSection";
-import { HomeSharingSection } from "@components/HomeSharingSection";
-import Link from "next/link";
 import { SWRConfig } from "swr";
+import { SettingsLayout } from "@components/Layouts/SettingsLayout";
 import prisma from "@db";
 
 type PageProps = {
@@ -21,17 +18,13 @@ const Page = ({ fallback, homeId }: PageProps) => (
   <SWRConfig value={{ fallback }}>
     <header>
       <h1>General</h1>
-      <p>Settings and options for your vacation home</p>
     </header>
     <HomeSettingsSection id={homeId} />
-    <HomeSharingSection id={homeId} />
-    <hr />
-    <HomeDeleteSection id={homeId} />
   </SWRConfig>
 );
 
 Page.getLayout = (page: any, { homeId }: PageProps) => (
-  <HomeLayout id={homeId}>{page}</HomeLayout>
+  <SettingsLayout homeId={homeId}>{page}</SettingsLayout>
 );
 
 export const getStaticPaths: GetStaticPaths = async () => {

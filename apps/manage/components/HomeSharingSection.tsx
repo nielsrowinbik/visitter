@@ -5,11 +5,14 @@ import { useCallback, useState } from "react";
 import useSWR, { mutate } from "swr";
 
 import { CopyButton } from "./CopyButton";
+import Link from "next/link";
 import { fetcher } from "@lib/fetch";
 import { get } from "lodash";
 import { getErrorMessage } from "@lib/errors";
 import superagent from "superagent";
 import toast from "react-hot-toast";
+
+const VERCEL_URL = process.env.VERCEL_URL;
 
 type Props = {
   id: string;
@@ -41,6 +44,8 @@ export const HomeSharingSection = ({ id }: Props) => {
     }
   }, [id, isShared, key]);
 
+  const link = `${VERCEL_URL || "http://localhost:3000"}/share/${key}`;
+
   return (
     <section>
       <Toggle
@@ -61,12 +66,7 @@ export const HomeSharingSection = ({ id }: Props) => {
           <Input
             readOnly
             rightSection={
-              <CopyButton
-                timeout={3000}
-                value={`${
-                  process.env.VERCEL_URL || "http://localhost:3000"
-                }/availability/${key}`}
-              >
+              <CopyButton timeout={3000} value={link}>
                 {({ copy, copied }) => (
                   <button
                     className="border border-transparent border-l-zinc-200 bg-zinc-100 px-2 text-zinc-600 focus:border-blue-500 focus:outline-none focus:ring-2"
@@ -82,9 +82,7 @@ export const HomeSharingSection = ({ id }: Props) => {
               </CopyButton>
             }
             type="text"
-            value={`${
-              process.env.VERCEL_URL || "http://localhost:3000"
-            }/availability/${key}`}
+            value={link}
           />
         </div>
       )}

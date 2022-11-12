@@ -2,7 +2,6 @@ import type { Booking, Home } from "@prisma/client";
 import type { GetStaticPaths, GetStaticProps } from "next";
 
 import { HomeAvailability } from "@components/HomeAvailability";
-import { HomeTitle } from "@components/HomeTitle";
 import { SWRConfig } from "swr";
 import prisma from "@db";
 
@@ -16,7 +15,6 @@ type PageProps = {
 
 const Page = ({ fallback, homeId }: PageProps) => (
   <SWRConfig value={{ fallback }}>
-    <HomeTitle homeId={homeId} />
     <HomeAvailability homeId={homeId} />
   </SWRConfig>
 );
@@ -26,7 +24,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const shareKey = context.params?.shareKey as string;
+  const shareKey = context.params?.key as string;
   const key = await prisma.shareKey.findUnique({ where: { id: shareKey } });
 
   if (!key) {
