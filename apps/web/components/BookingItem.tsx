@@ -1,5 +1,6 @@
-import type { Booking } from "@prisma/client";
+import type { Booking } from "database";
 import { BookingDeleteButton } from "@/components/BookingDeleteButton";
+import { Skeleton } from "@/components/Skeleton";
 import { formatDate } from "@/lib/utils";
 
 interface BookingItemProps {
@@ -23,3 +24,14 @@ export function BookingItem({ booking }: BookingItemProps) {
     </div>
   );
 }
+
+BookingItem.Skeleton = function HomeItemSkeleton() {
+  return (
+    <div className="p-4">
+      <div className="space-y-3">
+        <Skeleton className="h-5 w-2/6" />
+        <Skeleton className="h-4 w-3/6" />
+      </div>
+    </div>
+  );
+};

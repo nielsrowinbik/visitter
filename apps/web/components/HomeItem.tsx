@@ -1,5 +1,6 @@
 import type { Home } from "database";
 import Link from "next/link";
+import { Skeleton } from "@/components/Skeleton";
 import { formatDate } from "@/lib/utils";
 
 interface HomeItemProps {
@@ -25,3 +26,14 @@ export function HomeItem({ home }: HomeItemProps) {
     </div>
   );
 }
+
+HomeItem.Skeleton = function HomeItemSkeleton() {
+  return (
+    <div className="p-4">
+      <div className="space-y-3">
+        <Skeleton className="h-5 w-2/6" />
+        <Skeleton className="h-4 w-3/6" />
+      </div>
+    </div>
+  );
+};
