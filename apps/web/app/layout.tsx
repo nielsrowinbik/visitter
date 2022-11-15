@@ -14,7 +14,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
       lang="en"
       className="bg-white text-zinc-900 antialiased dark:bg-zinc-900 dark:text-white"
     >
-      <head />
       <body className="min-h-screen">
         {children}
         <Analytics />
