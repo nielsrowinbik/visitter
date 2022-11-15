@@ -7,8 +7,6 @@ import { getSession } from "@/lib/session";
 // TODO: Consider creating this page from a markdown file too
 
 export default async function IndexPage() {
-  const session = await getSession();
-
   return (
     <main className="prose prose-lg prose-zinc mt-56 space-y-56 text-center prose-p:font-medium prose-ul:font-medium dark:prose-invert sm:prose-xl md:prose-2xl">
       <section>
@@ -27,11 +25,7 @@ export default async function IndexPage() {
           though, we&apos;ll sort out for you.
         </p>
         <div className="flex flex-col items-center justify-center space-y-3 md:flex-row md:items-start md:space-x-3 md:space-y-0">
-          <div
-            className={cn("flex flex-col items-center space-y-1", {
-              hidden: !!session,
-            })}
-          >
+          <div className="flex flex-col items-center space-y-1">
             <Link
               className="inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0"
               href="/get-started"
@@ -46,27 +40,11 @@ export default async function IndexPage() {
             </div>
           </div>
           <Link
-            className={cn(
-              "inline-flex items-center space-x-1 rounded-full bg-transparent px-4 py-2 text-current no-underline hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0",
-              {
-                hidden: !!session,
-              }
-            )}
+            className="inline-flex items-center space-x-1 rounded-full bg-transparent px-4 py-2 text-current no-underline hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0"
             href="#how-it-works"
           >
             <Icon.ArrowDownCircle className="h-10 w-10" />
             <span className="font-medium">Learn how it works</span>
-          </Link>
-          <Link
-            className={cn(
-              "inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0",
-              {
-                hidden: !session,
-              }
-            )}
-            href="/homes"
-          >
-            Go to the dashboard
           </Link>
         </div>
       </section>
@@ -202,24 +180,10 @@ export default async function IndexPage() {
           <h2>Ready to take control of your vacation home?</h2>
           <p>
             <Link
-              className={cn(
-                "inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0",
-                { hidden: !!session }
-              )}
+              className="inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0"
               href="/get-started"
             >
               Get started for free
-            </Link>
-            <Link
-              className={cn(
-                "inline-flex items-center space-x-1 rounded-full bg-blue-500 px-4 py-2 font-bold text-white no-underline hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0",
-                {
-                  hidden: !session,
-                }
-              )}
-              href="/homes"
-            >
-              Go to the dashboard
             </Link>
           </p>
         </div>
