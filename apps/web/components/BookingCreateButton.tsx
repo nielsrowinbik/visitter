@@ -8,7 +8,7 @@ import { Fragment, useState } from "react";
 import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import type { HTMLAttributes } from "react";
-import { Home } from "@prisma/client";
+import { Home } from "database";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { bookingCreateSchema } from "@/lib/validations/booking";

@@ -3,7 +3,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
-import { Booking } from "@prisma/client";
+import { Booking } from "database";
 import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import type { HTMLAttributes } from "react";

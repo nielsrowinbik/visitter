@@ -1,6 +1,6 @@
 import { Icon } from "@/components/Icon";
 import Image from "next/image";
-import type { User } from "@prisma/client";
+import type { User } from "database";
 
 interface UserAvatarProps {
   user: Pick<User, "image" | "name">;

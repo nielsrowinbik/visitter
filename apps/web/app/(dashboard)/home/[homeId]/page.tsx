@@ -4,7 +4,7 @@ import { Button } from "@/components/Button";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { DashboardShell } from "@/components/DashboardShell";
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
-import type { Home } from "@prisma/client";
+import type { Home } from "database";
 import Link from "next/link";
 import { db } from "database";
 import { formatDate } from "@/lib/utils";
