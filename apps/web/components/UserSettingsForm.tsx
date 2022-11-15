@@ -4,6 +4,7 @@ import * as z from "zod";
 
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
+import { Icon } from "./Icon";
 import { Input } from "@/components/Input";
 import type { User } from "database";
 import superagent from "superagent";
@@ -62,7 +63,7 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
       <div className="space-y-6">
         <Input
           description="Enter your full name or a display name you are comfortable with."
-          errorText={errors.name?.message}
+          errorText={errors.name?.message as string}
           id="name"
           type="text"
           label="Name"
@@ -70,7 +71,7 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
         />
         <Input
           description="Support for changing your e-mail address is coming soon. For now, this field is read-only."
-          // errorText={errors.email?.message}
+          // errorText={errors.email?.message as string}
           disabled
           id="email"
           label="Email"
@@ -82,6 +83,9 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
         />
       </div>
       <Button disabled={isSaving} type="submit">
+        {isSaving ? (
+          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : null}
         Save account settings
       </Button>
     </form>

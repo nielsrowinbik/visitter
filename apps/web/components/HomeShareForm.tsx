@@ -24,7 +24,7 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = keys.length !== 0;
   const key = get(keys, "[0].id");
-  const url = `/availability/${key}`;
+  const url = `${window.location.origin}/availability/${key}`;
 
   async function onChange(newValue: boolean) {
     setIsSaving(true);
@@ -53,7 +53,7 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
       <Toggle
         checked={isShared}
         description="Expose the availability of your vacation home at its own unique link."
-        disabled={isSaving}
+        isSaving={isSaving}
         label="Sharing"
         onChange={onChange}
       />
@@ -63,7 +63,11 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
             <h4>Your home&apos;s unique link</h4>
             <p>
               Use this link to share when your vacation home is available with
-              whomever you want.
+              whomever you want. Copy it below or{" "}
+              <a href={url} rel="noreferrer" target="_blank">
+                open it in a new tab
+              </a>
+              .
             </p>
             <Input
               id="unique-link"

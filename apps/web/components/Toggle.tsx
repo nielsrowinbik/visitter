@@ -8,6 +8,7 @@ interface ToggleProps {
   checked: boolean;
   disabled?: boolean;
   description?: ReactNode;
+  isSaving?: boolean;
   label: string;
   onChange: (checked: boolean) => void;
 }
@@ -15,6 +16,8 @@ interface ToggleProps {
 export const Toggle = ({
   checked,
   description,
+  disabled,
+  isSaving,
   label,
   onChange,
   ...props
@@ -33,10 +36,14 @@ export const Toggle = ({
           <span className="text-zinc-600">Not enabled</span>
         )}
         <Button
+          disabled={isSaving || disabled}
           onClick={() => onChange(!checked)}
           variant={checked ? "danger" : "outline"}
           {...props}
         >
+          {isSaving ? (
+            <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
+          ) : null}
           {checked ? "Disable" : "Enable"}
         </Button>
       </div>

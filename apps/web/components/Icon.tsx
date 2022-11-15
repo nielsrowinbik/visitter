@@ -10,6 +10,8 @@ import {
   HiOutlineXMark,
 } from "react-icons/hi2";
 
+import { CgSpinner } from "react-icons/cg";
+
 export const Icon = {
   Apple: AiFillApple,
   ArrowDownCircle: HiOutlineArrowDownCircle,
@@ -20,6 +22,7 @@ export const Icon = {
   Facebook: AiFillFacebook,
   Google: AiOutlineGoogle,
   Logo: HiOutlineHome,
+  Spinner: CgSpinner,
   Trash: HiOutlineTrash,
   User: HiOutlineUser,
 };

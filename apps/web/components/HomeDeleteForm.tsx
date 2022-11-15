@@ -105,9 +105,9 @@ export function HomeDeleteForm({ home }: HomeDeleteFormProps) {
                         onClick={deleteHome}
                         variant="danger"
                       >
-                        {/* {isSaving ? (
-                          <Icon.spinner className="mr-2 h-4 w-4" />
-                        ) : null} */}
+                        {isSaving ? (
+                          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                        ) : null}
                         Delete home
                       </Button>
                       <Button onClick={closeModal} variant="outline">
