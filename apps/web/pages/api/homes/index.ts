@@ -28,7 +28,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   const session = await getSession(req, res);
 
-  const body = homeCreateSchema.parse(JSON.parse(req.body));
+  const body = homeCreateSchema.parse(req.body);
 
   const home = await db.home.create({
     data: {

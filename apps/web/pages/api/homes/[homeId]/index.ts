@@ -19,8 +19,6 @@ handler.delete(async (req, res) => {
     },
   });
 
-  // TODO: Also delete bookings and keys (if this delete doesn't cascade by default)
-
   return res.status(204).end();
 });
 
@@ -32,7 +30,7 @@ handler.patch(async (req, res) => {
     },
   });
 
-  const body = homePatchSchema.parse(JSON.parse(req.body));
+  const body = homePatchSchema.parse(req.body);
 
   await db.home.update({
     where: {

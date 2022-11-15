@@ -23,14 +23,15 @@ export function HomeDeleteForm({ home }: HomeDeleteFormProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   async function deleteHome() {
-    setIsSaving(true);
-
     try {
+      setIsSaving(true);
+
       await superagent.delete(`/api/homes/${home.id}`);
+
       router.replace("/homes");
       router.refresh();
     } catch (error) {
-      return toast({
+      toast({
         title: "Something went wrong.",
         message: "Your home was not deleted. Please try again.",
         type: "error",

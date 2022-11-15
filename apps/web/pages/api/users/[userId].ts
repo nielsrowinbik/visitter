@@ -16,7 +16,12 @@ handler.use(authentication());
 handler.patch(async (req, res) => {
   const session = await getSession(req, res);
 
-  const body = userPatchSchema.parse(JSON.parse(req.body));
+  // Deny the request if this is not the current user changes his own information:
+  if (session.user.id !== req.query.userId) {
+    return res.status(403).end();
+  }
+
+  const body = userPatchSchema.parse(req.body);
 
   await db.user.update({
     where: {

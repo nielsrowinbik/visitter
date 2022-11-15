@@ -11,6 +11,7 @@ import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { homeCreateSchema } from "@/lib/validations/home";
+import superagent from "superagent";
 import toast from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -40,27 +41,22 @@ export function HomeCreateButton({
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   async function onSubmit(data: FormData) {
-    setIsSaving(true);
+    try {
+      setIsSaving(true);
 
-    const response = await fetch(`/api/homes`, {
-      method: "POST",
-      body: JSON.stringify({
-        name: data.name,
-      }),
-    });
+      await superagent.post(`/api/homes`).send(data);
 
-    setIsSaving(false);
-
-    if (!response?.ok) {
-      return toast({
+      router.refresh();
+    } catch (error) {
+      toast({
         title: "Something went wrong.",
         message: "Your vacation home was not created. Please try again.",
         type: "error",
       });
+    } finally {
+      setIsSaving(false);
+      closeModal();
     }
-
-    router.refresh();
-    closeModal();
   }
 
   return (

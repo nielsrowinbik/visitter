@@ -27,9 +27,9 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
   const url = `${window.location.origin}/availability/${key}`;
 
   async function onChange(newValue: boolean) {
-    setIsSaving(true);
-
     try {
+      setIsSaving(true);
+
       if (newValue === true) {
         await superagent.post(`/api/homes/${homeId}/keys`);
       } else {
@@ -38,7 +38,7 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
 
       router.refresh();
     } catch (error) {
-      return toast({
+      toast({
         title: "Something went wrong.",
         message: "Your vacation home was not created. Please try again.",
         type: "error",

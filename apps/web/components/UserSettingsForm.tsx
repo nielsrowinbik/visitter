@@ -34,9 +34,9 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   async function onSubmit(data: FormData) {
-    setIsSaving(true);
-
     try {
+      setIsSaving(true);
+
       await superagent.patch(`/api/users/${user.id}`).send({
         name: data.name,
       });
@@ -48,7 +48,7 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
 
       router.refresh();
     } catch (error) {
-      return toast({
+      toast({
         title: "Something went wrong.",
         message: "Your settings were not saved. Please try again.",
         type: "error",

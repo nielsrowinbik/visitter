@@ -12,6 +12,7 @@ import { Home } from "@prisma/client";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { bookingCreateSchema } from "@/lib/validations/booking";
+import superagent from "superagent";
 import toast from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -44,25 +45,22 @@ export function BookingCreateButton({
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   async function onSubmit(data: FormData) {
-    setIsSaving(true);
+    try {
+      setIsSaving(true);
 
-    const response = await fetch(`/api/homes/${homeId}/bookings`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+      await superagent.post(`/api/homes/${homeId}/bookings`).send(data);
 
-    setIsSaving(false);
-
-    if (!response?.ok) {
-      return toast({
+      router.refresh();
+    } catch (error) {
+      toast({
         title: "Something went wrong.",
         message: "Your booking was not created. Please try again.",
         type: "error",
       });
+    } finally {
+      setIsSaving(false);
+      closeModal();
     }
-
-    router.refresh();
-    closeModal();
   }
 
   return (

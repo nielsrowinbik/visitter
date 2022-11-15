@@ -28,7 +28,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   const homeId = req.query.homeId as string;
 
-  const body = bookingCreateSchema.parse(JSON.parse(req.body));
+  const body = bookingCreateSchema.parse(req.body);
 
   // FIXME: Manual validation to make sure the startDate is before the endDate (should be handled by Zod)
   if (body.startDate > body.endDate) {

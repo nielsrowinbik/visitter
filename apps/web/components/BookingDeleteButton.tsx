@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
+import superagent from "superagent";
 import toast from "@/components/Toast";
 import { useRouter } from "next/navigation";
 
@@ -29,24 +30,22 @@ export function BookingDeleteButton({
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   async function deleteBooking() {
-    setIsSaving(true);
+    try {
+      setIsSaving(true);
 
-    const response = await fetch(`/api/bookings/${bookingId}`, {
-      method: "DELETE",
-    });
+      await superagent.delete(`/api/bookings/${bookingId}`);
 
-    setIsSaving(false);
-
-    if (!response?.ok) {
-      return toast({
+      router.refresh();
+    } catch (error) {
+      toast({
         title: "Something went wrong.",
         message: "Your booking was not deleted. Please try again.",
         type: "error",
       });
+    } finally {
+      setIsSaving(false);
+      closeModal();
     }
-
-    router.refresh();
-    closeModal();
   }
 
   return (
