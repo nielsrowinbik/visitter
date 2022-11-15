@@ -25,7 +25,8 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = keys.length !== 0;
   const key = get(keys, "[0].id");
-  const origin = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
+  const origin =
+    `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || "http://localhost:3000";
   const url = `${origin}/availability/${key}`;
 
   async function onChange(newValue: boolean) {
