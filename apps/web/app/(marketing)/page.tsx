@@ -39,16 +39,16 @@ export default async function IndexPage() {
               </ul>
             </div>
           </div>
-          <Link
+          <a
             className="inline-flex items-center space-x-1 rounded-full bg-transparent px-4 py-2 text-current no-underline hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-blue-500/40 focus:ring-offset-0"
             href="#how-it-works"
           >
             <Icon.ArrowDownCircle className="h-10 w-10" />
             <span className="font-medium">Learn how it works</span>
-          </Link>
+          </a>
         </div>
       </section>
-      <section>
+      <section id="how-it-works">
         <h2>Here&apos;s how it works</h2>
         <h3>Add your vacation home</h3>
         <p>
@@ -69,7 +69,7 @@ export default async function IndexPage() {
         <h3>More features coming soon</h3>
         <p>We&apos;re working on many more handy features. Stay tuned!</p>
       </section>
-      <section>
+      <section id="pricing">
         <h2>Pricing</h2>
         <p>
           We like to keep things simple, and that includes our pricing options.
@@ -119,7 +119,7 @@ export default async function IndexPage() {
           </div>
         </div>
       </section>
-      <section>
+      <section id="cta">
         <div className="mx-auto max-w-xl text-center">
           <h2>Ready to take control of your vacation home?</h2>
           <p>
@@ -132,7 +132,7 @@ export default async function IndexPage() {
           </p>
         </div>
       </section>
-      <footer className="prose prose-lg prose-zinc text-center prose-p:font-medium prose-ul:font-medium dark:prose-invert sm:prose-xl md:prose-2xl">
+      <footer id="footer">
         <div className="mx-auto max-w-xl pb-6 text-center">
           <h4>We hope you have a wonderful day!</h4>
           <p>
