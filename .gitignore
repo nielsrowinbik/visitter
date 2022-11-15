@@ -28,8 +28,6 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
-!packages/database/.env
-!apps/web/.env
 
 # turbo
 .turbo
