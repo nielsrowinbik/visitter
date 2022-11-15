@@ -1,26 +1,29 @@
 {
-  "name": "visitter",
-  "version": "0.0.0",
   "private": true,
+  "name": "visitter",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma",
+    "seed": "tsx packages/database/src/seed.ts"
+  },
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "db:migrate:deploy": "turbo run db:migrate:deploy",
+    "db:push": "turbo run db:push",
+    "db:push:force": "turbo run db:push:force",
+    "db:seed": "turbo run db:seed",
+    "dev": "turbo run dev --parallel --force",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "generate": "turbo run generate",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "prettier": "latest",
+    "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
+    "tsx": "^3.7.1",
     "turbo": "latest"
-  },
-  "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
-  },
-  "packageManager": "pnpm@7.6.0"
+  }
 }
