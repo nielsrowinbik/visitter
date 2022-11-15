@@ -80,39 +80,11 @@ export default async function IndexPage() {
             <div className="not-prose mb-6 font-medium">
               <ul>
                 <li className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className="mr-1 inline h-[1.25em] w-[1.25em]"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
+                  <Icon.Checkmark className="mr-1 h-7 w-7" />
                   <span>All current and future features</span>
                 </li>
                 <li className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className="mr-1 inline h-[1.25em] w-[1.25em]"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
+                  <Icon.Checkmark className="mr-1 h-7 w-7" />
                   <span>Manage one vacation home</span>
                 </li>
               </ul>
@@ -129,39 +101,11 @@ export default async function IndexPage() {
             <div className="not-prose mb-6 font-medium">
               <ul>
                 <li className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className="mr-1 inline h-[1.25em] w-[1.25em]"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
+                  <Icon.Checkmark className="mr-1 h-7 w-7" />
                   <span>Everything in free</span>
                 </li>
                 <li className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    className="mr-1 inline h-[1.25em] w-[1.25em]"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
+                  <Icon.Checkmark className="mr-1 h-7 w-7" />
                   <span>Unlimited vacation homes</span>
                 </li>
               </ul>
