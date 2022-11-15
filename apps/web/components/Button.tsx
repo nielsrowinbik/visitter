@@ -18,7 +18,7 @@ export function Button({
     <button
       {...props}
       className={cn(
-        "relative box-border inline-flex shrink-0 select-none items-center justify-center space-x-3 overflow-hidden whitespace-nowrap rounded-md border border-transparent text-center font-semibold leading-none no-underline outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-0 disabled:cursor-not-allowed",
+        "relative box-border inline-flex shrink-0 select-none items-center justify-center space-x-3 overflow-hidden whitespace-nowrap rounded-md border border-transparent text-center font-semibold leading-none no-underline outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-0 disabled:cursor-not-allowed",
         { "py-2 px-4": compact === false && square === false },
         { "h-9 w-9": compact === false && square === true },
         { "py-1.5 px-2 text-xs": compact === true && square === false },

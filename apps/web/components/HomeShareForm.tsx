@@ -2,11 +2,12 @@
 
 import type { Home, ShareKey } from "database";
 
-import { Card } from "./Card";
-import { CopyButton } from "./CopyButton";
+import { Button } from "@/components/Button";
+import { Card } from "@/components/Card";
+import { CopyButton } from "@/components/CopyButton";
 import type { HTMLAttributes } from "react";
-import { Icon } from "./Icon";
-import { Input } from "./Input";
+import { Icon } from "@/components/Icon";
+import { Input } from "@/components/Input";
 import { Toggle } from "@/components/Toggle";
 import { get } from "lodash";
 import superagent from "superagent";
@@ -24,7 +25,8 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = keys.length !== 0;
   const key = get(keys, "[0].id");
-  const url = `${window.location.origin}/availability/${key}`;
+  // const url = `${window.location.origin}/availability/${key}`;
+  const url = `/availability/${key}`;
 
   async function onChange(newValue: boolean) {
     try {
@@ -75,16 +77,17 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
               rightSection={
                 <CopyButton timeout={3000} value={url}>
                   {({ copy, copied }) => (
-                    <button
-                      className="border border-transparent border-l-zinc-400/20 bg-white px-2 text-zinc-600 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-2"
+                    <Button
+                      className="rounded-l-none border-transparent ring-0 focus:z-10 dark:border-transparent"
                       onClick={copy}
+                      variant="outline"
                     >
                       {copied ? (
                         <Icon.Checkmark className="h-5 w-5" />
                       ) : (
                         <Icon.Copy className="h-5 w-5" />
                       )}
-                    </button>
+                    </Button>
                   )}
                 </CopyButton>
               }
