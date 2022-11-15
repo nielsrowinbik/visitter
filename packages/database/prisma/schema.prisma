@@ -31,7 +31,6 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@map(name: "accounts")
 }
 
 model Booking {
@@ -42,8 +41,6 @@ model Booking {
     endDate     DateTime
     home        Home        @relation(fields: [homeId], references: [id], onDelete: Cascade)
     homeId      String
-
-    @@map(name: "bookings")
 }
 
 model Home {
@@ -55,8 +52,6 @@ model Home {
     ownerId     String
     bookings    Booking[]
     shareKey    ShareKey?
-
-    @@map(name: "homes")
 }
 
 model Session {
@@ -65,16 +60,12 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map(name: "sessions")
 }
 
 model ShareKey {
     id          String      @id @default(cuid())
     home        Home        @relation(fields: [homeId], references: [id], onDelete: Cascade)
     homeId      String      @unique
-
-    @@map(name: "keys")
 }
 
 model User {
@@ -89,8 +80,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
   homes         Home[]
-
-  @@map(name: "users")
 }
 
 model VerificationToken {
@@ -99,5 +88,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-  @@map(name: "verification_tokens")
 }
