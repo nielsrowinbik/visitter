@@ -55,49 +55,11 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
     <>
       <Toggle
         checked={isShared}
-        description="Expose the availability of your vacation home at its own unique link."
+        description="Turning this setting will create a unique link that you can share with others to let them see when your vacation home is (un)available."
         isSaving={isSaving}
-        label="Sharing"
+        label="Availability sharing"
         onChange={onChange}
       />
-      {isShared && (
-        <Card variant="info">
-          <Card.Content>
-            <h4>Your home&apos;s unique link</h4>
-            <p>
-              Use this link to share when your vacation home is available with
-              whomever you want. Copy it below or{" "}
-              <a href={url} rel="noreferrer" target="_blank">
-                open it in a new tab
-              </a>
-              .
-            </p>
-            <Input
-              id="unique-link"
-              readOnly
-              rightSection={
-                <CopyButton timeout={3000} value={url}>
-                  {({ copy, copied }) => (
-                    <Button
-                      className="rounded-l-none border-transparent ring-0 focus:z-10 dark:border-transparent"
-                      onClick={copy}
-                      variant="outline"
-                    >
-                      {copied ? (
-                        <Icon.Checkmark className="h-5 w-5" />
-                      ) : (
-                        <Icon.Copy className="h-5 w-5" />
-                      )}
-                    </Button>
-                  )}
-                </CopyButton>
-              }
-              type="text"
-              value={url}
-            />
-          </Card.Content>
-        </Card>
-      )}
     </>
   );
 }
