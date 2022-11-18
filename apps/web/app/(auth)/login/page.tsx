@@ -15,7 +15,7 @@ export default function LoginPage() {
       <div className="p-8">
         <div className="mx-auto flex w-[350px] flex-col justify-center space-y-6">
           <div className="flex flex-col space-y-2 text-center">
-            <Icon.Logo className="mx-auto h-6 w-6" />
+            <Icon.Logo className="mx-auto box-content h-6 w-6 p-1" />
             <h1 className="text-2xl font-bold">Welcome back</h1>
             <p className="text-sm text-slate-500">
               Enter your email to sign in to your account
