@@ -35,16 +35,17 @@ export default async function DashboardPage() {
       </DashboardHeader>
       <div>
         {homes?.length ? (
-          <div className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             {homes.map((home) => (
               <HomeItem key={home.id} home={home} />
             ))}
           </div>
         ) : (
           <EmptyPlaceholder>
-            <EmptyPlaceholder.Title>No homes created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>No vacation homes</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              You don&apos;t have any homes yet.
+              Once you&apos;ve created a vacation home, you can begin managing
+              its (un)availability.
             </EmptyPlaceholder.Description>
             <HomeCreateButton variant="outline" />
           </EmptyPlaceholder>

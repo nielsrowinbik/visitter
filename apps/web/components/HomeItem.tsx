@@ -9,30 +9,28 @@ interface HomeItemProps {
 
 export function HomeItem({ home }: HomeItemProps) {
   return (
-    <div className="flex items-center justify-between p-4">
+    <Link
+      className="flex items-center justify-between rounded-md p-4 shadow-md ring-1 ring-zinc-400/20 transition-all hover:shadow-lg"
+      href={`/home/${home.id}`}
+    >
       <div className="grid gap-1">
-        <Link
-          href={`/home/${home.id}`}
-          className="font-semibold hover:underline"
-        >
-          {home.name}
-        </Link>
+        <h2 className="font-semibold">{home.name}</h2>
         <div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
             Created on {formatDate(home.createdAt?.toDateString())}
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 HomeItem.Skeleton = function HomeItemSkeleton() {
   return (
-    <div className="p-4">
+    <div className="rounded-md p-4 ring-1 ring-zinc-400/20">
       <div className="space-y-3">
-        <Skeleton className="h-5 w-2/6" />
-        <Skeleton className="h-4 w-3/6" />
+        <Skeleton className="h-5 w-3/6" />
+        <Skeleton className="h-4 w-4/6" />
       </div>
     </div>
   );

@@ -10,8 +10,7 @@ export default function DashboardLoading() {
         <HomeCreateButton />
       </DashboardHeader>
       <div>
-        <div className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
-          <HomeItem.Skeleton />
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
           <HomeItem.Skeleton />
           <HomeItem.Skeleton />
           <HomeItem.Skeleton />
