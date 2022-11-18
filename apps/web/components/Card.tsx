@@ -9,14 +9,14 @@ export function Card({ className, variant = "default", ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "flex max-w-none overflow-hidden rounded-lg border",
-        { "border-zinc-200": variant === "default" },
+        "flex max-w-none flex-col overflow-hidden rounded-md ring-1",
+        { "ring-zinc-400/20 ": variant === "default" },
         {
-          "border-red-500 bg-red-50 prose-headings:text-red-600 dark:bg-zinc-800":
+          "bg-red-50 ring-red-500 prose-headings:text-red-600 dark:bg-zinc-800":
             variant === "danger",
         },
         {
-          "border-blue-500 bg-blue-50 dark:bg-blue-900/50": variant === "info",
+          "bg-blue-50 ring-blue-500 dark:bg-blue-900/50": variant === "info",
         },
         className
       )}
