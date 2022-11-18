@@ -25,3 +25,9 @@
     @apply border-zinc-400/20;
   }
 }
+
+@layer components {
+  .section-text {
+    @apply prose prose-sm prose-zinc prose-a:font-normal prose-a:text-blue-500 prose-a:no-underline dark:prose-invert prose-a:dark:text-blue-400;
+  }
+}
