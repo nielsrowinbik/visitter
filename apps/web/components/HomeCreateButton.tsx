@@ -8,6 +8,7 @@ import { Fragment, useState } from "react";
 import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import type { HTMLAttributes } from "react";
+import type { Home } from "database";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { homeCreateSchema } from "@/lib/validations/home";
@@ -44,8 +45,10 @@ export function HomeCreateButton({
     try {
       setIsSaving(true);
 
-      await superagent.post(`/api/homes`).send(data);
+      const res = await superagent.post(`/api/homes`).send(data);
+      const { id } = res.body as Pick<Home, "id">;
 
+      router.push(`/home/${id}`);
       router.refresh();
     } catch (error) {
       toast({
