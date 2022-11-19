@@ -29,6 +29,7 @@ handler.patch(async (req, res) => {
     },
     data: {
       name: body.name || session.user.name,
+      phone: body.phone || session.user.phone,
     },
   });
 

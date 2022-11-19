@@ -16,7 +16,7 @@ import { userPatchSchema } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserSettingsFormProps extends HTMLAttributes<HTMLDivElement> {
-  user: Pick<User, "id" | "name" | "email">;
+  user: Pick<User, "id" | "name" | "email" | "phone">;
 }
 
 type FormData = z.infer<typeof userPatchSchema>;
@@ -37,9 +37,7 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
     try {
       setIsSaving(true);
 
-      await superagent.patch(`/api/users/${user.id}`).send({
-        name: data.name,
-      });
+      await superagent.patch(`/api/users/${user.id}`).send(data);
 
       toast({
         title: "Settings saved successfully",
@@ -62,24 +60,32 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
       <div className="space-y-6">
         <Input
+          autoComplete="name"
           description="Enter your full name or a display name you are comfortable with."
           errorText={errors.name?.message as string}
-          id="name"
           type="text"
           label="Name"
           {...register("name")}
         />
         <Input
+          autoComplete="email"
           description="Support for changing your e-mail address is coming soon. For now, this field is read-only."
-          // errorText={errors.email?.message as string}
+          errorText={errors.email?.message as string}
           disabled
-          id="email"
-          label="Email"
+          label="Email address"
+          placeholder="name@domain.com"
           readOnly
           required
+          type="email"
+          {...register("email")}
+        />
+        <Input
+          autoComplete="tel"
+          description="Enter your phone number including country code. We will never share your phone number without your permission."
+          errorText={errors.phone?.message as string}
+          label="Phone number"
           type="text"
-          value={user.email}
-          // {...register("email")}
+          {...register("phone")}
         />
       </div>
       <Button disabled={isSaving} type="submit">

@@ -17,6 +17,7 @@
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
     "hasha": "^5.2.2",
+    "libphonenumber-js": "^1.10.14",
     "lodash": "^4.17.21",
     "next": "^13.0.3-canary.4",
     "next-auth": "^4.16.4",

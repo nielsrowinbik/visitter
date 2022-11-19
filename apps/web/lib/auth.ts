@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         image: dbUser.image,
+        phone: dbUser.phone,
       };
     },
     async session({ session, token }) {
@@ -53,6 +54,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.image;
+        session.user.phone = token.phone;
       }
 
       return session;
