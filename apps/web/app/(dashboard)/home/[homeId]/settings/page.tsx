@@ -24,19 +24,10 @@ async function getHome(homeId: Home["id"]) {
   return home;
 }
 
-async function getKeys(homeId: Home["id"]) {
-  return await db.shareKey.findMany({
-    where: {
-      homeId,
-    },
-  });
-}
-
 export default async function HomeSettingsPage({
   params: { homeId },
 }: PageProps) {
   const home = await getHome(homeId);
-  const keys = await getKeys(homeId);
 
   return (
     <div className="space-y-8">
