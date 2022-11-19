@@ -8,7 +8,7 @@ import { Icon } from "./Icon";
 import { Input } from "@/components/Input";
 import type { User } from "database";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -39,18 +39,14 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
 
       await superagent.patch(`/api/users/${user.id}`).send(data);
 
-      toast({
-        title: "Settings saved successfully",
-        message: "Your settings were saved.",
-      });
+      toast("Settings saved", "Your settings were saved succesfully.");
 
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your settings were not saved. Please try again.",
-        type: "error",
-      });
+      toast(
+        "Something went wrong.",
+        "Your settings were not saved. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }

@@ -13,7 +13,7 @@ import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { homeCreateSchema } from "@/lib/validations/home";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,11 +51,10 @@ export function HomeCreateButton({
       router.push(`/home/${id}`);
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your vacation home was not created. Please try again.",
-        type: "error",
-      });
+      toast.error(
+        "Something went wrong.",
+        "Your vacation home was not created. Please try again."
+      );
     } finally {
       setIsSaving(false);
       closeModal();

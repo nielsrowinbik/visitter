@@ -8,7 +8,7 @@ import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { cn } from "@/lib/utils";
 import { signIn } from "next-auth/react";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { userAuthSchema } from "@/lib/validations/auth";
@@ -40,18 +40,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(false);
 
     if (!signInResult?.ok) {
-      return toast({
-        title: "Something went wrong.",
-        message: "Your post was not saved. Please try again.",
-        type: "error",
-      });
+      return toast.error(
+        "Something went wrong.",
+        "Your post was not saved. Please try again."
+      );
     }
 
-    return toast({
-      title: "Check your email",
-      message: "We sent you a login link. Be sure to check your spam too.",
-      type: "success",
-    });
+    return toast.success(
+      "Check your email",
+      "We sent you a login link. Be sure to check your spam too."
+    );
   }
 
   return (

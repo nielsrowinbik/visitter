@@ -8,7 +8,7 @@ import { Card } from "@/components/Card";
 import type { Home } from "database";
 import { Icon } from "./Icon";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
 
 interface HomeDeleteFormProps {
@@ -31,11 +31,10 @@ export function HomeDeleteForm({ home }: HomeDeleteFormProps) {
       router.replace("/homes");
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your home was not deleted. Please try again.",
-        type: "error",
-      });
+      toast(
+        "Something went wrong.",
+        "Your home was not deleted. Please try again."
+      );
     } finally {
       setIsSaving(false);
       closeModal();

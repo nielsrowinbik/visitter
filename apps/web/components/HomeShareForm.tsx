@@ -11,7 +11,7 @@ import { Input } from "@/components/Input";
 import { Toggle } from "@/components/Toggle";
 import { get } from "lodash";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -41,11 +41,10 @@ export function HomeShareForm({ homeId, keys }: HomeShareFormProps) {
 
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your vacation home was not created. Please try again.",
-        type: "error",
-      });
+      toast.error(
+        "Something went wrong.",
+        "Your vacation home was not created. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }

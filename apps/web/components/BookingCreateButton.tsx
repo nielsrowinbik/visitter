@@ -13,7 +13,7 @@ import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { bookingCreateSchema } from "@/lib/validations/booking";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,11 +52,10 @@ export function BookingCreateButton({
 
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your booking was not created. Please try again.",
-        type: "error",
-      });
+      toast.error(
+        "Something went wrong.",
+        "Your booking was not created. Please try again."
+      );
     } finally {
       setIsSaving(false);
       closeModal();

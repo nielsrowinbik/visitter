@@ -10,7 +10,7 @@ import { Icon } from "@/components/Icon";
 import { get } from "lodash";
 import { getClientOrigin } from "@/lib/utils";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -38,11 +38,10 @@ export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
 
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your vacation home was not created. Please try again.",
-        type: "error",
-      });
+      toast.error(
+        "Something went wrong.",
+        "Your vacation home was not created. Please try again."
+      );
     } finally {
       setIsSaving(false);
     }

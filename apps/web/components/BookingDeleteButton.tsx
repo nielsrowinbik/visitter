@@ -9,7 +9,7 @@ import type { ButtonProps } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
 import superagent from "superagent";
-import toast from "@/components/Toast";
+import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
 
 interface BookingDeleteButtonProps
@@ -37,11 +37,10 @@ export function BookingDeleteButton({
 
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Something went wrong.",
-        message: "Your booking was not deleted. Please try again.",
-        type: "error",
-      });
+      toast.error(
+        "Something went wrong.",
+        "Your booking was not deleted. Please try again."
+      );
     } finally {
       setIsSaving(false);
       closeModal();
