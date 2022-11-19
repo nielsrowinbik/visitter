@@ -7,8 +7,8 @@ import { Button } from "./Button";
 import { CopyButton } from "./CopyButton";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
-import { cn } from "@/lib/utils";
 import { get } from "lodash";
+import { getClientOrigin } from "@/lib/utils";
 import superagent from "superagent";
 import toast from "@/components/Toast";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,7 @@ export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = keys.length !== 0;
   const key = get(keys, "[0].id");
+  const url = `${getClientOrigin()}/availability/${key}`;
 
   async function onChange() {
     try {
@@ -49,7 +50,7 @@ export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
 
   return (
     <div className="section-text">
-      <h3>
+      <h3 className="mt-0">
         Availability sharing{" "}
         <Badge className="ml-2" variant={isShared ? "success" : "default"}>
           {isShared ? "Enabled" : "Disabled"}
@@ -63,7 +64,7 @@ export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
       </p>
       <div className="not-prose flex space-x-3">
         {isShared ? (
-          <CopyButton value={`${process.env.NEXTAUTH_URL}/availability/${key}`}>
+          <CopyButton value={url}>
             {({ copy, copied }) => (
               <Button compact onClick={copy} variant="outline">
                 {copied ? "Link copied!" : "Copy unique link"}

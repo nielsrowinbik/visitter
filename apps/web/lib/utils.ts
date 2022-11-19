@@ -6,6 +6,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getClientOrigin() {
+  if (process.env.NEXT_PUBLIC_URL) {
+    return process.env.NEXT_PUBLIC_URL;
+  } else {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+}
+
 export function formatDate(input: string): string {
   const date = new Date(input);
   return date.toLocaleDateString("en-US", {
