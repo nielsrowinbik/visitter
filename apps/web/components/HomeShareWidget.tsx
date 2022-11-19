@@ -50,7 +50,7 @@ export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
 
   return (
     <div className="section-text">
-      <h3 className="mt-0">
+      <h3>
         Availability sharing{" "}
         <Badge className="ml-2" variant={isShared ? "success" : "default"}>
           {isShared ? "Enabled" : "Disabled"}

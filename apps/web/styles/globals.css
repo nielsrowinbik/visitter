@@ -28,6 +28,6 @@
 
 @layer components {
   .section-text {
-    @apply prose prose-sm prose-zinc prose-a:font-normal prose-a:text-blue-500 prose-a:no-underline dark:prose-invert prose-a:dark:text-blue-400;
+    @apply prose prose-sm prose-zinc prose-headings:first:mt-0 prose-a:font-normal prose-a:text-blue-500 prose-a:no-underline dark:prose-invert prose-a:dark:text-blue-400;
   }
 }
