@@ -21,6 +21,9 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "husky": "^8.0.2",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "tsx": "^3.7.1",
