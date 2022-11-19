@@ -77,7 +77,9 @@ export default async function HomeDetailPage({ params }: PageProps) {
                 Periods of unavailability, regardless of the reason, are logged
                 as bookings.
               </EmptyPlaceholder.Description>
-              <BookingCreateButton homeId={home.id} variant="outline" />
+              <EmptyPlaceholder.Actions>
+                <BookingCreateButton homeId={home.id} variant="outline" />
+              </EmptyPlaceholder.Actions>
             </EmptyPlaceholder>
           )}
         </div>

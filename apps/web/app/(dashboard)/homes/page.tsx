@@ -47,7 +47,9 @@ export default async function DashboardPage() {
               Once you&apos;ve created a vacation home, you can begin managing
               its (un)availability.
             </EmptyPlaceholder.Description>
-            <HomeCreateButton variant="outline" />
+            <EmptyPlaceholder.Actions>
+              <HomeCreateButton variant="outline" />
+            </EmptyPlaceholder.Actions>
           </EmptyPlaceholder>
         )}
       </div>
