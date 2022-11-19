@@ -1,19 +1,21 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 
 import { forwardRef } from "react";
+import slugify from "slugify";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   description?: string;
   errorText?: string;
-  id: string;
   label?: string;
   rightSection?: ReactNode;
 }
 
 export const Input = forwardRef<any, InputProps>(function Input(
-  { description, errorText, id, label, rightSection, ...props },
+  { description, errorText, label, rightSection, ...props },
   ref
 ) {
+  const id = props.id || (label && slugify(label, { lower: true }));
+
   return (
     <div className="block w-full max-w-md">
       {label && (

@@ -29,6 +29,7 @@
     "react-hook-form": "^7.39.3",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.6.0",
+    "slugify": "^1.6.5",
     "superagent": "^8.0.3",
     "tailwind-merge": "^1.8.0",
     "zod": "^3.19.1"
