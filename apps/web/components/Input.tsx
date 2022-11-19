@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 
+import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 import slugify from "slugify";
 
@@ -27,7 +28,12 @@ export const Input = forwardRef<any, InputProps>(function Input(
       {description && (
         <p className="mb-2 text-sm text-zinc-500">{description}</p>
       )}
-      <div className="mt-2 flex rounded-md border border-zinc-400/20 [&>:first-child]:rounded-l-md [&>:last-child]:rounded-r-md">
+      <div
+        className={cn(
+          "mt-2 flex rounded-md border border-zinc-400/20 [&>:first-child]:rounded-l-md [&>:last-child]:rounded-r-md",
+          { "border-red-500": !!errorText }
+        )}
+      >
         <input {...props} id={id} ref={ref} />
         {rightSection}
       </div>
