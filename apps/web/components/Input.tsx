@@ -24,7 +24,7 @@ export const Input = forwardRef<any, InputProps>(function Input(
           {props.required && <span> *</span>}
         </label>
       )}
-      {description && !errorText && (
+      {description && (
         <p className="mb-2 text-sm text-zinc-500">{description}</p>
       )}
       <div className="mt-2 flex rounded-md border border-zinc-400/20 [&>:first-child]:rounded-l-md [&>:last-child]:rounded-r-md">
