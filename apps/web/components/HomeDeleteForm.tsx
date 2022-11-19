@@ -46,10 +46,10 @@ export function HomeDeleteForm({ home }: HomeDeleteFormProps) {
     <>
       <Card variant="danger">
         <Card.Content>
-          <h4>Delete home</h4>
+          <h3>Delete vacation home</h3>
           <p>
-            Delete <strong>{home.name}</strong> and all of its bookings. Any
-            links shared for this home will stop working.
+            This will delete <strong>{home.name}</strong> and all of its
+            bookings. Any shared links will stop working.
           </p>
         </Card.Content>
         <Card.Action>
