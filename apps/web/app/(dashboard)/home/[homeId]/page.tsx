@@ -81,7 +81,7 @@ export default async function HomeDetailPage({ params }: PageProps) {
             </EmptyPlaceholder>
           )}
         </div>
-        <div className="max-w-[35%]">
+        <div className="lg:max-w-[35%]">
           <HomeShareWidget home={home} keys={keys} />
         </div>
       </div>
