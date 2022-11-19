@@ -1,6 +1,6 @@
 import type { Home } from "database";
 import { HomeDeleteForm } from "@/components/HomeDeleteForm";
-import { HomeShareForm } from "@/components/HomeShareForm";
+import { HomeSettingsForm } from "@/components/HomeSettingsForm";
 import { db } from "database";
 import { notFound } from "next/navigation";
 
@@ -40,7 +40,7 @@ export default async function HomeSettingsPage({
 
   return (
     <div className="space-y-8">
-      <HomeShareForm homeId={homeId} keys={keys} />
+      <HomeSettingsForm home={home} />
       <hr />
       <HomeDeleteForm home={home} />
     </div>
