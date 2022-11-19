@@ -99,7 +99,7 @@ export default function Calendar({
                     dayIdx === 0 && colStartClasses[getDay(day)],
                     "peer mx-auto flex h-8 w-full items-center justify-center",
                     {
-                      "rounded-full border border-red-200 bg-red-50 font-medium text-red-600 [&:has(+.bg-red-50)]:rounded-r-none [&:has(+.bg-red-50)]:border-r-0 [&+.bg-red-50]:rounded-l-none [&+.bg-red-50]:border-l-0":
+                      "rounded-full bg-red-500 font-medium text-white [&:has(+.bg-red-500)]:rounded-r-none [&+.bg-red-500]:rounded-l-none":
                         isWithinIntervals(day, bookings),
                     }
                   )}
