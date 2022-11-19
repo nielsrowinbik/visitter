@@ -1,13 +1,12 @@
-import { Badge } from "@/components/Badge";
 import { BookingCreateButton } from "@/components/BookingCreateButton";
-import { BookingItem } from "@/components/BookingItem";
+import { BookingsList } from "@/components/BookingsList";
 import { Button } from "@/components/Button";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { DashboardShell } from "@/components/DashboardShell";
-import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
 import type { Home } from "database";
 import { HomeShareWidget } from "@/components/HomeShareWidget";
 import Link from "next/link";
+import { Suspense } from "react";
 import { db } from "database";
 import { notFound } from "next/navigation";
 
@@ -17,7 +16,7 @@ interface PageProps {
   };
 }
 
-async function getHome(homeId: Home["id"]) {
+async function findHomeByHomeId(homeId: Home["id"]) {
   const home = await db.home.findUnique({
     where: { id: homeId },
     select: {
@@ -32,15 +31,6 @@ async function getHome(homeId: Home["id"]) {
   return home;
 }
 
-async function getBookingsForHome(homeId: Home["id"]) {
-  const bookings = await db.booking.findMany({
-    where: { homeId },
-    orderBy: { startDate: "asc" },
-  });
-
-  return bookings;
-}
-
 async function findKeysByHomeId(homeId: Home["id"]) {
   const keys = await db.shareKey.findMany({
     where: { homeId },
@@ -50,8 +40,7 @@ async function findKeysByHomeId(homeId: Home["id"]) {
 }
 
 export default async function HomeDetailPage({ params }: PageProps) {
-  const home = await getHome(params.homeId);
-  const bookings = await getBookingsForHome(params.homeId);
+  const home = await findHomeByHomeId(params.homeId);
   const keys = await findKeysByHomeId(params.homeId);
 
   return (
@@ -64,24 +53,10 @@ export default async function HomeDetailPage({ params }: PageProps) {
       </DashboardHeader>
       <div className="mb-10 space-y-6 lg:flex lg:space-y-0">
         <div className="flex-1 lg:mr-10">
-          {bookings?.length ? (
-            <div className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
-              {bookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
-              ))}
-            </div>
-          ) : (
-            <EmptyPlaceholder>
-              <EmptyPlaceholder.Title>No bookings yet</EmptyPlaceholder.Title>
-              <EmptyPlaceholder.Description>
-                Periods of unavailability, regardless of the reason, are logged
-                as bookings.
-              </EmptyPlaceholder.Description>
-              <EmptyPlaceholder.Actions>
-                <BookingCreateButton homeId={home.id} variant="outline" />
-              </EmptyPlaceholder.Actions>
-            </EmptyPlaceholder>
-          )}
+          <Suspense fallback={<BookingsList.Skeleton />}>
+            {/* @ts-expect-error Async Server Component */}
+            <BookingsList home={home} />
+          </Suspense>
         </div>
         <div className="lg:max-w-[35%]">
           <HomeShareWidget home={home} keys={keys} />
