@@ -17,7 +17,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="min-h-screen">
         {children}
         <Analytics />
-        <Toaster position="bottom-right" />
+        <Toaster />
       </body>
     </html>
   );
