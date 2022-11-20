@@ -19,10 +19,16 @@ export function Badge({
           "border-green-200 bg-green-50 text-green-600 dark:border-green-700 dark:bg-green-900/40 dark:text-green-500":
             variant === "success",
         },
+        {
+          "border-purple-200 bg-purple-50 text-purple-600 dark:border-purple-700 dark:bg-purple-900/40 dark:text-purple-500":
+            variant === "busy",
+        },
         className
       )}
     >
-      {variant === "busy" && <Icon.Spinner className="mr-1 h-4 w-4" />}
+      {variant === "busy" && (
+        <Icon.Spinner className="mr-1 h-4 w-4 animate-spin" />
+      )}
       {variant === "success" && (
         <Icon.CheckmarkCircle className="mr-1 h-4 w-4" />
       )}
