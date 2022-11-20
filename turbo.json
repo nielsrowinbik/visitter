@@ -6,6 +6,9 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "db:generate": {
+      "dependsOn": ["^db:generate"]
+    },
     "db:migrate:deploy": {
       "outputs": []
     },
@@ -20,9 +23,6 @@
     },
     "dev": {
       "cache": false
-    },
-    "generate": {
-      "dependsOn": ["^generate"]
     },
     "lint": {
       "outputs": []
