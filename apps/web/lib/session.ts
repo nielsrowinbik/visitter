@@ -6,6 +6,7 @@ import type {
 
 import type { Session } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { db } from "packages/database/dist";
 import { unstable_getServerSession } from "next-auth";
 
 export async function getSession(
@@ -19,5 +20,10 @@ export async function getSession(
 
 export async function getCurrentUser() {
   const session = await getSession();
-  return session?.user;
+
+  const user = await db.user.findUnique({
+    where: { id: session.user?.id },
+  });
+
+  return user;
 }
