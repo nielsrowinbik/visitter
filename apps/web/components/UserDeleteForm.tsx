@@ -49,7 +49,7 @@ export function UserDeleteForm({ user }: UserDeleteFormProps) {
       <Card variant="danger">
         <Card.Content>
           <h3>Delete account</h3>
-          <p>
+          <p className="mb-0">
             This will delete your account and all of your vacation homes,
             including all of their bookings. Any shared links pointing to one of
             your vacation homes will stop working.
