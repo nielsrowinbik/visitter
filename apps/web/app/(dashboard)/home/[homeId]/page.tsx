@@ -31,17 +31,8 @@ async function findHomeByHomeId(homeId: Home["id"]) {
   return home;
 }
 
-async function findKeysByHomeId(homeId: Home["id"]) {
-  const keys = await db.shareKey.findMany({
-    where: { homeId },
-  });
-
-  return keys;
-}
-
 export default async function HomeDetailPage({ params }: PageProps) {
   const home = await findHomeByHomeId(params.homeId);
-  const keys = await findKeysByHomeId(params.homeId);
 
   return (
     <DashboardShell>
@@ -59,7 +50,10 @@ export default async function HomeDetailPage({ params }: PageProps) {
           </Suspense>
         </div>
         <div className="lg:max-w-[35%]">
-          <HomeShareWidget home={home} keys={keys} />
+          <Suspense fallback={<HomeShareWidget.Skeleton />}>
+            {/* @ts-expect-error Async Server Component */}
+            <HomeShareWidget home={home} />
+          </Suspense>
         </div>
       </div>
     </DashboardShell>

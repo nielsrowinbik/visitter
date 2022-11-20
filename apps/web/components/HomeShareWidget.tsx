@@ -1,51 +1,27 @@
-"use client";
-
-import type { Home, ShareKey } from "database";
-
 import { Badge } from "@/components/Badge";
-import { Button } from "./Button";
-import { CopyButton } from "./CopyButton";
 import type { HTMLAttributes } from "react";
-import { Icon } from "@/components/Icon";
+import type { Home } from "database";
+import { HomeShareCopyButton } from "@/components/HomeShareCopyButton";
+import { HomeShareToggle } from "@/components/HomeShareToggle";
+import { db } from "database";
 import { get } from "lodash";
 import { getClientOrigin } from "@/lib/utils";
-import superagent from "superagent";
-import { toast } from "@/components/Toast";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 interface HomeShareWidgetProps extends HTMLAttributes<HTMLDivElement> {
-  home: Pick<Home, "id" | "name">;
-  keys: Pick<ShareKey, "id">[];
+  home: Pick<Home, "id">;
 }
 
-export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
-  const router = useRouter();
-  const [isSaving, setIsSaving] = useState<boolean>(false);
+async function findKeysByHomeId(homeId: Home["id"]) {
+  const keys = db.shareKey.findMany({ where: { homeId } });
+  return keys;
+}
+
+export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
+  const keys = await findKeysByHomeId(home.id);
+
   const isShared = keys.length !== 0;
-  const key = get(keys, "[0].id");
+  const key: string = get(keys, "[0].id");
   const url = `${getClientOrigin()}/availability/${key}`;
-
-  async function onChange() {
-    try {
-      setIsSaving(true);
-
-      if (isShared === true) {
-        await superagent.delete(`/api/keys/${key}`);
-      } else {
-        await superagent.post(`/api/homes/${home.id}/keys`);
-      }
-
-      router.refresh();
-    } catch (error) {
-      toast.error(
-        "Something went wrong.",
-        "Your vacation home was not created. Please try again."
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  }
 
   return (
     <div className="section-text">
@@ -56,33 +32,34 @@ export function HomeShareWidget({ home, keys }: HomeShareWidgetProps) {
         </Badge>
       </h3>
       <p>
-        Let others see when {home.name} is (un)available by sending them the
-        unique link that is created when turning this setting on. You can always
-        turn this setting back off after which a previously generated link stops
-        working.
+        Let others see when your vacation home is (un)available by sending them
+        the unique link that is created when turning this setting on. You can
+        always turn this setting back off after which a previously generated
+        link stops working.
       </p>
       <div className="not-prose flex space-x-3">
-        {isShared ? (
-          <CopyButton value={url}>
-            {({ copy, copied }) => (
-              <Button compact onClick={copy} variant="outline">
-                {copied ? "Link copied!" : "Copy unique link"}
-              </Button>
-            )}
-          </CopyButton>
-        ) : null}
-        <Button
-          compact
-          disabled={isSaving}
-          onClick={onChange}
-          variant={isShared ? "danger" : "outline"}
-        >
-          {isSaving ? (
-            <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : null}
-          {isShared ? "Disable sharing" : "Enable sharing"}
-        </Button>
+        {isShared ? <HomeShareCopyButton url={url} /> : null}
+        <HomeShareToggle home={home} shareKey={key} />
       </div>
     </div>
   );
 }
+
+HomeShareWidget.Skeleton = function HomeShareWidgetSkeleton() {
+  return (
+    <div className="section-text">
+      <h3>
+        Availability sharing{" "}
+        <Badge className="ml-2" variant="busy">
+          Loading
+        </Badge>
+      </h3>
+      <p>
+        Let others see when your vacation home is (un)available by sending them
+        the unique link that is created when turning this setting on. You can
+        always turn this setting back off after which a previously generated
+        link stops working.
+      </p>
+    </div>
+  );
+};
