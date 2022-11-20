@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+import Stripe from "stripe";
 import { authentication } from "@/lib/api-middlewares/authentication";
 import { db } from "database";
 import { getSession } from "@/lib/session";
@@ -38,7 +39,8 @@ handler.patch(async (req, res) => {
 
   const body = userPatchSchema.parse(req.body);
 
-  await db.user.update({
+  // Update the local user:
+  const user = await db.user.update({
     where: {
       id: session.user.id,
     },
@@ -46,6 +48,15 @@ handler.patch(async (req, res) => {
       name: body.name || session.user.name,
       phone: body.phone || session.user.phone,
     },
+  });
+
+  // Also update the Stripe customer:
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+    apiVersion: "2022-11-15",
+  });
+
+  await stripe.customers.update(user.stripeCustomerId, {
+    name: body.name || session.user.name,
   });
 
   return res.status(204).end();

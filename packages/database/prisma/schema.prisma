@@ -69,18 +69,20 @@ model ShareKey {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  phone         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  id                String    @id @default(cuid())
+  name              String?
+  email             String?   @unique
+  emailVerified     DateTime?
+  image             String?
+  phone             String?
+  stripeCustomerId  String?   @unique
+  isPayingCustomer  Boolean   @default(false)
+  createdAt         DateTime  @default(now()) @map(name: "created_at")
+  updatedAt         DateTime  @default(now()) @map(name: "updated_at")
 
-  accounts      Account[]
-  sessions      Session[]
-  homes         Home[]
+  accounts          Account[]
+  sessions          Session[]
+  homes             Home[]
 }
 
 model VerificationToken {

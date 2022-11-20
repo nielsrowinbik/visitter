@@ -1,6 +1,7 @@
 import EmailProvider from "next-auth/providers/email";
 import type { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import Stripe from "stripe";
 import { db } from "database";
 
 export const authOptions: NextAuthOptions = {
@@ -58,6 +59,24 @@ export const authOptions: NextAuthOptions = {
       }
 
       return session;
+    },
+  },
+  events: {
+    async createUser({ user }) {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+        apiVersion: "2022-11-15",
+      });
+
+      const customer = await stripe.customers.create({
+        email: user.email!,
+      });
+
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          stripeCustomerId: customer.id,
+        },
+      });
     },
   },
 };
