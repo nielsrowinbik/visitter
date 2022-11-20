@@ -2,6 +2,7 @@ import { DashboardHeader } from "@/components/DashboardHeader";
 import { DashboardShell } from "@/components/DashboardShell";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
+import { UserDeleteForm } from "@/components/UserDeleteForm";
 import { UserSetttingsForm } from "@/components/UserSettingsForm";
 import { authOptions } from "@/lib/auth";
 import { getCurrentUser } from "@/lib/session";
@@ -29,6 +30,8 @@ export default async function SettingsPage() {
         }
       ></DashboardHeader>
       <UserSetttingsForm user={user} />
+      <hr />
+      <UserDeleteForm user={user} />
     </DashboardShell>
   );
 }

@@ -13,6 +13,21 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
 handler.use(authentication());
 
+handler.delete(async (req, res) => {
+  const session = await getSession(req, res);
+
+  // Deny the request if this is not the current user changes his own information:
+  if (session.user.id !== req.query.userId) {
+    return res.status(403).end();
+  }
+
+  await db.user.delete({
+    where: { id: req.query.userId as string },
+  });
+
+  res.status(204).end();
+});
+
 handler.patch(async (req, res) => {
   const session = await getSession(req, res);
 
