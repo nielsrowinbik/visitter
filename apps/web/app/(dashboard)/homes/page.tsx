@@ -23,7 +23,7 @@ export default async function DashboardPage() {
       <DashboardHeader title="Homes">
         <HomeCreateButton
           homeCount={homeCount}
-          isPaying={user.isPayingCustomer}
+          isPaying={user.hasSubscription}
         />
       </DashboardHeader>
       <div>

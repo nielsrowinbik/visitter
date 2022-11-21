@@ -27,7 +27,7 @@ export default async function SettingsPage() {
           </Link>
         }
       ></DashboardHeader>
-      {!user.isPayingCustomer ? (
+      {!user.hasSubscription ? (
         <Card variant="info">
           <Card.Content>
             <h3>You are currently on the free plan</h3>

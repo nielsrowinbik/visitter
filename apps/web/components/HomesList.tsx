@@ -6,7 +6,7 @@ import type { User } from "database";
 import { db } from "database";
 
 interface HomesListProps extends HTMLAttributes<HTMLDivElement> {
-  user: Pick<User, "id" | "isPayingCustomer">;
+  user: Pick<User, "id" | "hasSubscription">;
 }
 
 async function findHomesByUserId(ownerId: User["id"]) {
@@ -33,7 +33,7 @@ export async function HomesList({ user }: HomesListProps) {
       <EmptyPlaceholder.Actions>
         <HomeCreateButton
           homeCount={homes?.length}
-          isPaying={user.isPayingCustomer}
+          isPaying={user.hasSubscription}
           variant="outline"
         />
       </EmptyPlaceholder.Actions>

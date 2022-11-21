@@ -76,7 +76,7 @@ model User {
   image             String?
   phone             String?
   stripeCustomerId  String?   @unique
-  isPayingCustomer  Boolean   @default(false)
+  hasSubscription   Boolean   @default(false)
   createdAt         DateTime  @default(now()) @map(name: "created_at")
   updatedAt         DateTime  @default(now()) @map(name: "updated_at")
 
