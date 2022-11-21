@@ -6,7 +6,7 @@ import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "./Icon";
 import { Input } from "@/components/Input";
-import type { User } from "database";
+import { User } from "next-auth";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";

@@ -45,8 +45,9 @@ export const authOptions: NextAuthOptions = {
         id: dbUser.id,
         name: dbUser.name,
         email: dbUser.email,
-        image: dbUser.image,
+        picture: dbUser.image, // We use the `picture` field because it's there by default in the JWT object
         phone: dbUser.phone,
+        hasSubscription: dbUser.hasSubscription,
       };
     },
     async session({ session, token }) {
@@ -54,8 +55,9 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
-        session.user.image = token.image;
+        session.user.image = token.picture; // In the User object, we prefer the `image` field
         session.user.phone = token.phone;
+        session.user.hasSubscription = token.hasSubscription;
       }
 
       return session;
