@@ -28,6 +28,21 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   const session = await getSession(req, res);
 
+  const { hasSubscription } = session.user;
+
+  if (!hasSubscription) {
+    // User has no subscription. Check if user has already created a home.
+    // Deny the request if he has.
+
+    const homeCount = await db.home.count({
+      where: { ownerId: session.user.id },
+    });
+
+    if (homeCount >= 1) {
+      return res.status(402).end();
+    }
+  }
+
   const body = homeCreateSchema.parse(req.body);
 
   const home = await db.home.create({
