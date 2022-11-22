@@ -65,7 +65,7 @@ export default function Calendar({
           className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
         >
           <span className="sr-only">Previous month</span>
-          <Icon.ChevronLeft className="h-5 w-5" aria-hidden="true" />
+          <Icon.ChevronLeft className="h-5 w-5" />
         </button>
         <button
           onClick={nextMonth}
@@ -73,7 +73,7 @@ export default function Calendar({
           className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
         >
           <span className="sr-only">Next month</span>
-          <Icon.ChevronRight className="h-5 w-5" aria-hidden="true" />
+          <Icon.ChevronRight className="h-5 w-5" />
         </button>
       </div>
       <div className="grid grid-flow-row grid-cols-1 gap-16 md:grid-cols-2">
