@@ -37,6 +37,7 @@ model Booking {
     id          String      @id @default(cuid())
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
+    name        String      @default("Unnamed booking")
     startDate   DateTime
     endDate     DateTime
     home        Home        @relation(fields: [homeId], references: [id], onDelete: Cascade)

@@ -108,6 +108,13 @@ export function BookingCreateButton({
                       onSubmit={handleSubmit(onSubmit)}
                     >
                       <Input
+                        description="You can use the booking's name to indicate who or what the booking is for."
+                        errorText={errors.name?.message}
+                        required
+                        label="Name"
+                        {...register("name")}
+                      />
+                      <Input
                         errorText={errors.startDate?.message}
                         required
                         label="Start date"

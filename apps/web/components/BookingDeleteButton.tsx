@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
+import { cn } from "@/lib/utils";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
@@ -49,9 +50,15 @@ export function BookingDeleteButton({
 
   return (
     <>
-      <Button square variant="subtle" {...props} onClick={openModal}>
-        <Icon.Trash className="h-4 w-4" />
-      </Button>
+      <div
+        className={cn(
+          "block px-4 py-2 text-sm hover:cursor-pointer",
+          className
+        )}
+        onClick={openModal}
+      >
+        Delete
+      </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" onClose={closeModal} open={isOpen}>
           <Transition.Child
