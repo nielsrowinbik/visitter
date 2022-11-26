@@ -59,7 +59,6 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
           autoComplete="name"
           description="Enter your full name or a display name you are comfortable with."
           errorText={errors.name?.message as string}
-          type="text"
           label="Name"
           {...register("name")}
         />
@@ -80,7 +79,6 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
           description="Enter your phone number including country code. We will never share your phone number without your permission."
           errorText={errors.phone?.message as string}
           label="Phone number"
-          type="text"
           {...register("phone")}
         />
       </div>

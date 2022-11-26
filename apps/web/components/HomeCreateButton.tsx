@@ -108,11 +108,9 @@ export function HomeCreateButton({
                       <Input
                         {...register("name")}
                         autoFocus
-                        id="name"
                         label="Name"
                         placeholder="Fanta Sea"
                         required
-                        type="text"
                       />
                     </form>
                   </div>

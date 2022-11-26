@@ -60,8 +60,6 @@ export function HomeSettingsForm({ home }: HomeSettingsFormProps) {
         <Input
           description="Enter a name for your vacation home."
           errorText={errors.name?.message as string}
-          id="name"
-          type="text"
           label="Name"
           {...register("name")}
         />

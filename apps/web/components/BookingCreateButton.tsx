@@ -109,7 +109,6 @@ export function BookingCreateButton({
                     >
                       <Input
                         errorText={errors.startDate?.message}
-                        id="startDate"
                         required
                         label="Start date"
                         type="date"
@@ -117,7 +116,6 @@ export function BookingCreateButton({
                       />
                       <Input
                         errorText={errors.endDate?.message}
-                        id="endDate"
                         required
                         label="End date"
                         type="date"

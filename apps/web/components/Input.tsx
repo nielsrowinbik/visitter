@@ -12,7 +12,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<any, InputProps>(function Input(
-  { description, errorText, label, rightSection, ...props },
+  { description, errorText, label, rightSection, type = "text", ...props },
   ref
 ) {
   const id = props.id || (label && slugify(label, { lower: true }));
@@ -34,7 +34,7 @@ export const Input = forwardRef<any, InputProps>(function Input(
           { "border-red-500": !!errorText }
         )}
       >
-        <input {...props} id={id} ref={ref} />
+        <input {...props} id={id} ref={ref} type={type} />
         {rightSection}
       </div>
       {errorText && <p className="mt-2 text-xs text-red-500">{errorText}</p>}
