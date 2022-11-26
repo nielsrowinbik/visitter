@@ -10,11 +10,13 @@ import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
 import { cn } from "@/lib/utils";
 
-interface BookingOperationsProps extends HTMLAttributes<HTMLDivElement> {
+interface BookingOperationsMenuProps extends HTMLAttributes<HTMLDivElement> {
   bookingId: Booking["id"];
 }
 
-export function BookingOperations({ bookingId }: BookingOperationsProps) {
+export function BookingOperationsMenu({
+  bookingId,
+}: BookingOperationsMenuProps) {
   return (
     <Menu as="div" className="relative">
       <Menu.Button as={Fragment}>
