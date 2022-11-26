@@ -15,18 +15,7 @@ export default async function SettingsPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader
-        title="Account settings"
-        subtitle={
-          <Link
-            className="flex items-center text-sm text-zinc-500 hover:underline"
-            href="/homes"
-          >
-            <Icon.ChevronLeft className="mr-1 h-3 w-3" />
-            Back to overview
-          </Link>
-        }
-      ></DashboardHeader>
+      {/* <DashboardHeader title="Account settings"></DashboardHeader> */}
       {!user.hasSubscription ? (
         <Card variant="info">
           <Card.Content>

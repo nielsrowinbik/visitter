@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
         email: dbUser.email,
         picture: dbUser.image, // We use the `picture` field because it's there by default in the JWT object
         phone: dbUser.phone,
+        stripeCustomerId: dbUser.stripeCustomerId,
         hasSubscription: dbUser.hasSubscription,
       };
     },
@@ -57,6 +58,7 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.image = token.picture; // In the User object, we prefer the `image` field
         session.user.phone = token.phone;
+        session.user.stripeCustomerId = token.stripeCustomerId;
         session.user.hasSubscription = token.hasSubscription;
       }
 
