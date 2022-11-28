@@ -1,5 +1,5 @@
 import type { Booking } from "database";
-import { BookingOperationsMenu } from "@/components/BookingOperationsMenu";
+import { BookingDeleteButton } from "./BookingDeleteButton";
 import { Skeleton } from "@/components/Skeleton";
 import { formatDate } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export function BookingItem({ booking }: BookingItemProps) {
           <time>{formatDate(booking.endDate.toDateString())}</time>
         </p>
       </div>
-      <BookingOperationsMenu bookingId={booking.id} />
+      <BookingDeleteButton bookingId={booking.id} />
     </div>
   );
 }

@@ -50,15 +50,9 @@ export function BookingDeleteButton({
 
   return (
     <>
-      <div
-        className={cn(
-          "block px-4 py-2 text-sm hover:cursor-pointer",
-          className
-        )}
-        onClick={openModal}
-      >
-        Delete
-      </div>
+      <Button compact onClick={openModal} variant="subtle">
+        <Icon.Trash className="h-4 w-4" />
+      </Button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" onClose={closeModal} open={isOpen}>
           <Transition.Child
