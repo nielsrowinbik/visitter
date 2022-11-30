@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import Stripe from "stripe";
 import { authentication } from "@/lib/api-middlewares/authentication";
 import { db } from "database";
 import { getSession } from "@/lib/session";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
+import { stripe } from "@/lib/stripe";
 import { userPatchSchema } from "@/lib/validations/user";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
@@ -51,10 +51,6 @@ handler.patch(async (req, res) => {
   });
 
   // Also update the Stripe customer:
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: "2022-11-15",
-  });
-
   await stripe.customers.update(user.stripeCustomerId, {
     name: body.name || session.user.name,
   });

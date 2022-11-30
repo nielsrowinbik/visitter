@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import Stripe from "stripe";
 import { authentication } from "@/lib/api-middlewares/authentication";
 import { getSession } from "@/lib/session";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
+import { stripe } from "@/lib/stripe";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError,
@@ -14,9 +14,6 @@ handler.use(authentication());
 
 handler.post(async (req, res) => {
   const session = await getSession(req, res);
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: "2022-11-15",
-  });
 
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
