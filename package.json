@@ -57,7 +57,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.8",
     "@types/lodash": "^4.14.188",
-    "@types/node": "^17.0.12",
+    "@types/node": "^18.11.10",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
     "@types/superagent": "^4.1.15",
