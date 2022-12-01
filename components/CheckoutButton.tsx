@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/Button";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/Icon";
 import superagent from "superagent";
-import { toast } from "./Toast";
+import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

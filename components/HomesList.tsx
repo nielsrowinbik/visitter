@@ -1,20 +1,13 @@
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
-import type { HTMLAttributes } from "react";
 import { HomeCreateButton } from "@/components/HomeCreateButton";
 import { HomeItem } from "@/components/HomeItem";
-import type { User } from "@prisma/client";
-import { db } from "@/lib/db";
+import { findHomesByUserId } from "@/lib/home";
+import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
-import { getUserSubscriptionPlan } from "@/lib/subscription";
-
-async function findHomesByUserId(ownerId: User["id"]) {
-  const homes = db.home.findMany({ where: { ownerId } });
-  return homes;
-}
 
 export async function HomesList() {
   const user = await getCurrentUser();
-  const subscriptionPlan = await getUserSubscriptionPlan(user.id);
+  const subscriptionPlan = await findSubscriptionByUserId(user.id);
   const homes = await findHomesByUserId(user.id);
 
   return homes?.length ? (

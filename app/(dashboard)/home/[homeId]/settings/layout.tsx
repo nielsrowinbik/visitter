@@ -1,10 +1,9 @@
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { DashboardShell } from "@/components/DashboardShell";
-import type { Home } from "@prisma/client";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { db } from "@/lib/db";
+import { findHomeById } from "@/lib/home";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -14,22 +13,13 @@ interface PageProps {
   };
 }
 
-async function getHome(homeId: Home["id"]) {
-  const home = await db.home.findUnique({
-    where: { id: homeId },
-    select: {
-      createdAt: true,
-      id: true,
-      name: true,
-    },
-  });
+export default async function HomeSettingsLayout({
+  children,
+  params,
+}: PageProps) {
+  const home = await findHomeById(params.homeId);
 
   if (!home) return notFound();
-
-  return home;
-}
-export default async function HomeSettingsLayout({ children, params }) {
-  const home = await getHome(params.homeId);
 
   return (
     <DashboardShell>

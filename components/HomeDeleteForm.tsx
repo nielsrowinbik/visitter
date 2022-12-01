@@ -6,7 +6,7 @@ import { Fragment, useState } from "react";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import type { Home } from "@prisma/client";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/Icon";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";

@@ -4,7 +4,7 @@ import * as z from "zod";
 
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { User } from "next-auth";
 import superagent from "superagent";
@@ -58,7 +58,6 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
         autoComplete="name"
         description="Enter your full name or a display name you are comfortable with."
         errorText={errors.name?.message as string}
-        type="text"
         label="Name"
         {...register("name")}
       />
@@ -79,7 +78,6 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
         description="Enter your phone number including country code. We will never share your phone number without your permission."
         errorText={errors.phone?.message as string}
         label="Phone number"
-        type="text"
         {...register("phone")}
       />
       <Button disabled={isSaving} type="submit">

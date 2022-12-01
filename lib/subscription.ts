@@ -4,7 +4,7 @@ import { UserSubscriptionPlan } from "types";
 import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 
-export async function getUserSubscriptionPlan(
+export async function findSubscriptionByUserId(
   userId: string
 ): Promise<UserSubscriptionPlan> {
   const user = await db.user.findUnique({

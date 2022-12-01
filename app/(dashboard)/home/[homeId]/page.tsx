@@ -3,11 +3,10 @@ import { BookingsList } from "@/components/BookingsList";
 import { Button } from "@/components/Button";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { DashboardShell } from "@/components/DashboardShell";
-import type { Home } from "@prisma/client";
 import { HomeShareWidget } from "@/components/HomeShareWidget";
 import Link from "next/link";
 import { Suspense } from "react";
-import { db } from "@/lib/db";
+import { findHomeById } from "@/lib/home";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -16,23 +15,10 @@ interface PageProps {
   };
 }
 
-async function findHomeByHomeId(homeId: Home["id"]) {
-  const home = await db.home.findUnique({
-    where: { id: homeId },
-    select: {
-      createdAt: true,
-      id: true,
-      name: true,
-    },
-  });
+export default async function HomeDetailPage({ params }: PageProps) {
+  const home = await findHomeById(params.homeId);
 
   if (!home) return notFound();
-
-  return home;
-}
-
-export default async function HomeDetailPage({ params }: PageProps) {
-  const home = await findHomeByHomeId(params.homeId);
 
   return (
     <DashboardShell>

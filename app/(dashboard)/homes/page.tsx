@@ -3,21 +3,13 @@ import { DashboardShell } from "@/components/DashboardShell";
 import { HomeCreateButton } from "@/components/HomeCreateButton";
 import { HomesList } from "@/components/HomesList";
 import { Suspense } from "react";
-import type { User } from "@prisma/client";
-import { db } from "@/lib/db";
+import { findHomesCountByUserId } from "@/lib/home";
+import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
-import { getUserSubscriptionPlan } from "@/lib/subscription";
-
-async function findHomesCountByUserId(userId: User["id"]) {
-  const count = await db.home.count({
-    where: { ownerId: userId },
-  });
-  return count;
-}
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
-  const subscriptionPlan = await getUserSubscriptionPlan(user.id);
+  const subscriptionPlan = await findSubscriptionByUserId(user.id);
   const homeCount = await findHomesCountByUserId(user.id);
 
   return (

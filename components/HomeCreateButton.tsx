@@ -148,7 +148,6 @@ export function HomeCreateButton({
                         label="Name"
                         placeholder="Fanta Sea"
                         required
-                        type="text"
                       />
                     </form>
                   </div>

@@ -3,7 +3,7 @@ import { getCurrentUser, getSession } from "@/lib/session";
 
 import { authentication } from "@/lib/api-middlewares/authentication";
 import { db } from "@/lib/db";
-import { getUserSubscriptionPlan } from "@/lib/subscription";
+import { findSubscriptionByUserId } from "@/lib/subscription";
 import { homeCreateSchema } from "@/lib/validations/home";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
@@ -28,7 +28,7 @@ handler.get(async (req, res) => {
 
 handler.post(async (req, res) => {
   const user = await getCurrentUser(req, res);
-  const { isPremium } = await getUserSubscriptionPlan(user.id);
+  const { isPremium } = await findSubscriptionByUserId(user.id);
 
   if (!isPremium) {
     // User has no subscription. Check if user has already created a home.

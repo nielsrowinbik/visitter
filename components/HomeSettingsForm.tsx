@@ -5,7 +5,7 @@ import * as z from "zod";
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { homePatchSchema } from "@/lib/validations/home";
 import superagent from "superagent";
@@ -61,7 +61,6 @@ export function HomeSettingsForm({ home }: HomeSettingsFormProps) {
           description="Enter a name for your vacation home."
           errorText={errors.name?.message as string}
           id="name"
-          type="text"
           label="Name"
           {...register("name")}
         />

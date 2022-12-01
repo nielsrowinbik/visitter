@@ -5,7 +5,7 @@ import { Fragment, useState } from "react";
 
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/Icon";
 import type { User } from "@prisma/client";
 import { signOut } from "next-auth/react";
 import superagent from "superagent";

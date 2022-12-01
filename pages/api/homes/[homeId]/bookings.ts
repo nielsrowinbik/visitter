@@ -43,6 +43,7 @@ handler.post(async (req, res) => {
 
   const booking = await db.booking.create({
     data: {
+      name: body.name,
       startDate: body.startDate,
       endDate: body.endDate,
       home: { connect: { id: homeId } },

@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/Icon";
 import { cn } from "@/lib/utils";
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

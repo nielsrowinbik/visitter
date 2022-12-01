@@ -1,8 +1,6 @@
-import { Button, ButtonProps } from "@/components/Button";
-
-import { Icon } from "./Icon";
+import { Button } from "@/components/Button";
+import { Icon } from "@/components/Icon";
 import type { ReactNode } from "react";
-import { useCallback } from "react";
 
 interface ToggleProps {
   checked: boolean;

@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { absoluteUrl } from "@/lib/utils";
 import { authentication } from "@/lib/api-middlewares/authentication";
+import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
-import { getUserSubscriptionPlan } from "@/lib/subscription";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
 import { premiumPlan } from "@/config/subscriptions";
