@@ -144,7 +144,6 @@ export function HomeCreateButton({
                         {...register("name")}
                         autoFocus
                         errorText={errors.name?.message}
-                        id="name"
                         label="Name"
                         placeholder="Fanta Sea"
                         required
