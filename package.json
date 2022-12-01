@@ -62,7 +62,7 @@
     "@types/react-dom": "^18.0.7",
     "@types/superagent": "^4.1.15",
     "autoprefixer": "^10.4.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.28.0",
     "eslint-config-next": "^13.0.5",
     "husky": "^8.0.2",
     "postcss": "^8.4.4",
