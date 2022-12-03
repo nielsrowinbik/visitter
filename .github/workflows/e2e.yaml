@@ -1,0 +1,23 @@
+name: e2e tests
+
+on:
+  deployment_status:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: github.event.deployment_status.state == 'success'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "18.x"
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Install Playwright
+        run: pnpm test:install
+      - name: Run Playwright tests
+        run: pnpm test:e2e
+        env:
+          PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
