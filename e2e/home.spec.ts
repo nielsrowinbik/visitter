@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("should navigate to the about page", async ({ page }) => {
+test("should navigate to the register page", async ({ page }) => {
   // Start from the index page (the baseURL is set via the webServer in the playwright.config.ts)
   await page.goto("/");
   // Find an element with the text 'Get started for free' and click on it
