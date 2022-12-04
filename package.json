@@ -65,6 +65,7 @@
     "@types/react-dom": "^18.0.7",
     "@types/superagent": "^4.1.15",
     "autoprefixer": "^10.4.0",
+    "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
     "eslint-config-next": "^13.0.5",
     "husky": "^8.0.2",

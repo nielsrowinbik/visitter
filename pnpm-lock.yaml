@@ -22,6 +22,7 @@ specifiers:
   autoprefixer: ^10.4.0
   clsx: ^1.2.1
   date-fns: ^2.29.3
+  dotenv: ^16.0.3
   eslint: ^7.32.0
   eslint-config-next: ^13.0.5
   fast-glob: ^3.2.12
@@ -102,6 +103,7 @@ devDependencies:
   '@types/react-dom': 18.0.9
   '@types/superagent': 4.1.16
   autoprefixer: 10.4.13_postcss@8.4.19
+  dotenv: 16.0.3
   eslint: 7.32.0
   eslint-config-next: 13.0.5_77fvizpdb3y4icyeo2mf4eo7em
   husky: 8.0.2
@@ -1559,6 +1561,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-obj: 2.0.0
+    dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /electron-to-chromium/1.4.284:
