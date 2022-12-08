@@ -97,7 +97,9 @@ export default async function IndexPage() {
             </Link>
           </div>
           <div className="rounded-br-[6rem] bg-pink-50 px-20 py-10 text-pink-600">
-            <h3 className="!mt-0 text-inherit">Coming soon</h3>
+            <h3 className="!mt-0 text-inherit">
+              &euro; 4,99<span className="text-sm">/month</span>
+            </h3>
             <div className="not-prose mb-6 font-medium">
               <ul>
                 <li className="flex items-center">
@@ -114,7 +116,7 @@ export default async function IndexPage() {
               className="inline-block rounded-3xl bg-pink-500 px-3 py-1 font-bold text-white no-underline hover:bg-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-500/40 focus:ring-offset-0"
               href="/get-started"
             >
-              Express interest
+              Get started
             </Link>
           </div>
         </div>
