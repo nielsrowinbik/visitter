@@ -6,7 +6,6 @@ import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
-import { cn } from "@/lib/utils";
 import { signIn } from "next-auth/react";
 import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
