@@ -1,113 +1,53 @@
-# Turborepo starter
+# Visitter
 
-This is an official starter turborepo.
+An open source application for managing vacation homes built using everything new in Next.js 13.
 
-## What's inside?
+> **Warning**
+> This app is a work in progress. I'm building this in public.
 
-This turborepo includes the following packages/apps:
+## About this project
 
-### Apps and Packages
+My parents own a vacation home that they rent out but not just to anyone. I wanted to create a simple and easy to use tool with which they can manage and share their vacation home's availability. Since my parents expect renters to also take care of the house, the name "visitter" seemed fitting.
 
-- `web`: a [Next.js](https://nextjs.org/) app
-- `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `database`: [Prisma](https://prisma.io/) ORM wrapper to manage & access your database
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+## Note on Performance
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+> **Warning**
+> This app is using the canary releases for Next.js 13 and React 18. The new router and app directory are still in beta and not production-ready.
+> NextAuth.js, which is used for authentication, is also not fully supported in Next.js 13 and RSC. Finally, I'm still learning all of these new features.
+> **Performance of the app may not yet be great**.
 
-### Utilities
+## Features
 
-This turborepo has some additional tools already setup for you:
+- New `/app` dir,
+- Routing, Layouts, Nested Layouts and Layout Groups
+- Data Fetching, Caching and Mutation
+- Loading UI
+- Server and Client Components
+- API Routes and Middlewares
+- Authentication using **NextAuth.js**
+- ORM using **Prisma**
+- Database on **PlanetScale**
+- Subscriptions using **Stripe**
+- Styled using **Tailwind CSS**
+- Validations using **Zod**
+- Written in **TypeScript**
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Prisma](https://prisma.io/) for database ORM
-- [Docker Compose](https://docs.docker.com/compose/) for local database
+## Running Locally
 
-### Database
-
-We use [Prisma](https://prisma.io/) to manage & access our database. As such you will need a database for this project, either locally or hosted in the cloud.
-
-To make this process easier, we offer a [`docker-compose.yml`](https://docs.docker.com/compose/) file to deploy a MySQL server locally with a new database named `turborepo` (To change this update the `MYSQL_DATABASE` environment variable in the `docker-compose.yml` file):
-
-```bash
-cd my-turborepo
-docker-compose up -d
-```
-
-Once deployed you will need to copy the `.env.example` file to `.env` in order for Prisma to have a `DATABASE_URL` environment variable to access.
-
-```bash
-cp .env.example .env
-```
-
-If you added a custom database name, or use a cloud based database, you will need to update the `DATABASE_URL` in your `.env` accordingly.
-
-Once deployed & up & running, you will need to create & deploy migrations to your database to add the necessary tables. This can be done using [Prisma Migrate](https://www.prisma.io/migrate):
-
-```bash
-npx prisma migrate dev
-```
-
-If you need to push any existing migrations to the database, you can use either the Prisma db push or the Prisma migrate deploy command(s):
-
-```bash
-yarn run db:push
-
-# OR
-
-yarn run db:migrate:deploy
-```
-
-There is slight difference between the two commands & [Prisma offers a breakdown on which command is best to use](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push#choosing-db-push-or-prisma-migrate).
-
-An optional additional step is to seed some initial or fake data to your database using [Prisma's seeding functionality](https://www.prisma.io/docs/guides/database/seed-database).
-
-To do this update check the seed script located in `packages/database/src/seed.ts` & add or update any users you wish to seed to the database.
-
-Once edited run the following command to run tell Prisma to run the seed script defined in the Prisma configuration:
-
-```bash
-yarn run db:seed
-```
-
-For further more information on migrations, seeding & more, we recommend reading through the [Prisma Documentation](https://www.prisma.io/docs/).
-
-## Using this example
-
-Run the following command:
+1. Install dependencies using pnpm:
 
 ```sh
-npx degit vercel/turbo/examples/with-prisma with-prisma
-cd with-prisma
-yarn install
-git init . && git add . && git commit -m "Init"
+pnpm install
 ```
 
-### Build
+2. Copy `.env.example` to `.env.local` and update the variables.
 
-To build all apps and packages, run the following command:
-
-```bash
-yarn run build
+```sh
+cp .env.example .env.local
 ```
 
-### Develop
+3. Start the development server:
 
-To develop all apps and packages, run the following command:
-
-```bash
-yarn run dev
+```sh
+pnpm dev
 ```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
