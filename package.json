@@ -46,6 +46,7 @@
     "slugify": "^1.6.5",
     "stripe": "^11.1.0",
     "superagent": "^8.0.3",
+    "suspend-react": "^0.0.8",
     "tailwind-merge": "^1.8.0",
     "vfile": "^5.3.6",
     "vfile-matter": "^4.0.0",

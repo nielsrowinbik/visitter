@@ -11,11 +11,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface HomeShareToggleProps extends HTMLAttributes<HTMLButtonElement> {
-  home: Pick<Home, "id">;
+  homeId: Home["id"];
   shareKey?: ShareKey["id"];
 }
 
-export function HomeShareToggle({ home, shareKey: key }: HomeShareToggleProps) {
+export function HomeShareToggle({
+  homeId,
+  shareKey: key,
+}: HomeShareToggleProps) {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = !!key;
@@ -27,7 +30,7 @@ export function HomeShareToggle({ home, shareKey: key }: HomeShareToggleProps) {
       if (isShared === true) {
         await superagent.delete(`/api/keys/${key}`);
       } else {
-        await superagent.post(`/api/homes/${home.id}/keys`);
+        await superagent.post(`/api/homes/${homeId}/keys`);
       }
 
       router.refresh();

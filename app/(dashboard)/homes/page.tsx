@@ -22,7 +22,6 @@ export default async function DashboardPage() {
       </DashboardHeader>
       <div>
         <Suspense fallback={<HomesList.Skeleton />}>
-          {/* @ts-expect-error Async Server Component */}
           <HomesList />
         </Suspense>
       </div>

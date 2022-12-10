@@ -15,8 +15,10 @@ interface PageProps {
   };
 }
 
-export default async function HomeDetailPage({ params }: PageProps) {
-  const home = await findHomeById(params.homeId);
+export default async function HomeDetailPage({
+  params: { homeId },
+}: PageProps) {
+  const home = await findHomeById(homeId);
 
   if (!home) return notFound();
 
@@ -31,14 +33,12 @@ export default async function HomeDetailPage({ params }: PageProps) {
       <div className="mb-10 space-y-6 lg:flex lg:space-y-0">
         <div className="flex-1 lg:mr-10">
           <Suspense fallback={<BookingsList.Skeleton />}>
-            {/* @ts-expect-error Async Server Component */}
-            <BookingsList home={home} />
+            <BookingsList homeId={homeId} />
           </Suspense>
         </div>
         <div className="lg:max-w-[35%]">
           <Suspense fallback={<HomeShareWidget.Skeleton />}>
-            {/* @ts-expect-error Async Server Component */}
-            <HomeShareWidget home={home} />
+            <HomeShareWidget homeId={homeId} />
           </Suspense>
         </div>
       </div>

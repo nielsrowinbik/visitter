@@ -6,9 +6,10 @@ import { HomeShareToggle } from "@/components/HomeShareToggle";
 import { db } from "@/lib/db";
 import { get } from "lodash";
 import { getClientOrigin } from "@/lib/utils";
+import { suspend } from "suspend-react";
 
 interface HomeShareWidgetProps extends HTMLAttributes<HTMLDivElement> {
-  home: Pick<Home, "id">;
+  homeId: Home["id"];
 }
 
 async function findKeysByHomeId(homeId: Home["id"]) {
@@ -16,8 +17,10 @@ async function findKeysByHomeId(homeId: Home["id"]) {
   return keys;
 }
 
-export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
-  const keys = await findKeysByHomeId(home.id);
+export function HomeShareWidget({ homeId }: HomeShareWidgetProps) {
+  const keys = suspend(async () => {
+    return await findKeysByHomeId(homeId);
+  }, ["keys", homeId]);
 
   const isShared = keys.length !== 0;
   const key: string = get(keys, "[0].id");
@@ -39,7 +42,7 @@ export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
       </p>
       <div className="not-prose flex space-x-3">
         {isShared ? <HomeShareCopyButton url={url} /> : null}
-        <HomeShareToggle home={home} shareKey={key} />
+        <HomeShareToggle homeId={homeId} shareKey={key} />
       </div>
     </div>
   );

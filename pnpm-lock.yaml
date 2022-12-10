@@ -47,6 +47,7 @@ specifiers:
   slugify: ^1.6.5
   stripe: ^11.1.0
   superagent: ^8.0.3
+  suspend-react: ^0.0.8
   tailwind-merge: ^1.8.0
   tailwindcss: ^3.0.0
   typescript: ^4.5.3
@@ -84,6 +85,7 @@ dependencies:
   slugify: 1.6.5
   stripe: 11.1.0
   superagent: 8.0.4
+  suspend-react: 0.0.8_react@18.2.0
   tailwind-merge: 1.8.0
   vfile: 5.3.6
   vfile-matter: 4.0.0
@@ -4374,6 +4376,14 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /suspend-react/0.0.8_react@18.2.0:
+    resolution: {integrity: sha512-ZC3r8Hu1y0dIThzsGw0RLZplnX9yXwfItcvaIzJc2VQVi8TGyGDlu92syMB5ulybfvGLHAI5Ghzlk23UBPF8xg==}
+    peerDependencies:
+      react: '>=17.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /synckit/0.8.4:
     resolution: {integrity: sha512-Dn2ZkzMdSX827QbowGbU/4yjWuvNaCoScLLoMo/yKbu+P4GBR6cRGKZH27k6a9bRzdqcyd1DE96pQtQ6uNkmyw==}

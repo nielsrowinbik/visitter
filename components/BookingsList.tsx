@@ -3,19 +3,17 @@ import { BookingItem } from "@/components/BookingItem";
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
 import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
-import { db } from "@/lib/db";
+import { findBookingsByHomeId } from "@/lib/booking";
+import { suspend } from "suspend-react";
 
 interface BookingsListProps extends HTMLAttributes<HTMLDivElement> {
-  home: Pick<Home, "id">;
+  homeId: Home["id"];
 }
 
-async function findBookingsByHomeId(homeId: Home["id"]) {
-  const bookings = db.booking.findMany({ where: { homeId } });
-  return bookings;
-}
-
-export async function BookingsList({ home }: BookingsListProps) {
-  const bookings = await findBookingsByHomeId(home.id);
+export function BookingsList({ homeId }: BookingsListProps) {
+  const bookings = suspend(async () => {
+    return await findBookingsByHomeId(homeId);
+  }, ["bookings", homeId]);
 
   return bookings?.length ? (
     <div className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
@@ -31,7 +29,7 @@ export async function BookingsList({ home }: BookingsListProps) {
         bookings.
       </EmptyPlaceholder.Description>
       <EmptyPlaceholder.Actions>
-        <BookingCreateButton homeId={home.id} variant="outline" />
+        <BookingCreateButton homeId={homeId} variant="outline" />
       </EmptyPlaceholder.Actions>
     </EmptyPlaceholder>
   );
