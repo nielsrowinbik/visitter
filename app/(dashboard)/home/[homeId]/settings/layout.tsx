@@ -3,7 +3,7 @@ import { DashboardShell } from "@/components/DashboardShell";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { findHomeById } from "@/lib/home";
+import { findHomeById } from "@/lib/homes";
 import { notFound } from "next/navigation";
 
 interface PageProps {

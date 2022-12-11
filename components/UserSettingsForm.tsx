@@ -16,7 +16,7 @@ import { userPatchSchema } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserSettingsFormProps extends HTMLAttributes<HTMLDivElement> {
-  user: Pick<User, "id" | "name" | "email" | "phone">;
+  user: User;
 }
 
 type FormData = z.infer<typeof userPatchSchema>;
@@ -53,6 +53,8 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
   }
 
   return (
+    // FIXME: We shouldn't have to ignore this error.
+    // @ts-ignore
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Input
         autoComplete="name"

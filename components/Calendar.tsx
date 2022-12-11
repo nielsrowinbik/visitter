@@ -44,7 +44,7 @@ export default function Calendar({
     });
   });
 
-  const bookings = props.bookings?.map(toInterval);
+  const bookings = props.bookings ? props.bookings.map(toInterval) : [];
 
   function previousMonth() {
     let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
@@ -127,7 +127,13 @@ const colStartClasses = [
   "col-start-6",
 ];
 
-function toInterval({ startDate, endDate }) {
+function toInterval({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}) {
   return {
     start: startOfDay(parseISO(startDate)),
     end: startOfDay(parseISO(endDate)),

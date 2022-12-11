@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { authentication } from "@/lib/api-middlewares/authentication";
-import { db } from "@/lib/db";
+import { createKey } from "@/lib/keys";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
 
@@ -12,15 +12,9 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 handler.use(authentication());
 
 handler.post(async (req, res) => {
-  const key = await db.shareKey.create({
-    data: {
-      home: {
-        connect: {
-          id: req.query.homeId as string,
-        },
-      },
-    },
-  });
+  const homeId = req.query.homeId as string;
+
+  const key = await createKey(homeId);
 
   return res.status(201).json(key);
 });

@@ -4,7 +4,7 @@ export const freePlan: SubscriptionPlan = {
   name: "Free",
   description:
     "The free plan is limited to one vacation home. Upgrade to Premium to manage unlimited vacation homes.",
-  stripePriceId: null,
+  stripePriceId: undefined,
 };
 
 export const premiumPlan: SubscriptionPlan = {

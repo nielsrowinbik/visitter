@@ -5,7 +5,7 @@ import Calendar from "@/components/Calendar";
 import { Card } from "@/components/Card";
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { findHomeByShareKey } from "@/lib/home";
+import { findHomeByShareKey } from "@/lib/homes";
 import { getCurrentUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 

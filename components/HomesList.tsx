@@ -1,7 +1,7 @@
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
 import { HomeCreateButton } from "@/components/HomeCreateButton";
 import { HomeItem } from "@/components/HomeItem";
-import { findHomesByUserId } from "@/lib/home";
+import { findHomesByUserId } from "@/lib/homes";
 import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
 import { suspend } from "suspend-react";
@@ -9,8 +9,8 @@ import { suspend } from "suspend-react";
 export function HomesList() {
   const { subscriptionPlan, homes } = suspend(async () => {
     const user = await getCurrentUser();
-    const subscriptionPlan = await findSubscriptionByUserId(user.id);
-    const homes = await findHomesByUserId(user.id);
+    const subscriptionPlan = await findSubscriptionByUserId(user!.id);
+    const homes = await findHomesByUserId(user!.id);
 
     return {
       subscriptionPlan,

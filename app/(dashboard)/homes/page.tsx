@@ -3,14 +3,14 @@ import { DashboardShell } from "@/components/DashboardShell";
 import { HomeCreateButton } from "@/components/HomeCreateButton";
 import { HomesList } from "@/components/HomesList";
 import { Suspense } from "react";
-import { findHomesCountByUserId } from "@/lib/home";
+import { findHomesCountByUserId } from "@/lib/homes";
 import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
-  const subscriptionPlan = await findSubscriptionByUserId(user.id);
-  const homeCount = await findHomesCountByUserId(user.id);
+  const subscriptionPlan = await findSubscriptionByUserId(user!.id);
+  const homeCount = await findHomesCountByUserId(user!.id);
 
   return (
     <DashboardShell>

@@ -23,24 +23,24 @@ export async function generateStaticParams(): Promise<
 export default async function PostPage({ params }: PostPageProps) {
   return notFound();
 
-  const post = await Blog.getMdxNode(params?.slug);
+  // const post = await Blog.getMdxNode(params?.slug);
 
-  if (!post) {
-    notFound();
-  }
+  // if (!post) {
+  //   notFound();
+  // }
 
-  const mdx = await serialize(post.content);
+  // const mdx = await serialize(post.content);
 
-  return (
-    <article className="prose prose-zinc mx-auto dark:prose-invert">
-      <div className="flex flex-col space-y-2">
-        <h1>{post.frontMatter.title}</h1>
-        {post.frontMatter.date && (
-          <time>{formatDate(post.frontMatter.date)}</time>
-        )}
-      </div>
-      <hr className="my-6" />
-      {mdx && <MdxContent source={mdx} />}
-    </article>
-  );
+  // return (
+  //   <article className="prose prose-zinc mx-auto dark:prose-invert">
+  //     <div className="flex flex-col space-y-2">
+  //       <h1>{post.frontMatter.title}</h1>
+  //       {post.frontMatter.date && (
+  //         <time>{formatDate(post.frontMatter.date)}</time>
+  //       )}
+  //     </div>
+  //     <hr className="my-6" />
+  //     {mdx && <MdxContent source={mdx} />}
+  //   </article>
+  // );
 }

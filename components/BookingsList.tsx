@@ -3,7 +3,7 @@ import { BookingItem } from "@/components/BookingItem";
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
 import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
-import { findBookingsByHomeId } from "@/lib/booking";
+import { findBookingsByHomeId } from "@/lib/bookings";
 import { suspend } from "suspend-react";
 
 interface BookingsListProps extends HTMLAttributes<HTMLDivElement> {

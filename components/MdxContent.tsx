@@ -1,7 +1,12 @@
-"use client"
+"use client";
 
-import { MDXRemote } from "next-mdx-remote"
+import { MDXRemote } from "next-mdx-remote";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
-export function MdxContent({ source }) {
-  return <MDXRemote {...source} />
+interface MdxContentProps {
+  source: MDXRemoteSerializeResult;
+}
+
+export function MdxContent({ source }: MdxContentProps) {
+  return <MDXRemote {...source} />;
 }
