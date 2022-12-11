@@ -6,7 +6,7 @@ import { DashboardShell } from "@/components/DashboardShell";
 import { HomeShareWidget } from "@/components/HomeShareWidget";
 import Link from "next/link";
 import { Suspense } from "react";
-import { findHomeById } from "@/lib/home";
+import { findHomeById } from "@/lib/homes";
 import { notFound } from "next/navigation";
 
 interface PageProps {

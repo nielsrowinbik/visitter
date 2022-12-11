@@ -1,6 +1,12 @@
 import { Blog } from "@/lib/mdx";
 
-export default async function Head({ params }) {
+interface PageProps {
+  params: {
+    slug: string[];
+  };
+}
+
+export default async function Head({ params }: PageProps) {
   const post = await Blog.getMdxNode(params?.slug);
 
   if (!post) {

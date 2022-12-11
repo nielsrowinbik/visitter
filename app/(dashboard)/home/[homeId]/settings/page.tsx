@@ -1,6 +1,6 @@
 import { HomeDeleteForm } from "@/components/HomeDeleteForm";
 import { HomeSettingsForm } from "@/components/HomeSettingsForm";
-import { findHomeById } from "@/lib/home";
+import { findHomeById } from "@/lib/homes";
 import { notFound } from "next/navigation";
 
 interface PageProps {

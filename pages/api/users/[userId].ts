@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { deleteUser, findUserById, updateUser } from "@/lib/users";
 
 import { authentication } from "@/lib/api-middlewares/authentication";
-import { db } from "@/lib/db";
-import { getSession } from "@/lib/session";
+import { getCurrentUser } from "@/lib/session";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
 import { stripe } from "@/lib/stripe";
@@ -15,45 +15,47 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 handler.use(authentication());
 
 handler.delete(async (req, res) => {
-  const session = await getSession(req, res);
+  const userId = req.query.userId as string;
+  const user = await getCurrentUser(req, res);
 
   // Deny the request if this is not the current user changes his own information:
-  if (session.user.id !== req.query.userId) {
+  if (user!.id !== userId) {
     return res.status(403).end();
   }
 
-  await db.user.delete({
-    where: { id: req.query.userId as string },
-  });
+  await deleteUser(userId);
 
   res.status(204).end();
 });
 
+handler.get(async (req, res) => {
+  const userId = req.query.userId as string;
+
+  const user = await findUserById(userId);
+
+  return res.json(user);
+});
+
 handler.patch(async (req, res) => {
-  const session = await getSession(req, res);
+  const userId = req.query.userId as string;
+  const user = await getCurrentUser(req, res);
 
   // Deny the request if this is not the current user changes his own information:
-  if (session.user.id !== req.query.userId) {
+  if (user?.id !== userId) {
     return res.status(403).end();
   }
 
   const body = userPatchSchema.parse(req.body);
 
   // Update the local user:
-  const user = await db.user.update({
-    where: {
-      id: session.user.id,
-    },
-    data: {
-      name: body.name || session.user.name,
-      phone: body.phone || session.user.phone,
-    },
-  });
+  const dbUser = await updateUser(userId, body);
 
   // Also update the Stripe customer:
-  await stripe.customers.update(user.stripeCustomerId, {
-    name: body.name || session.user.name,
-  });
+  if (dbUser.stripeCustomerId && dbUser.name) {
+    await stripe.customers.update(dbUser.stripeCustomerId, {
+      name: dbUser.name,
+    });
+  }
 
   return res.status(204).end();
 });

@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    // @ts-expect-error FIXME: I don't know why my types are wrong here
     async jwt({ token, user }) {
       const dbUser = await db.user.findFirst({
         where: {
@@ -37,6 +38,7 @@ export const authOptions: NextAuthOptions = {
       });
 
       if (!dbUser) {
+        // @ts-expect-error FIXME: I don't know why my types are wrong here
         token.id = user.id;
         return token;
       }

@@ -24,8 +24,8 @@ handler.post(async (req, res) => {
 
   const event = stripe.webhooks.constructEvent(
     body,
-    signature,
-    process.env.STRIPE_WEBHOOK_SECRET
+    signature!,
+    process.env.STRIPE_WEBHOOK_SECRET!
   );
 
   // Subscription is created through a checkout session:
@@ -42,7 +42,7 @@ handler.post(async (req, res) => {
     // the subscription id and customer id.
     await db.user.update({
       where: {
-        id: session.metadata.userId,
+        id: session!.metadata?.userId,
       },
       data: {
         stripeSubscriptionId: subscription.id,

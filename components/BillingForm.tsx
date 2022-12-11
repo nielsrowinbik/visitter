@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-
+import type { FormEvent, HTMLAttributes } from "react";
 import { cn, formatDate } from "@/lib/utils";
 
 import { Button } from "@/components/Button";
@@ -10,8 +9,9 @@ import { Icon } from "@/components/Icon";
 import { UserSubscriptionPlan } from "types";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
+import { useState } from "react";
 
-interface BillingFormProps extends React.HTMLAttributes<HTMLFormElement> {
+interface BillingFormProps extends HTMLAttributes<HTMLFormElement> {
   subscriptionPlan: UserSubscriptionPlan & {
     isCanceled: boolean;
   };
@@ -22,9 +22,9 @@ export function BillingForm({
   className,
   ...props
 }: BillingFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  async function onSubmit(event) {
+  async function onSubmit(event: FormEvent) {
     event.preventDefault();
 
     try {
