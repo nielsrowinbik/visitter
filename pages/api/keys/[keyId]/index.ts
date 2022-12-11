@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { authentication } from "@/lib/api-middlewares/authentication";
-import { db } from "@/lib/db";
+import { deleteKey } from "@/lib/keys";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
 
@@ -12,11 +12,9 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 handler.use(authentication());
 
 handler.delete(async (req, res) => {
-  await db.shareKey.delete({
-    where: {
-      id: req.query.keyId as string,
-    },
-  });
+  const keyId = req.query.keyId as string;
+
+  await deleteKey(keyId);
 
   return res.status(204).end();
 });

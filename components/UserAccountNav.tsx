@@ -11,14 +11,14 @@ import { cn } from "@/lib/utils";
 import { signOut } from "next-auth/react";
 
 interface UserAccountNavProps extends HTMLAttributes<HTMLDivElement> {
-  user: Pick<User, "name" | "image" | "email">;
+  user: User;
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
   return (
     <Menu as="div" className="relative">
       <Menu.Button>
-        <UserAvatar user={{ name: user.name, image: user.image }} />
+        <UserAvatar user={user} />
       </Menu.Button>
       <Transition
         as={Fragment}

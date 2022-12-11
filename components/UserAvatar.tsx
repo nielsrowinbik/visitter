@@ -1,9 +1,9 @@
 import { Icon } from "@/components/Icon";
 import Image from "next/image";
-import type { User } from "@prisma/client";
+import type { User } from "next-auth";
 
 interface UserAvatarProps {
-  user: Pick<User, "image" | "name">;
+  user: User;
 }
 
 export function UserAvatar({ user, ...props }: UserAvatarProps) {

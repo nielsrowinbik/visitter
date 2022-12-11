@@ -20,7 +20,7 @@ export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
   const keys = await findKeysByHomeId(home.id);
 
   const isShared = keys.length !== 0;
-  const key: string = get(keys, "[0].id");
+  const key: string | undefined = get(keys, "[0].id");
   const url = `${getClientOrigin()}/availability/${key}`;
 
   return (

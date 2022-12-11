@@ -1,14 +1,14 @@
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
 import { HomeCreateButton } from "@/components/HomeCreateButton";
 import { HomeItem } from "@/components/HomeItem";
-import { findHomesByUserId } from "@/lib/home";
+import { findHomesByUserId } from "@/lib/homes";
 import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
 
 export async function HomesList() {
   const user = await getCurrentUser();
-  const subscriptionPlan = await findSubscriptionByUserId(user.id);
-  const homes = await findHomesByUserId(user.id);
+  const subscriptionPlan = await findSubscriptionByUserId(user!.id);
+  const homes = await findHomesByUserId(user!.id);
 
   return homes?.length ? (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">

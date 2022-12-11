@@ -3,15 +3,10 @@ import { BookingItem } from "@/components/BookingItem";
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
 import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
-import { db } from "@/lib/db";
+import { findBookingsByHomeId } from "@/lib/bookings";
 
 interface BookingsListProps extends HTMLAttributes<HTMLDivElement> {
   home: Pick<Home, "id">;
-}
-
-async function findBookingsByHomeId(homeId: Home["id"]) {
-  const bookings = db.booking.findMany({ where: { homeId } });
-  return bookings;
 }
 
 export async function BookingsList({ home }: BookingsListProps) {

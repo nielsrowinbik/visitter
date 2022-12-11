@@ -7,14 +7,14 @@ import { getCurrentUser } from "@/lib/session";
 
 export default async function SettingsPage() {
   const user = await getCurrentUser();
-  const subscriptionPlan = await findSubscriptionByUserId(user.id);
+  const subscriptionPlan = await findSubscriptionByUserId(user!.id);
 
   return (
     <DashboardShell>
       <BillingForm subscriptionPlan={subscriptionPlan} />
-      <UserSetttingsForm user={user} />
+      <UserSetttingsForm user={user!} />
       <hr />
-      <UserDeleteForm user={user} />
+      <UserDeleteForm user={user!} />
     </DashboardShell>
   );
 }

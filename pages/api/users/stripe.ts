@@ -21,10 +21,10 @@ handler.get(async (req, res) => {
   const user = await getCurrentUser(req, res);
   // const subscriptionPlan = await getUserSubscriptionPlan(user.id);
 
-  if (!!user.stripeSubscriptionId) {
+  if (user!.stripeSubscriptionId) {
     // The user is on the Premium plan, create a portal session to manage the subscription:
     const stripeSession = await stripe.billingPortal.sessions.create({
-      customer: user.stripeCustomerId,
+      customer: user!.stripeCustomerId!,
       return_url: billingUrl,
     });
 
@@ -44,9 +44,9 @@ handler.get(async (req, res) => {
     cancel_url: billingUrl,
     payment_method_types: ["card"],
     billing_address_collection: "auto",
-    customer_email: user.email,
+    customer_email: user!.email!,
     metadata: {
-      userId: user.id,
+      userId: user!.id,
     },
   });
 

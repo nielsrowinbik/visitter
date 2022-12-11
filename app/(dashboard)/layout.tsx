@@ -20,13 +20,7 @@ export default async function DashboardLayout({
           <Icon.Logo className="box-content h-6 w-6 p-1" />
           <span className="font-bold">Visitter</span>
         </Link>
-        <UserAccountNav
-          user={{
-            name: user.name,
-            image: user.image,
-            email: user.email,
-          }}
-        />
+        <UserAccountNav user={user!} />
       </header>
       <main className="flex w-full flex-1 flex-col">{children}</main>
     </div>

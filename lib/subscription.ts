@@ -1,3 +1,10 @@
+// @ts-nocheck
+
+// FIXME: This file needs to be refactored to account for a number of values not being there.
+// If the user does not exist, this should probably throw
+// If the Stripe values aren't filled, then the user should just be put on the free plan
+// This reminds me that we should backfill the stripe fields somehow so we can depend on them being there
+
 import { freePlan, premiumPlan } from "@/config/subscriptions";
 
 import { UserSubscriptionPlan } from "types";
