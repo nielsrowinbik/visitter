@@ -22,5 +22,5 @@ export async function getSession(
 export async function getCurrentUser(...args: GetSessionArgs) {
   const session = await getSession(...args);
 
-  return session.user;
+  return session?.user;
 }
