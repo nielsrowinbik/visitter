@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
+import { forwardRef } from "react";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   compact?: boolean;
@@ -7,16 +8,20 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "danger" | "outline" | "subtle";
 }
 
-export function Button({
-  className,
-  compact = false,
-  square = false,
-  variant = "default",
-  ...props
-}: ButtonProps) {
+export const Button = forwardRef(function renderButton(
+  {
+    className,
+    compact = false,
+    square = false,
+    variant = "default",
+    ...props
+  }: ButtonProps,
+  ref: any
+) {
   return (
     <button
       {...props}
+      ref={ref}
       className={cn(
         "relative box-border inline-flex shrink-0 select-none items-center justify-center space-x-3 overflow-hidden whitespace-nowrap rounded-md border border-transparent text-center font-semibold leading-none no-underline outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-0 disabled:cursor-not-allowed",
         { "py-2 px-4": compact === false && square === false },
@@ -42,4 +47,4 @@ export function Button({
       )}
     />
   );
-}
+});
