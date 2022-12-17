@@ -11,11 +11,11 @@ export async function HomesList() {
   const homes = await findHomesByUserId(user!.id);
 
   return homes?.length ? (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       {homes.map((home) => (
         <HomeItem key={home.id} home={home} />
       ))}
-    </div>
+    </ul>
   ) : (
     <EmptyPlaceholder>
       <EmptyPlaceholder.Title>No vacation homes</EmptyPlaceholder.Title>
