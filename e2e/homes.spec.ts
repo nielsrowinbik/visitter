@@ -8,7 +8,9 @@ test.describe("The dashboard", () => {
   // @ts-expect-error
   test.use({ storageState: {} });
 
-  test("should redirect to the login page when unauthed", async ({ page }) => {
+  test.only("should redirect to the login page when unauthed", async ({
+    page,
+  }) => {
     await page.goto("/homes");
 
     await expect(page).toHaveURL("/login");
@@ -16,7 +18,7 @@ test.describe("The dashboard", () => {
 });
 
 test.describe("The dashboard", () => {
-  test("should show an empty list of vacation homes", async ({ page }) => {
+  test.only("should show an empty list of vacation homes", async ({ page }) => {
     await page.goto("/homes");
 
     await expect(
