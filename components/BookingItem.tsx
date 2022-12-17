@@ -9,7 +9,7 @@ interface BookingItemProps {
 
 export function BookingItem({ booking }: BookingItemProps) {
   return (
-    <div className="flex items-center justify-between p-4">
+    <li className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <p className="font-semibold">{booking.name}</p>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -18,7 +18,7 @@ export function BookingItem({ booking }: BookingItemProps) {
         </p>
       </div>
       <BookingDeleteButton bookingId={booking.id} />
-    </div>
+    </li>
   );
 }
 BookingItem.Skeleton = function HomeItemSkeleton() {
