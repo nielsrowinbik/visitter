@@ -13,6 +13,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test:e2e": "playwright test",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:install": "playwright install --with-deps",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
@@ -54,6 +57,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
+    "@playwright/test": "^1.29.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.8",
     "@types/lodash": "^4.14.188",
@@ -62,6 +66,7 @@
     "@types/react-dom": "^18.0.7",
     "@types/superagent": "^4.1.15",
     "autoprefixer": "^10.4.0",
+    "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
     "eslint-config-next": "^13.0.5",
     "husky": "^8.0.2",
