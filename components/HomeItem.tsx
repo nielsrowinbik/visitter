@@ -9,19 +9,18 @@ interface HomeItemProps {
 
 export function HomeItem({ home }: HomeItemProps) {
   return (
-    <Link
-      className="flex items-center justify-between rounded-md p-4 shadow-md ring-1 ring-zinc-400/20 transition-all hover:shadow-lg"
-      href={`/home/${home.id}`}
-    >
-      <div className="grid gap-1">
-        <h2 className="font-semibold">{home.name}</h2>
-        <div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
-            Created on {formatDate(home.createdAt?.toDateString())}
-          </p>
+    <li className="flex items-center justify-between rounded-md shadow-md ring-1 ring-zinc-400/20 transition-all hover:shadow-lg">
+      <Link className="flex-auto p-4" href={`/home/${home.id}`}>
+        <div className="grid gap-1">
+          <h2 className="font-semibold">{home.name}</h2>
+          <div>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+              Created on {formatDate(home.createdAt?.toDateString())}
+            </p>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </li>
   );
 }
 
