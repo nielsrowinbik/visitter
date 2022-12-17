@@ -42,7 +42,7 @@ handler.post(async (req, res) => {
 
   const body = homeCreateSchema.parse(req.body);
 
-  const home = createHome(user!.id, body);
+  const home = await createHome(user!.id, body);
 
   return res.status(201).json(home);
 });
