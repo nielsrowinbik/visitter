@@ -53,7 +53,7 @@ export function HomeCreateButton({
       setIsSaving(true);
 
       const res = await superagent.post(`/api/homes`).send(data);
-      const { id } = res.body as Pick<Home, "id">;
+      const { id } = res.body as Home;
 
       router.push(`/home/${id}`);
       router.refresh();
