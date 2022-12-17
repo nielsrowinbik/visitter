@@ -18,14 +18,6 @@ test.describe("The dashboard", () => {
 });
 
 test.describe("The dashboard", () => {
-  test.only("should show an empty list of vacation homes", async ({ page }) => {
-    await page.goto("/homes");
-
-    await expect(
-      page.getByText("No vacation homes", { exact: true })
-    ).toBeVisible();
-  });
-
   test("should allow the user to create a new vacation home", async ({
     page,
   }) => {
