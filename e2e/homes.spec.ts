@@ -8,9 +8,7 @@ test.describe("The dashboard", () => {
   // @ts-expect-error
   test.use({ storageState: {} });
 
-  test.only("should redirect to the login page when unauthed", async ({
-    page,
-  }) => {
+  test("should redirect to the login page when unauthed", async ({ page }) => {
     await page.goto("/homes");
 
     await expect(page).toHaveURL("/login");
