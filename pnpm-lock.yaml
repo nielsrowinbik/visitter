@@ -7,6 +7,7 @@ specifiers:
   '@heroicons/react': ^2.0.13
   '@hookform/resolvers': ^2.9.10
   '@next-auth/prisma-adapter': ^1.0.5
+  '@playwright/test': ^1.29.0
   '@prisma/client': ^4.7.0
   '@stripe/react-stripe-js': ^1.15.0
   '@stripe/stripe-js': ^1.44.1
@@ -21,6 +22,7 @@ specifiers:
   autoprefixer: ^10.4.0
   clsx: ^1.2.1
   date-fns: ^2.29.3
+  dotenv: ^16.0.3
   eslint: ^7.32.0
   eslint-config-next: ^13.0.5
   fast-glob: ^3.2.12
@@ -92,6 +94,7 @@ dependencies:
 devDependencies:
   '@commitlint/cli': 17.3.0
   '@commitlint/config-conventional': 17.3.0
+  '@playwright/test': 1.29.0
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.4
   '@tailwindcss/typography': 0.5.8_tailwindcss@3.2.4
   '@types/lodash': 4.14.190
@@ -100,6 +103,7 @@ devDependencies:
   '@types/react-dom': 18.0.9
   '@types/superagent': 4.1.16
   autoprefixer: 10.4.13_postcss@8.4.19
+  dotenv: 16.0.3
   eslint: 7.32.0
   eslint-config-next: 13.0.5_77fvizpdb3y4icyeo2mf4eo7em
   husky: 8.0.2
@@ -600,6 +604,15 @@ packages:
       picocolors: 1.0.0
       tiny-glob: 0.2.9
       tslib: 2.4.1
+    dev: true
+
+  /@playwright/test/1.29.0:
+    resolution: {integrity: sha512-gp5PVBenxTJsm2bATWDNc2CCnrL5OaA/MXQdJwwkGQtqTjmY+ZOqAdLqo49O9MLTDh2vYh+tHWDnmFsILnWaeA==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 17.0.45
+      playwright-core: 1.29.0
     dev: true
 
   /@prisma/client/4.7.0_prisma@4.7.0:
@@ -1548,6 +1561,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       is-obj: 2.0.0
+    dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /electron-to-chromium/1.4.284:
@@ -3666,6 +3684,12 @@ packages:
   /pify/2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /playwright-core/1.29.0:
+    resolution: {integrity: sha512-pboOm1m0RD6z1GtwAbEH60PYRfF87vKdzOSRw2RyO0Y0a7utrMyWN2Au1ojGvQr4umuBMODkKTv607YIRypDSQ==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /postcss-import/14.1.0_postcss@8.4.19:
