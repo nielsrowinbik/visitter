@@ -13,11 +13,11 @@ export async function BookingsList({ home }: BookingsListProps) {
   const bookings = await findBookingsByHomeId(home.id);
 
   return bookings?.length ? (
-    <div className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
+    <ul className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
       {bookings.map((booking) => (
         <BookingItem key={booking.id} booking={booking} />
       ))}
-    </div>
+    </ul>
   ) : (
     <EmptyPlaceholder>
       <EmptyPlaceholder.Title>No bookings yet</EmptyPlaceholder.Title>
