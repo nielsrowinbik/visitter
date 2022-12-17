@@ -58,7 +58,7 @@ test.describe("The dashboard", () => {
     await page
       .getByLabel("End date")
       .fill(format(endOfWeek(new Date()), "yyyy-MM-dd"));
-    await page.click("text=Create booking");
+    await page.click("text=Create booking"); // TODO: Replace with `locator.click()`
 
     await expect(booking).toBeVisible();
   });
@@ -66,15 +66,21 @@ test.describe("The dashboard", () => {
   test("should allow the user to delete a booking", async ({ page }) => {
     await page.goto("/homes");
 
-    await page.getByRole("listitem").filter({ hasText: HOME_NAME }).click();
+    await page
+      .getByRole("listitem")
+      .filter({ hasText: HOME_NAME })
+      .first()
+      .click();
 
     await page
       .getByRole("listitem")
       .filter({ hasText: BOOKING_NAME })
-      .getByRole("button")
+      .first()
+      .getByRole("button") // TODO: We should probably be a bit more specific here. Button probably isn't accessible enough.
       .click();
 
     await page
+      .getByRole("dialog", { name: "Are you sure?" })
       .getByRole("button")
       .filter({ hasText: "Delete booking" })
       .click();
