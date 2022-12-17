@@ -24,6 +24,11 @@
   hr {
     @apply border-zinc-400/20;
   }
+
+  /* https://github.com/vercel/next.js/discussions/41745#discussioncomment-3964086 */
+  [data-nextjs-scroll-focus-boundary] {
+    display: contents;
+  }
 }
 
 @layer components {
