@@ -32,11 +32,13 @@ export async function findHomeById(id: Home["id"]) {
 }
 
 export async function findHomeByShareKey(key: ShareKey["id"]) {
-  const { homeId } = await db.shareKey.findUniqueOrThrow({
+  const shareKey = await db.shareKey.findUnique({
     where: { id: key },
   });
 
-  return await findHomeById(homeId);
+  if (!shareKey) return null;
+
+  return await findHomeById(shareKey.homeId);
 }
 
 export async function updateHome(
