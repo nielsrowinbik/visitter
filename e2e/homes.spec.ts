@@ -49,7 +49,11 @@ test.describe("The dashboard", () => {
 
     await expect(booking).not.toBeVisible();
 
-    await page.getByRole("button").filter({ hasText: "New booking" }).click();
+    await page
+      .getByRole("button")
+      .filter({ hasText: "New booking" })
+      .first()
+      .click();
 
     await page.getByLabel("name").fill(BOOKING_NAME);
     await page
@@ -58,7 +62,10 @@ test.describe("The dashboard", () => {
     await page
       .getByLabel("End date")
       .fill(format(endOfWeek(new Date()), "yyyy-MM-dd"));
-    await page.click("text=Create booking"); // TODO: Replace with `locator.click()`
+    await page
+      .getByRole("button")
+      .filter({ hasText: "Create booking" })
+      .click();
 
     await expect(booking).toBeVisible();
   });
@@ -93,7 +100,9 @@ test.describe("The dashboard", () => {
   test("should allow the user to delete a vacation home", async ({ page }) => {
     await page.goto("/homes");
 
-    await page.getByRole("listitem").filter({ hasText: HOME_NAME }).click();
+    const home = page.getByRole("listitem").filter({ hasText: HOME_NAME });
+
+    await home.click();
 
     await page.getByRole("button").filter({ hasText: "Settings" }).click();
 
@@ -106,6 +115,6 @@ test.describe("The dashboard", () => {
       .click();
 
     await expect(page).toHaveURL("/homes");
-    await expect(page.locator(`text=${HOME_NAME}`)).not.toBeVisible();
+    await expect(home).not.toBeVisible();
   });
 });
