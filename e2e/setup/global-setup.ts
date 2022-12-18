@@ -1,29 +1,37 @@
 import * as dotenv from "dotenv";
 
 import type { FullConfig } from "@playwright/test";
-import { addMonths } from "date-fns";
 import { chromium } from "@playwright/test";
+import { encode } from "next-auth/jwt";
 
 dotenv.config();
 
 export default async function globalSetup(config: FullConfig) {
-  const { baseURL, storageState } = config.projects[0].use;
-  const sessionToken = process.env.E2E_TOKEN as string;
+  const { storageState } = config.projects[0].use;
+  const baseURL =
+    process.env.PLAYWRIGHT_TEST_BASE_URL || "http://localhost:3000";
+  const domain = new URL(baseURL).hostname;
 
-  const expires = addMonths(new Date(), 1);
+  const secure = domain !== "localhost";
+  const sessionToken = await encode({
+    token: {
+      id: "clbs0af0y0000p2do3lm5kgnr",
+      email: "e2e@nielsbik.nl",
+    },
+    secret: process.env.NEXTAUTH_SECRET!,
+  });
 
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
   await page.context().addCookies([
     {
-      name: "next-auth.session-token",
+      name: `${secure ? "__Secure-" : ""}next-auth.session-token`,
       value: sessionToken,
-      domain: new URL(baseURL!).hostname,
+      domain,
       path: "/",
-      // httpOnly: true,
-      // sameSite: "Lax",
-      expires: expires.getTime() / 1000,
+      secure,
+      httpOnly: true,
     },
   ]);
 
