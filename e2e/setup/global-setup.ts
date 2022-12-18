@@ -21,8 +21,8 @@ export default async function globalSetup(config: FullConfig) {
       value: sessionToken,
       domain: new URL(baseURL!).hostname,
       path: "/",
-      httpOnly: true,
-      sameSite: "Lax",
+      // httpOnly: true,
+      // sameSite: "Lax",
       expires: expires.getTime() / 1000,
     },
   ]);
