@@ -23,5 +23,5 @@ jobs:
       - name: Run Playwright tests
         run: pnpm test:e2e
         env:
-          E2E_TOKEN: ${{ secrets.E2E_TOKEN }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
