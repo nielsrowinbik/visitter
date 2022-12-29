@@ -1,5 +1,7 @@
 import { User } from "@prisma/client";
 
+type Nullable<T> = { [P in keyof T]: T[P] | null };
+
 export type SubscriptionPlan = {
   name: string;
   description: string;
