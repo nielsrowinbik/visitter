@@ -1,7 +1,7 @@
 import type { Booking } from "@prisma/client";
 import { BookingDeleteButton } from "@/components/BookingDeleteButton";
 import { Skeleton } from "@/components/Skeleton";
-import { formatDate } from "@/lib/utils";
+import { formatNullableInterval } from "@/lib/utils";
 
 interface BookingItemProps {
   booking: Pick<Booking, "id" | "name" | "startDate" | "endDate">;
@@ -13,8 +13,10 @@ export function BookingItem({ booking }: BookingItemProps) {
       <div className="grid gap-1">
         <p className="font-semibold">{booking.name}</p>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          <time>{formatDate(booking.startDate.toDateString())}</time> -{" "}
-          <time>{formatDate(booking.endDate.toDateString())}</time>
+          {formatNullableInterval({
+            start: booking.startDate,
+            end: booking.endDate,
+          })}
         </p>
       </div>
       <BookingDeleteButton bookingId={booking.id} />

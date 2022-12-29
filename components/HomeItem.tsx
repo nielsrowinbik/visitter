@@ -15,7 +15,11 @@ export function HomeItem({ home }: HomeItemProps) {
           <h2 className="font-semibold">{home.name}</h2>
           <div>
             <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Created on {formatDate(home.createdAt?.toDateString())}
+              Created on{" "}
+              {formatDate(home.createdAt, {
+                includeMonth: true,
+                includeYear: true,
+              })}
             </p>
           </div>
         </div>
