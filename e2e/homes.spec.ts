@@ -56,12 +56,10 @@ test.describe("The dashboard", () => {
       .click();
 
     await page.getByLabel("name").fill(BOOKING_NAME);
-    await page
-      .getByLabel("Start date")
-      .fill(format(startOfWeek(new Date()), "yyyy-MM-dd"));
-    await page
-      .getByLabel("End date")
-      .fill(format(endOfWeek(new Date()), "yyyy-MM-dd"));
+    await page.getByLabel("Start date").click();
+    await page.getByText("13").click();
+    await page.getByText("15").click();
+    await page.getByRole("button").filter({ hasText: "Done" }).click();
     await page
       .getByRole("button")
       .filter({ hasText: "Create booking" })
