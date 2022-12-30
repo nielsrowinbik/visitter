@@ -133,16 +133,16 @@ export function DateRangeInput({
                 <Icon.ChevronRight className="h-5 w-5" />
               </button>
             </div>
-            <div className="mx-auto grid w-56 grid-cols-[repeat(7,minmax(0,min-content))] text-center text-xs leading-6 text-gray-500">
-              <div className="h-8 w-8">M</div>
-              <div className="h-8 w-8">T</div>
-              <div className="h-8 w-8">W</div>
-              <div className="h-8 w-8">T</div>
-              <div className="h-8 w-8">F</div>
-              <div className="h-8 w-8">S</div>
-              <div className="h-8 w-8">S</div>
+            <div className="grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
+              <div>M</div>
+              <div>T</div>
+              <div>W</div>
+              <div>T</div>
+              <div>F</div>
+              <div>S</div>
+              <div>S</div>
             </div>
-            <div className="mx-auto grid w-56 grid-cols-[repeat(7,minmax(0,min-content))] place-items-center gap-y-2 text-center text-sm">
+            <div className="grid w-full grid-cols-7 place-items-center gap-y-2 text-center text-sm">
               {days.map((day, dayIdx) => {
                 const isRangeStart = isSameDay(day, range.start!);
                 const isRangeEnd = isSameDay(day, range.end!);
@@ -150,13 +150,15 @@ export function DateRangeInput({
                 return (
                   <div
                     className={cn(
-                      "flex h-8 w-8 justify-center",
+                      "grid h-8 w-full place-content-center",
                       dayIdx === 0 && colStartClasses[getDay(day)],
                       {
                         "bg-zinc-100 dark:bg-zinc-800":
                           isWithinNullableInterval(day, range),
-                        "rounded-l-full": isRangeStart,
-                        "rounded-r-full": isRangeEnd,
+                        "rounded-l-full bg-transparent bg-gradient-to-r from-[transparent_50%] to-[#f4f4f5_50%] dark:bg-transparent dark:to-[#27272a_50%]":
+                          isRangeStart && !isNull(range.end),
+                        "rounded-r-full bg-transparent bg-gradient-to-l from-[transparent_50%] to-[#f4f4f5_50%] dark:bg-transparent dark:to-[#27272a_50%]":
+                          isRangeEnd,
                       }
                     )}
                     key={day.toString()}
