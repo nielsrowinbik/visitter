@@ -9,12 +9,12 @@ import { useController, useForm } from "react-hook-form";
 import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import type { Control } from "react-hook-form";
-import type { DateChangeCallBack } from "@/components/RangeInput";
+import type { DateChangeCallBack } from "@/components/DateRangeInput";
+import { DateRangeInput } from "@/components/DateRangeInput";
 import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
-import { RangeInput } from "@/components/RangeInput";
 import { bookingCreateSchema as originalBookingCreateSchema } from "@/lib/validations/booking";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
@@ -51,7 +51,7 @@ function ControlledRangeInput({ control }: ControlledRangeInputProps) {
   };
 
   return (
-    <RangeInput
+    <DateRangeInput
       onStartDateChange={handleStartDateChange}
       onEndDateChange={handleEndDateChange}
     >
@@ -62,7 +62,7 @@ function ControlledRangeInput({ control }: ControlledRangeInputProps) {
           <Input {...endDateProps} />
         </div>
       )}
-    </RangeInput>
+    </DateRangeInput>
   );
 }
 
