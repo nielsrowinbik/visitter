@@ -74,6 +74,10 @@ export function RangeInput({
     if (onEndDateChange) onEndDateChange(range.end);
   }, [range.end]);
 
+  useDidMountEffect(() => {
+    if (!isNull(range.end)) setFocus(undefined);
+  }, [range.end]);
+
   return (
     <Popover className="relative">
       {children({
@@ -175,16 +179,6 @@ export function RangeInput({
                   </div>
                 );
               })}
-            </div>
-            <div className="flex justify-end">
-              <Button
-                compact
-                onClick={() => setFocus(undefined)}
-                type="button"
-                variant="outline"
-              >
-                Done
-              </Button>
             </div>
           </div>
         </Popover.Panel>
