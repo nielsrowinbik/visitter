@@ -123,15 +123,20 @@ export function DateRangeInput({
         >
           <div className="space-y-3 px-3 pt-3 pb-2">
             <div className="flex items-center justify-between">
-              <button type="button" onClick={previousMonth}>
-                <span className="sr-only">Previous month</span>
+              <Button
+                square
+                type="button"
+                onClick={previousMonth}
+                variant="subtle"
+              >
                 <Icon.ChevronLeft className="h-5 w-5" />
-              </button>
+                <span className="sr-only">Previous month</span>
+              </Button>
               <h2 className="text-sm">{format(days[0], "MMMM yyyy")}</h2>
-              <button type="button" onClick={nextMonth}>
-                <span className="sr-only">Next month</span>
+              <Button square type="button" onClick={nextMonth} variant="subtle">
                 <Icon.ChevronRight className="h-5 w-5" />
-              </button>
+                <span className="sr-only">Next month</span>
+              </Button>
             </div>
             <div className="grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
               <div>M</div>
