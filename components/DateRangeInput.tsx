@@ -36,7 +36,7 @@ type RangeInputProps = {
   onEndDateChange?: DateChangeCallBack;
 };
 
-export function RangeInput({
+export function DateRangeInput({
   children,
   onStartDateChange,
   onEndDateChange,
