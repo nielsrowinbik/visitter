@@ -59,7 +59,6 @@ test.describe("The dashboard", () => {
     await page.getByLabel("Start date").click();
     await page.getByText("13").click();
     await page.getByText("15").click();
-    await page.getByRole("button").filter({ hasText: "Done" }).click();
     await page
       .getByRole("button")
       .filter({ hasText: "Create booking" })
