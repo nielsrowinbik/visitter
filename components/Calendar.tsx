@@ -6,37 +6,35 @@ import {
   endOfMonth,
   format,
   getDay,
-  isWithinInterval,
-  parse,
-  parseISO,
-  startOfDay,
-  startOfToday,
+  startOfMonth,
 } from "date-fns";
 
+import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
-import type { Interval } from "date-fns";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
-interface CalendarProps {
-  bookings?: Array<{
-    startDate: string;
-    endDate: string;
-  }>;
-  monthsToShow?: number;
-  ranges?: Interval[];
-}
+type InjectedProps = {
+  day: Date;
+  className: string;
+};
 
-export default function Calendar({
+type CalendarProps = {
+  children(props: InjectedProps): ReactNode;
+  className?: string;
+  monthsToShow?: number;
+};
+
+export function Calendar({
+  children,
+  className,
   monthsToShow = 1,
-  ...props
 }: CalendarProps) {
-  const today = startOfToday();
-  const [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
-  const firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
+  const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
 
   const months = Array.from({ length: monthsToShow }, (_, i) => {
-    const start = add(firstDayCurrentMonth, { months: i });
+    const start = add(currentMonth, { months: i });
 
     return eachDayOfInterval({
       start,
@@ -44,45 +42,37 @@ export default function Calendar({
     });
   });
 
-  const bookings = props.bookings ? props.bookings.map(toInterval) : [];
-
   function previousMonth() {
-    let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
-    setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
+    setCurrentMonth(startOfMonth(add(currentMonth, { months: -1 })));
   }
 
   function nextMonth() {
-    let firstDayNextMonth = add(firstDayCurrentMonth, { months: 1 });
-    setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
+    setCurrentMonth(startOfMonth(add(currentMonth, { months: 1 })));
   }
 
   return (
-    <div className="not-prose mx-auto max-w-md px-4 sm:px-7 md:max-w-4xl md:px-6">
-      <div className="flex items-center justify-end">
-        <button
-          type="button"
-          onClick={previousMonth}
-          className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-        >
-          <span className="sr-only">Previous month</span>
+    <div className={cn("space-y-3", className)}>
+      <div className="flex items-center justify-between">
+        <Button square type="button" onClick={previousMonth} variant="subtle">
           <Icon.ChevronLeft className="h-5 w-5" />
-        </button>
-        <button
-          onClick={nextMonth}
-          type="button"
-          className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-        >
-          <span className="sr-only">Next month</span>
-          <Icon.ChevronRight className="h-5 w-5" />
-        </button>
-      </div>
-      <div className="grid grid-flow-row grid-cols-1 gap-16 md:grid-cols-2">
-        {months.map((days) => (
-          <div key={format(days[0], "MMMM yyyy")}>
-            <h2 className="text-center font-semibold text-gray-900">
+          <span className="sr-only">Previous month</span>
+        </Button>
+        <div className="flex flex-auto justify-around">
+          {months.map((days, i) => (
+            <h2 className="text-sm" key={i}>
               {format(days[0], "MMMM yyyy")}
             </h2>
-            <div className="mt-10 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
+          ))}
+        </div>
+        <Button square type="button" onClick={nextMonth} variant="subtle">
+          <Icon.ChevronRight className="h-5 w-5" />
+          <span className="sr-only">Next month</span>
+        </Button>
+      </div>
+      <div className="grid grid-flow-col gap-x-6">
+        {months.map((days, i) => (
+          <div key={i}>
+            <div className="grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
               <div>M</div>
               <div>T</div>
               <div>W</div>
@@ -91,24 +81,13 @@ export default function Calendar({
               <div>S</div>
               <div>S</div>
             </div>
-            <div className="mt-2 grid grid-cols-7 gap-y-5 text-sm">
-              {days.map((day, dayIdx) => (
-                <div
-                  key={day.toString()}
-                  className={cn(
-                    dayIdx === 0 && colStartClasses[getDay(day)],
-                    "peer mx-auto flex h-8 w-full items-center justify-center",
-                    {
-                      "rounded-full bg-red-500 font-medium text-white [&:has(+.bg-red-500)]:rounded-r-none [&+.bg-red-500]:rounded-l-none":
-                        isWithinIntervals(day, bookings),
-                    }
-                  )}
-                >
-                  <time dateTime={format(day, "yyyy-MM-dd")}>
-                    {format(day, "d")}
-                  </time>
-                </div>
-              ))}
+            <div className="grid w-full grid-cols-7 place-items-center gap-y-2 text-center text-sm">
+              {days.map((day, i) =>
+                children({
+                  className: cn(i === 0 && colStartClasses[getDay(day)]),
+                  day,
+                })
+              )}
             </div>
           </div>
         ))}
@@ -126,20 +105,3 @@ const colStartClasses = [
   "col-start-5",
   "col-start-6",
 ];
-
-function toInterval({
-  startDate,
-  endDate,
-}: {
-  startDate: string;
-  endDate: string;
-}) {
-  return {
-    start: startOfDay(parseISO(startDate)),
-    end: startOfDay(parseISO(endDate)),
-  };
-}
-
-function isWithinIntervals(date: Date | number, intervals: Interval[]) {
-  return intervals.some((interval) => isWithinInterval(date, interval));
-}

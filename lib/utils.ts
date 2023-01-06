@@ -1,6 +1,9 @@
-import { every, get, isNull, isUndefined, some } from "lodash";
+import { every, get, isNull, isUndefined, reduce, some } from "lodash";
 import {
   format,
+  isAfter,
+  isBefore,
+  isSameDay,
   isSameMonth,
   isSameYear,
   isThisYear,
@@ -8,6 +11,7 @@ import {
 } from "date-fns";
 
 import type { ClassValue } from "clsx";
+import type { Interval } from "date-fns";
 import type { Nullable } from "types";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -18,6 +22,43 @@ export function absoluteUrl(path: string) {
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+type IntervalTuple = [Interval[], Interval["end"]];
+
+export function flattenIntervals(intervals: Interval[]): Interval[] {
+  return intervals.reduce<IntervalTuple>(
+    ([res, end], interval, i) => {
+      if (isAfter(interval.start, end)) {
+        // Booking starts after the last endDate
+        return [
+          [...res, { start: interval.start, end: interval.end }],
+          interval.end,
+        ];
+      }
+
+      if (isBefore(interval.start, end) || isSameDay(interval.start, end)) {
+        // Booking starts during our current period or exactly at the end
+
+        if (isAfter(interval.end, end)) {
+          // Booking lasts longer than our current endDate
+          return [
+            [
+              ...res.slice(0, -1),
+              {
+                start: res.slice(-1)[0].start,
+                end: interval.end,
+              },
+            ],
+            interval.end,
+          ];
+        }
+      }
+
+      return [res, end];
+    },
+    [[], new Date("1970-01-01")]
+  )[0];
 }
 
 type FormatOptions = {
@@ -87,6 +128,15 @@ export function getClientOrigin() {
 
 function isNotThisYear(date: Date | number) {
   return !isThisYear(date);
+}
+
+export function isWithinIntervals(
+  date: Date | number,
+  intervals: Interval[]
+): boolean {
+  return intervals
+    .map((interval) => isWithinInterval(date, interval))
+    .some((val) => val === true);
 }
 
 export function isWithinNullableInterval(
