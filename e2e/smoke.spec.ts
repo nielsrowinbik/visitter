@@ -1,7 +1,8 @@
-import { endOfWeek, format, startOfWeek } from "date-fns";
 import { expect, test } from "@playwright/test";
 
-const HOME_NAME = "Fanta Sea";
+import { faker } from "@faker-js/faker";
+
+const HOME_NAME = `${faker.name.lastName()} Family Home`;
 const BOOKING_NAME = "End to end test";
 
 test.describe("The dashboard", () => {
