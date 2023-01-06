@@ -1,23 +1,11 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import {
-  Interval,
-  add,
-  eachDayOfInterval,
-  endOfMonth,
-  format,
-  getDay,
-  isBefore,
-  isSameDay,
-  parse,
-  startOfToday,
-} from "date-fns";
+import { Interval, format, isBefore, isSameDay } from "date-fns";
 import { Popover, Transition } from "@headlessui/react";
 import { cn, formatDate, isWithinNullableInterval } from "@/lib/utils";
 
-import { Button } from "@/components/Button";
-import { Icon } from "@/components/Icon";
+import { Calendar } from "@/components/Calendar";
 import type { InputProps } from "@/components/Input";
 import type { Nullable } from "types";
 import { isNull } from "lodash";
@@ -46,25 +34,6 @@ export function DateRangeInput({
     start: null,
     end: null,
   });
-
-  const today = startOfToday();
-  const [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
-  const firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
-
-  const days = eachDayOfInterval({
-    start: firstDayCurrentMonth,
-    end: endOfMonth(firstDayCurrentMonth),
-  });
-
-  function previousMonth() {
-    let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
-    setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
-  }
-
-  function nextMonth() {
-    let firstDayNextMonth = add(firstDayCurrentMonth, { months: 1 });
-    setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
-  }
 
   useDidMountEffect(() => {
     if (onStartDateChange) onStartDateChange(range.start);
@@ -121,73 +90,50 @@ export function DateRangeInput({
           className="absolute left-0 z-50 mt-2 w-full origin-top rounded-md bg-white py-1 text-zinc-900 shadow-lg ring-1 ring-zinc-400/20 focus:outline-none dark:bg-zinc-900 dark:text-white"
           static
         >
-          <div className="space-y-3 px-3 pt-3 pb-2">
-            <div className="flex items-center justify-between">
-              <Button
-                square
-                type="button"
-                onClick={previousMonth}
-                variant="subtle"
-              >
-                <Icon.ChevronLeft className="h-5 w-5" />
-                <span className="sr-only">Previous month</span>
-              </Button>
-              <h2 className="text-sm">{format(days[0], "MMMM yyyy")}</h2>
-              <Button square type="button" onClick={nextMonth} variant="subtle">
-                <Icon.ChevronRight className="h-5 w-5" />
-                <span className="sr-only">Next month</span>
-              </Button>
-            </div>
-            <div className="grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
-              <div>M</div>
-              <div>T</div>
-              <div>W</div>
-              <div>T</div>
-              <div>F</div>
-              <div>S</div>
-              <div>S</div>
-            </div>
-            <div className="grid w-full grid-cols-7 place-items-center gap-y-2 text-center text-sm">
-              {days.map((day, dayIdx) => {
-                const isRangeStart = isSameDay(day, range.start!);
-                const isRangeEnd = isSameDay(day, range.end!);
+          <Calendar>
+            {({ className, day }) => {
+              const isRangeStart = isSameDay(day, range.start!);
+              const isRangeEnd = isSameDay(day, range.end!);
 
-                return (
-                  <div
+              return (
+                <div
+                  aria-label={format(day, "d, EEEE, MMMM yyyy")}
+                  className={cn(
+                    className,
+                    "grid h-8 w-full place-content-center",
+                    {
+                      "bg-zinc-100 dark:bg-zinc-800": isWithinNullableInterval(
+                        day,
+                        range
+                      ),
+                      "rounded-l-full bg-transparent bg-gradient-to-r from-[transparent_50%] to-[#f4f4f5_50%] dark:bg-transparent dark:to-[#27272a_50%]":
+                        isRangeStart && !isNull(range.end),
+                      "rounded-r-full bg-transparent bg-gradient-to-l from-[transparent_50%] to-[#f4f4f5_50%] dark:bg-transparent dark:to-[#27272a_50%]":
+                        isRangeEnd,
+                    }
+                  )}
+                  key={day.toString()}
+                  onClick={() => {
+                    setRange(setRangeForDay(day));
+                  }}
+                  role="button"
+                >
+                  <time
                     className={cn(
-                      "grid h-8 w-full place-content-center",
-                      dayIdx === 0 && colStartClasses[getDay(day)],
+                      "grid h-8 w-8 cursor-pointer place-content-center rounded-full border-2 border-transparent hover:border-black hover:dark:border-white",
                       {
-                        "bg-zinc-100 dark:bg-zinc-800":
-                          isWithinNullableInterval(day, range),
-                        "rounded-l-full bg-transparent bg-gradient-to-r from-[transparent_50%] to-[#f4f4f5_50%] dark:bg-transparent dark:to-[#27272a_50%]":
-                          isRangeStart && !isNull(range.end),
-                        "rounded-r-full bg-transparent bg-gradient-to-l from-[transparent_50%] to-[#f4f4f5_50%] dark:bg-transparent dark:to-[#27272a_50%]":
-                          isRangeEnd,
+                        "bg-zinc-800 text-white dark:bg-white dark:text-black":
+                          isRangeStart || isRangeEnd,
                       }
                     )}
-                    key={day.toString()}
-                    onClick={() => {
-                      setRange(setRangeForDay(day));
-                    }}
+                    dateTime={format(day, "yyyy-MM-dd")}
                   >
-                    <time
-                      className={cn(
-                        "grid h-8 w-8 cursor-pointer place-content-center rounded-full border-2 border-transparent hover:border-black hover:dark:border-white",
-                        {
-                          "bg-zinc-800 text-white dark:bg-white dark:text-black":
-                            isRangeStart || isRangeEnd,
-                        }
-                      )}
-                      dateTime={format(day, "yyyy-MM-dd")}
-                    >
-                      {format(day, "d")}
-                    </time>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                    {format(day, "d")}
+                  </time>
+                </div>
+              );
+            }}
+          </Calendar>
         </Popover.Panel>
       </Transition>
     </Popover>

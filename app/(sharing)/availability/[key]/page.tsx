@@ -1,11 +1,12 @@
-import type { Home, ShareKey } from "@prisma/client";
+import type { Booking, ShareKey } from "@prisma/client";
 
+import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import { Button } from "@/components/Button";
-import Calendar from "@/components/Calendar";
 import { Card } from "@/components/Card";
 import Link from "next/link";
-import { db } from "@/lib/db";
+import { findBookingsByHomeId } from "@/lib/bookings";
 import { findHomeByShareKey } from "@/lib/homes";
+import { flattenIntervals } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 
@@ -13,15 +14,6 @@ interface PageProps {
   params: {
     key: ShareKey["id"];
   };
-}
-
-async function findBookingsAsIsoStringsByHomeId(homeId: Home["id"]) {
-  const bookings = await db.booking.findMany({ where: { homeId } });
-
-  return bookings.map((booking) => ({
-    startDate: booking.startDate.toISOString(),
-    endDate: booking.endDate.toISOString(),
-  }));
 }
 
 export default async function HomeAvailabilityPage({
@@ -32,8 +24,9 @@ export default async function HomeAvailabilityPage({
 
   if (!home) return notFound();
 
-  // const unavailability = await findUnavailabilityByHomeId(home.id);
-  const bookings = await findBookingsAsIsoStringsByHomeId(home.id);
+  const bookings = await findBookingsByHomeId(home.id);
+  const intervals = bookings.map(toInterval);
+  const flattened = flattenIntervals(intervals);
 
   const isUsersHome = !!user && home.ownerId === user.id;
 
@@ -70,8 +63,15 @@ export default async function HomeAvailabilityPage({
             and contact the person who sent you this link.
           </p>
         </div>
-        <Calendar monthsToShow={2} bookings={bookings} />
+        <AvailabilityCalendar bookings={flattened} data-superjson />
       </div>
     </div>
   );
+}
+
+function toInterval(booking: Booking): Interval {
+  return {
+    start: booking.startDate,
+    end: booking.endDate,
+  };
 }
