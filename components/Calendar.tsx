@@ -72,7 +72,7 @@ export function Calendar({
       <div className="grid grid-flow-col gap-x-6">
         {months.map((days, i) => (
           <div key={i}>
-            <div className="grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
+            <div className="mb-3 grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
               <div>M</div>
               <div>T</div>
               <div>W</div>
