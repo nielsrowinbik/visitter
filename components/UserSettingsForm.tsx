@@ -53,8 +53,6 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
   }
 
   return (
-    // FIXME: We shouldn't have to ignore this error.
-    // @ts-ignore
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <Input
         autoComplete="name"
