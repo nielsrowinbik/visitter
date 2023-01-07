@@ -1,26 +1,25 @@
 import * as z from "zod";
 
-import { isNull } from "lodash";
 import { isValidPhoneNumber } from "libphonenumber-js";
 
 export const userPatchSchema = z.object({
   name: z
-    .string({
-      invalid_type_error: "This is not a valid name",
-    })
-    .min(2, "Your name should consist of at least two characters")
-    .max(32, "Your name cannot consist of more than 32 characters")
-    .optional(),
+    .union([
+      z.string().min(2, "Your name should consist of at least two characters"),
+      z.string().length(0),
+    ])
+    .nullable()
+    .transform((e) => (e === "" ? null : e)),
   phone: z
-    .string()
-    .refine(
-      (val) => {
-        if (isNull(val)) return true;
-        return isValidPhoneNumber(val);
-      },
-      {
-        message: "Please enter a valid phone number (including country code)",
-      }
-    )
-    .optional(),
+    .union([
+      z
+        .string()
+        .refine(
+          isValidPhoneNumber,
+          "Please enter a valid phone number including country code"
+        ),
+      z.string().length(0),
+    ])
+    .nullable()
+    .transform((e) => (e === "" ? null : e)),
 });
