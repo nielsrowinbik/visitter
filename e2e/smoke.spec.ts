@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 import { faker } from "@faker-js/faker";
 
-const HOME_NAME = `${faker.name.lastName()} Family Home`;
+const HOME_NAME = faker.music.songName();
 const BOOKING_NAME = "End to end test";
 
 test.describe("The dashboard", () => {
