@@ -1,42 +1,48 @@
 "use client";
 
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, forwardRef, useState } from "react";
+import * as z from "zod";
 
-import { Booking } from "@prisma/client";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
+
+import type { Booking } from "@prisma/client";
+import { BookingForm } from "./BookingForm";
 import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import { Icon } from "@/components/Icon";
-import type { Ref } from "react";
+import { bookingCreateSchema } from "@/lib/validations/booking";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
 
-interface BookingDeleteButtonProps extends ButtonProps {
-  bookingId: Booking["id"];
+type FormData = z.infer<typeof bookingCreateSchema>;
+
+interface BookingEditButtonProps extends ButtonProps {
+  booking: Booking;
 }
 
-export const BookingDeleteButton = forwardRef(function BookingDeleteButton(
-  { className, bookingId, ...props }: BookingDeleteButtonProps,
-  ref: Ref<any>
-) {
+export function BookingEditButton({
+  booking,
+  className,
+  ...props
+}: BookingEditButtonProps) {
   const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  async function deleteBooking() {
+  async function onSubmit(data: FormData) {
     try {
       setIsSaving(true);
 
-      await superagent.delete(`/api/bookings/${bookingId}`);
+      await superagent.patch(`/api/bookings/${booking.id}`).send(data);
 
       router.refresh();
     } catch (error) {
       toast.error(
         "Something went wrong.",
-        "Your booking was not deleted. Please try again."
+        "Your booking was not updated. Please try again."
       );
     } finally {
       setIsSaving(false);
@@ -46,15 +52,8 @@ export const BookingDeleteButton = forwardRef(function BookingDeleteButton(
 
   return (
     <>
-      <Button
-        compact
-        onClick={openModal}
-        ref={ref}
-        square
-        variant="outline"
-        {...props}
-      >
-        <Icon.Trash className="h-3 w-3" />
+      <Button compact onClick={openModal} square variant="outline" {...props}>
+        <Icon.Pencil className="h-3 w-3" />
       </Button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" onClose={closeModal} open={isOpen}>
@@ -80,29 +79,31 @@ export const BookingDeleteButton = forwardRef(function BookingDeleteButton(
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform divide-zinc-400/20 overflow-hidden rounded-xl bg-white text-left align-middle shadow-xl ring-1 ring-zinc-400/20 transition-all dark:bg-zinc-900">
+                <Dialog.Panel className="w-full max-w-md transform divide-zinc-400/20 rounded-xl bg-white text-left align-middle shadow-xl ring-1 ring-zinc-400/20 transition-all dark:bg-zinc-900">
                   <div className="space-y-4 px-6 pt-6">
                     <div className="flex">
                       <Dialog.Title
                         as="h3"
                         className="flex-auto text-lg font-semibold"
                       >
-                        Are you sure?
+                        Update booking
                       </Dialog.Title>
                       <Icon.Close className="h-4 w-4" onClick={closeModal} />
                     </div>
+                    <BookingForm
+                      defaultValues={booking}
+                      homeId={booking.homeId}
+                      onSubmit={onSubmit}
+                    />
                   </div>
-                  <Dialog.Description className="mt-6 px-6">
-                    Deleting a booking cannot cannot be undone.
-                  </Dialog.Description>
                   <div className="mt-6 border-t p-6">
                     <div className="flex space-x-3">
                       <Button
+                        form="booking-form"
                         loading={isSaving}
-                        onClick={deleteBooking}
-                        variant="danger"
+                        type="submit"
                       >
-                        Delete booking
+                        Update booking
                       </Button>
                       <Button onClick={closeModal} variant="outline">
                         Cancel
@@ -117,4 +118,4 @@ export const BookingDeleteButton = forwardRef(function BookingDeleteButton(
       </Transition>
     </>
   );
-});
+}
