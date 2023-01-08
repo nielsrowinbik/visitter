@@ -1,13 +1,16 @@
 import type { Booking } from "@prisma/client";
 import { BookingDeleteButton } from "@/components/BookingDeleteButton";
+import { BookingEditButton } from "./BookingEditButton";
 import { Skeleton } from "@/components/Skeleton";
 import { formatNullableInterval } from "@/lib/utils";
 
 interface BookingItemProps {
-  booking: Pick<Booking, "id" | "name" | "startDate" | "endDate">;
+  booking: Booking;
 }
 
 export function BookingItem({ booking }: BookingItemProps) {
+  console.log("BookingItem", typeof booking.startDate);
+
   return (
     <li className="flex items-center justify-between p-4">
       <div className="grid gap-1">
@@ -19,10 +22,14 @@ export function BookingItem({ booking }: BookingItemProps) {
           })}
         </p>
       </div>
-      <BookingDeleteButton bookingId={booking.id} />
+      <div className="flex space-x-2">
+        <BookingEditButton booking={booking} data-superjson />
+        <BookingDeleteButton bookingId={booking.id} />
+      </div>
     </li>
   );
 }
+
 BookingItem.Skeleton = function HomeItemSkeleton() {
   return (
     <div className="p-4">
