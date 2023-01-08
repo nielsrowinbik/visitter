@@ -34,14 +34,12 @@ export const Toggle = ({
           <span className="text-zinc-600">Not enabled</span>
         )}
         <Button
-          disabled={isSaving || disabled}
+          disabled={disabled}
+          loading={isSaving}
           onClick={() => onChange(!checked)}
           variant={checked ? "danger" : "outline"}
           {...props}
         >
-          {isSaving ? (
-            <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-          ) : null}
           {checked ? "Disable" : "Enable"}
         </Button>
       </div>

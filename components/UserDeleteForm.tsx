@@ -105,13 +105,10 @@ export function UserDeleteForm({ user }: UserDeleteFormProps) {
                   <div className="mt-6 border-t p-6">
                     <div className="flex space-x-3">
                       <Button
-                        disabled={isSaving}
+                        loading={isSaving}
                         onClick={deleteHome}
                         variant="danger"
                       >
-                        {isSaving ? (
-                          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                        ) : null}
                         Delete account
                       </Button>
                       <Button onClick={closeModal} variant="outline">

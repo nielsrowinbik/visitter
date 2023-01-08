@@ -152,10 +152,11 @@ export function HomeCreateButton({
                   <hr className="mt-6" />
                   <div className="p-6">
                     <div className="flex space-x-2">
-                      <Button form="create-home-form" type="submit">
-                        {isSaving ? (
-                          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                        ) : null}
+                      <Button
+                        form="create-home-form"
+                        loading={isSaving}
+                        type="submit"
+                      >
                         Create vacation home
                       </Button>
                       <Button onClick={closeModal} variant="outline">
