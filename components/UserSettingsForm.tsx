@@ -79,10 +79,7 @@ export function UserSetttingsForm({ user }: UserSettingsFormProps) {
         label="Phone number"
         {...register("phone")}
       />
-      <Button disabled={isSaving} type="submit">
-        {isSaving ? (
-          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : null}
+      <Button loading={isSaving} type="submit">
         Save account settings
       </Button>
     </form>

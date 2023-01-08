@@ -61,10 +61,7 @@ export function HomeSettingsForm({ home }: HomeSettingsFormProps) {
           {...register("name")}
         />
       </div>
-      <Button disabled={isSaving} type="submit">
-        {isSaving ? (
-          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : null}
+      <Button loading={isSaving} type="submit">
         Save home settings
       </Button>
     </form>

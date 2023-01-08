@@ -93,10 +93,11 @@ export function BookingDeleteButton({
                   </Dialog.Description>
                   <div className="mt-6 border-t p-6">
                     <div className="flex space-x-3">
-                      <Button onClick={deleteBooking} variant="danger">
-                        {isSaving ? (
-                          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
-                        ) : null}
+                      <Button
+                        loading={isSaving}
+                        onClick={deleteBooking}
+                        variant="danger"
+                      >
                         Delete booking
                       </Button>
                       <Button onClick={closeModal} variant="outline">

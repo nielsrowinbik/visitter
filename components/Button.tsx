@@ -1,17 +1,22 @@
 import type { ButtonHTMLAttributes } from "react";
+import { Icon } from "@/components/Icon";
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   compact?: boolean;
+  loading?: boolean;
   square?: boolean;
   variant?: "default" | "danger" | "outline" | "subtle";
 }
 
 export const Button = forwardRef(function renderButton(
   {
+    children,
     className,
+    disabled,
     compact = false,
+    loading = false,
     square = false,
     variant = "default",
     ...props
@@ -45,6 +50,10 @@ export const Button = forwardRef(function renderButton(
         },
         className
       )}
-    />
+      disabled={loading || disabled}
+    >
+      {loading ? <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" /> : null}
+      {children}
+    </button>
   );
 });
