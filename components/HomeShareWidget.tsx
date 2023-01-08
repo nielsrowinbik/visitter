@@ -34,7 +34,7 @@ export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
       </p>
       <div className="not-prose flex space-x-3">
         {isShared ? <HomeShareCopyButton url={url} /> : null}
-        <HomeShareToggle home={home} key={key} />
+        <HomeShareToggle home={home} key={key} data-superjson />
       </div>
     </div>
   );
