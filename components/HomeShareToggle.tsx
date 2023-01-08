@@ -4,7 +4,6 @@ import type { Home, ShareKey } from "@prisma/client";
 
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
-import { Icon } from "@/components/Icon";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
@@ -44,11 +43,10 @@ export function HomeShareToggle({ home, key: key }: HomeShareToggleProps) {
   return (
     <Button
       compact
-      disabled={isSaving}
+      loading={isSaving}
       onClick={onChange}
       variant={isShared ? "danger" : "outline"}
     >
-      {isSaving ? <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" /> : null}
       {isShared ? "Disable sharing" : "Enable sharing"}
     </Button>
   );
