@@ -4,10 +4,6 @@ export default function Head() {
       <title>Visitter</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width" />
-      <meta
-        name="description"
-        content="The easiest way to run your vacation home."
-      />
       <meta name="robots" content="noindex" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://visitter.app" />
