@@ -23,7 +23,7 @@ type InjectedProps = {
 type CalendarProps = {
   children(props: InjectedProps): ReactNode;
   className?: string;
-  monthsToShow?: number;
+  monthsToShow?: 1 | 2;
 };
 
 export function Calendar({
@@ -59,7 +59,10 @@ export function Calendar({
         </Button>
         <div className="flex flex-auto justify-around">
           {months.map((days, i) => (
-            <h2 className="text-sm" key={i}>
+            <h2
+              className="text-sm last:hidden only:block sm:last:block"
+              key={i}
+            >
               {format(days[0], "MMMM yyyy")}
             </h2>
           ))}
@@ -71,7 +74,7 @@ export function Calendar({
       </div>
       <div className="grid grid-flow-col gap-x-6">
         {months.map((days, i) => (
-          <div key={i}>
+          <div className="last:hidden only:block sm:last:block" key={i}>
             <div className="mb-3 grid w-full grid-cols-7 text-center text-xs leading-6 text-gray-500">
               <div>M</div>
               <div>T</div>

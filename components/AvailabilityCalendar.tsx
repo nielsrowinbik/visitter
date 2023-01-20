@@ -3,7 +3,6 @@
 import { Interval, isSameDay } from "date-fns";
 import { cn, isWithinIntervals } from "@/lib/utils";
 
-import { Booking } from "@prisma/client";
 import { Calendar } from "@/components/Calendar";
 import { format } from "date-fns";
 import { some } from "lodash";
