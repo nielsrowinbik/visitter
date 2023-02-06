@@ -1,9 +1,8 @@
-import * as z from "zod";
-
 import type { Booking, Home } from "@prisma/client";
 
 import { bookingCreateSchema } from "@/lib/validations/booking";
 import { db } from "@/lib/db";
+import { z } from "zod";
 
 export async function createBooking(
   booking: z.infer<typeof bookingCreateSchema>,

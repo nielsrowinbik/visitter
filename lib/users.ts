@@ -1,8 +1,7 @@
-import * as z from "zod";
-
 import { User } from "next-auth";
 import { db } from "@/lib/db";
 import { userPatchSchema } from "./validations/user";
+import { z } from "zod";
 
 export async function deleteUser(id: User["id"]) {
   return await db.user.delete({ where: { id } });

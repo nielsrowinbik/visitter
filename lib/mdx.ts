@@ -1,5 +1,3 @@
-import * as z from "zod";
-
 import NodeCache from "node-cache";
 import { VFile } from "vfile";
 import { promises as fs } from "fs";
@@ -7,6 +5,7 @@ import glob from "fast-glob";
 import hasha from "hasha";
 import { matter } from "vfile-matter";
 import path from "path";
+import { z } from "zod";
 
 const mdxCache = new NodeCache();
 
