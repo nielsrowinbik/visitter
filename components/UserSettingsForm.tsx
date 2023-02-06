@@ -1,7 +1,5 @@
 "use client";
 
-import * as z from "zod";
-
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
@@ -13,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { userPatchSchema } from "@/lib/validations/user";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserSettingsFormProps extends HTMLAttributes<HTMLDivElement> {

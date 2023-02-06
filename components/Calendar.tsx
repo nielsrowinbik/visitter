@@ -26,6 +26,10 @@ type CalendarProps = {
   monthsToShow?: 1 | 2;
 };
 
+function toUTC(date: Date) {
+  return new Date(format(date, "yyyy-MM-dd"));
+}
+
 export function Calendar({
   children,
   className,
@@ -40,7 +44,7 @@ export function Calendar({
       start,
       end: endOfMonth(start),
     });
-  });
+  }).map((days) => days.map(toUTC));
 
   function previousMonth() {
     setCurrentMonth(startOfMonth(add(currentMonth, { months: -1 })));

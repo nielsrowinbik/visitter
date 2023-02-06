@@ -1,4 +1,4 @@
-import { every, get, isNull, isUndefined, reduce, some } from "lodash";
+import { every, isNull, isUndefined, some } from "lodash";
 import {
   format,
   isAfter,
@@ -68,10 +68,9 @@ type FormatOptions = {
 
 export function formatDate(
   input: Date | number,
-  options?: FormatOptions
+  options: FormatOptions = {}
 ): string {
-  const includeMonth = get(options, "includeMonth");
-  const includeYear = get(options, "includeYear");
+  const { includeMonth, includeYear } = options;
 
   const shouldIncludeMonth =
     includeMonth === true ||

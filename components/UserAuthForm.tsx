@@ -1,7 +1,5 @@
 "use client";
 
-import * as z from "zod";
-
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import { Icon } from "@/components/Icon";
@@ -11,6 +9,7 @@ import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { userAuthSchema } from "@/lib/validations/auth";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLFormElement> {}

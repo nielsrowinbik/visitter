@@ -3,17 +3,12 @@ import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
 import { HomeShareCopyButton } from "@/components/HomeShareCopyButton";
 import { HomeShareToggle } from "@/components/HomeShareToggle";
-import { db } from "@/lib/db";
+import { findKeysByHomeId } from "@/lib/keys";
 import { get } from "lodash";
 import { getClientOrigin } from "@/lib/utils";
 
 interface HomeShareWidgetProps extends HTMLAttributes<HTMLDivElement> {
   home: Pick<Home, "id">;
-}
-
-async function findKeysByHomeId(homeId: Home["id"]) {
-  const keys = db.shareKey.findMany({ where: { homeId } });
-  return keys;
 }
 
 export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
@@ -39,7 +34,7 @@ export async function HomeShareWidget({ home }: HomeShareWidgetProps) {
       </p>
       <div className="not-prose flex space-x-3">
         {isShared ? <HomeShareCopyButton url={url} /> : null}
-        <HomeShareToggle home={home} shareKey={key} />
+        <HomeShareToggle home={home} key={key} />
       </div>
     </div>
   );

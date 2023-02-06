@@ -1,10 +1,9 @@
-import * as z from "zod";
-
 import type { Home, ShareKey } from "@prisma/client";
 import { homeCreateSchema, homePatchSchema } from "@/lib/validations/home";
 
 import type { User } from "next-auth";
 import { db } from "@/lib/db";
+import { z } from "zod";
 
 export async function createHome(
   userId: User["id"],

@@ -1,6 +1,5 @@
-import * as z from "zod";
-
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { z } from "zod";
 
 export const userPatchSchema = z.object({
   name: z

@@ -12,10 +12,10 @@ import { useState } from "react";
 
 interface HomeShareToggleProps extends HTMLAttributes<HTMLButtonElement> {
   home: Pick<Home, "id">;
-  shareKey?: ShareKey["id"];
+  key?: ShareKey["id"];
 }
 
-export function HomeShareToggle({ home, shareKey: key }: HomeShareToggleProps) {
+export function HomeShareToggle({ home, key: key }: HomeShareToggleProps) {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = !!key;

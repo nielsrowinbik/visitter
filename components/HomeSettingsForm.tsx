@@ -1,7 +1,5 @@
 "use client";
 
-import * as z from "zod";
-
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
@@ -13,10 +11,11 @@ import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface HomeSettingsFormProps extends HTMLAttributes<HTMLFormElement> {
-  home: Pick<Home, "id" | "name">;
+  home: Home;
 }
 
 type FormData = z.infer<typeof homePatchSchema>;
@@ -37,9 +36,7 @@ export function HomeSettingsForm({ home }: HomeSettingsFormProps) {
     try {
       setIsSaving(true);
 
-      await superagent.patch(`/api/homes/${home.id}`).send({
-        name: data.name,
-      });
+      await superagent.patch(`/api/homes/${home.id}`).send(data);
 
       toast("Settings saved", "Your settings were saved succesfully.");
 

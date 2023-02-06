@@ -1,7 +1,5 @@
 "use client";
 
-import * as z from "zod";
-
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useController, useForm } from "react-hook-form";
@@ -15,23 +13,12 @@ import type { HTMLAttributes } from "react";
 import type { Home } from "@prisma/client";
 import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
-import { bookingCreateSchema as originalBookingCreateSchema } from "@/lib/validations/booking";
+import { bookingCreateSchema } from "@/lib/validations/booking";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const bookingCreateSchema = originalBookingCreateSchema
-  .omit({
-    startDate: true,
-    endDate: true,
-  })
-  .extend({
-    interval: z.object({
-      start: z.date(),
-      end: z.date(),
-    }),
-  });
 
 type FormData = z.infer<typeof bookingCreateSchema>;
 
@@ -40,26 +27,32 @@ type ControlledRangeInputProps = {
 };
 
 function ControlledRangeInput({ control }: ControlledRangeInputProps) {
-  const { field } = useController({ control, name: "interval" });
+  const {
+    field: startDate,
+    fieldState: { error: startDateError },
+  } = useController({
+    control,
+    name: "startDate",
+  });
+  const onStartChange: DateChangeCallBack = (value) =>
+    startDate.onChange(value);
 
-  const handleStartDateChange: DateChangeCallBack = (newStartDate) => {
-    field.onChange({ start: newStartDate, end: field.value.end });
-  };
-
-  const handleEndDateChange: DateChangeCallBack = (newEndDate) => {
-    field.onChange({ start: field.value.start, end: newEndDate });
-  };
+  const {
+    field: endDate,
+    fieldState: { error: endDateError },
+  } = useController({ control, name: "endDate" });
+  const onEndChange: DateChangeCallBack = (value) => endDate.onChange(value);
 
   return (
     <DateRangeInput
-      onStartDateChange={handleStartDateChange}
-      onEndDateChange={handleEndDateChange}
+      onStartDateChange={onStartChange}
+      onEndDateChange={onEndChange}
     >
       {({ startDateProps, endDateProps }) => (
         <div className="flex items-end space-x-3">
-          <Input {...startDateProps} />
+          <Input {...startDateProps} errorText={startDateError?.message} />
           <Icon.ArrowRight className="mb-4 h-4 w-4 flex-shrink-0" />
-          <Input {...endDateProps} />
+          <Input {...endDateProps} errorText={endDateError?.message} />
         </div>
       )}
     </DateRangeInput>
@@ -88,23 +81,15 @@ export function BookingCreateButton({
     reset,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      interval: {},
-    },
     resolver: zodResolver(bookingCreateSchema),
   });
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  async function onSubmit({ interval, ...data }: FormData) {
+  async function onSubmit(data: FormData) {
     try {
       setIsSaving(true);
 
-      await superagent.post(`/api/homes/${homeId}/bookings`).send({
-        startDate: interval.start,
-        endDate: interval.end,
-        ...data,
-      });
+      await superagent.post(`/api/homes/${homeId}/bookings`).send(data);
 
       router.refresh();
     } catch (error) {
@@ -171,7 +156,14 @@ export function BookingCreateButton({
                         label="Name"
                         {...register("name")}
                       />
-                      <ControlledRangeInput control={control} />
+                      <div className="space-y-2">
+                        <ControlledRangeInput control={control} />
+                        <p className="text-xs italic text-zinc-500">
+                          Please note that you are selecting dates in your{" "}
+                          <strong>vacation home&apos;s timezone</strong>, which
+                          may differ from your current timezone.
+                        </p>
+                      </div>
                     </form>
                   </div>
                   <div className="mt-6 border-t p-6">
