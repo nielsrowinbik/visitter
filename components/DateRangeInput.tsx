@@ -22,18 +22,20 @@ type RangeInputProps = {
   children(props: InjectedProps): JSX.Element;
   onStartDateChange?: DateChangeCallBack;
   onEndDateChange?: DateChangeCallBack;
+  value?: Nullable<Interval>;
 };
 
 export function DateRangeInput({
   children,
   onStartDateChange,
   onEndDateChange,
-}: RangeInputProps) {
-  const [focus, setFocus] = useState<"startDate" | "endDate" | undefined>();
-  const [range, setRange] = useState<Nullable<Interval>>({
+  value = {
     start: null,
     end: null,
-  });
+  },
+}: RangeInputProps) {
+  const [focus, setFocus] = useState<"startDate" | "endDate" | undefined>();
+  const [range, setRange] = useState<Nullable<Interval>>(value);
 
   useDidMountEffect(() => {
     if (onStartDateChange) onStartDateChange(range.start);

@@ -9,8 +9,6 @@ interface BookingItemProps {
 }
 
 export function BookingItem({ booking }: BookingItemProps) {
-  console.log("BookingItem", typeof booking.startDate);
-
   return (
     <li className="flex items-center justify-between p-4">
       <div className="grid gap-1">

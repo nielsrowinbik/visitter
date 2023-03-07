@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { deleteBooking, findBookingById } from "@/lib/bookings";
+import { deleteBooking, findBookingById, updateBooking } from "@/lib/bookings";
 
 import { authentication } from "@/lib/api-middlewares/authentication";
+import { bookingCreateSchema } from "@/lib/validations/booking";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
 
@@ -25,6 +26,16 @@ handler.get(async (req, res) => {
   const booking = await findBookingById(bookingId);
 
   return res.json(booking);
+});
+
+handler.patch(async (req, res) => {
+  const bookingId = req.query.bookingId as string;
+
+  const body = bookingCreateSchema.parse(req.body);
+
+  await updateBooking(bookingId, body);
+
+  return res.status(204).end();
 });
 
 export default handler;
