@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icon";
 import { Input } from "@/components/Input";
 import { SubmitHandler } from "react-hook-form";
 import { bookingCreateSchema } from "@/lib/validations/booking";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,6 +68,10 @@ export function BookingForm({
       <DateRangeInput
         onStartDateChange={handleStartDateChange}
         onEndDateChange={handleEndDateChange}
+        value={{
+          start: defaultValues?.startDate || null,
+          end: defaultValues?.endDate || null,
+        }}
       >
         {({ startDateProps, endDateProps }) => (
           <div className="flex items-end space-x-3">

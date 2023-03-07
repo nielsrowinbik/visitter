@@ -24,3 +24,10 @@ export async function findBookingById(id: Booking["id"]) {
 export async function findBookingsByHomeId(homeId: Home["id"]) {
   return await db.booking.findMany({ where: { homeId } });
 }
+
+export async function updateBooking(
+  id: Booking["id"],
+  data: z.infer<typeof bookingCreateSchema>
+) {
+  return await db.booking.update({ where: { id }, data });
+}
