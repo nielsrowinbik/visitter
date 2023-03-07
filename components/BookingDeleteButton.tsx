@@ -51,6 +51,7 @@ export const BookingDeleteButton = forwardRef(function BookingDeleteButton(
         onClick={openModal}
         ref={ref}
         square
+        title="Delete booking"
         variant="outline"
         {...props}
       >
