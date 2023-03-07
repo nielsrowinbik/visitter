@@ -4,6 +4,7 @@ import { faker } from "@faker-js/faker";
 
 const HOME_NAME = faker.music.songName();
 const BOOKING_NAME = "End to end test";
+const EDITED_BOOKING_NAME = "End to end test (edited)";
 
 test.describe("The dashboard", () => {
   // @ts-expect-error
@@ -58,14 +59,44 @@ test.describe("The dashboard", () => {
 
     await page.getByLabel("name").fill(BOOKING_NAME);
     await page.getByLabel("Start date").click();
-    await page.getByText("13").click();
-    await page.getByText("15").click();
+    await page.getByRole("button").filter({ hasText: "13" }).click();
+    await page.getByRole("button").filter({ hasText: "15" }).click();
     await page
       .getByRole("button")
       .filter({ hasText: "Create booking" })
       .click();
 
     await expect(booking).toBeVisible();
+  });
+
+  test("should allow the user to edit a booking", async ({ page }) => {
+    await page.goto("/homes");
+
+    await page
+      .getByRole("listitem")
+      .filter({ hasText: HOME_NAME })
+      .first()
+      .click();
+
+    await page
+      .getByRole("listitem")
+      .filter({ hasText: BOOKING_NAME })
+      .first()
+      .getByTitle("Edit booking")
+      .click();
+
+    await page.getByLabel("name").fill(EDITED_BOOKING_NAME);
+    await page.getByLabel("Start date").click();
+    await page.getByRole("button").filter({ hasText: "20" }).click();
+    await page.getByRole("button").filter({ hasText: "24" }).click();
+    await page
+      .getByRole("button")
+      .filter({ hasText: "Update booking" })
+      .click();
+
+    await expect(
+      page.getByRole("listitem").filter({ hasText: EDITED_BOOKING_NAME })
+    ).toBeVisible();
   });
 
   test("should allow the user to delete a booking", async ({ page }) => {
@@ -79,9 +110,9 @@ test.describe("The dashboard", () => {
 
     await page
       .getByRole("listitem")
-      .filter({ hasText: BOOKING_NAME })
+      .filter({ hasText: EDITED_BOOKING_NAME })
       .first()
-      .getByRole("button") // TODO: We should probably be a bit more specific here. Button probably isn't accessible enough.
+      .getByTitle("Delete booking")
       .click();
 
     await page
@@ -91,7 +122,7 @@ test.describe("The dashboard", () => {
       .click();
 
     await expect(
-      page.getByRole("listitem").filter({ hasText: BOOKING_NAME })
+      page.getByRole("listitem").filter({ hasText: EDITED_BOOKING_NAME })
     ).not.toBeVisible();
   });
 

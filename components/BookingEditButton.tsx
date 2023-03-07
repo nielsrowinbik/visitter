@@ -52,7 +52,14 @@ export function BookingEditButton({
 
   return (
     <>
-      <Button compact onClick={openModal} square variant="outline" {...props}>
+      <Button
+        compact
+        onClick={openModal}
+        square
+        title="Edit booking"
+        variant="outline"
+        {...props}
+      >
         <Icon.Pencil className="h-3 w-3" />
       </Button>
       <Transition appear show={isOpen} as={Fragment}>
