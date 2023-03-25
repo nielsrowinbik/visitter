@@ -1,7 +1,7 @@
-import { every, isNull, isUndefined, some } from "lodash";
 import {
+  addDays,
   format,
-  isAfter,
+  getTime,
   isBefore,
   isSameDay,
   isSameMonth,
@@ -9,6 +9,7 @@ import {
   isThisYear,
   isWithinInterval,
 } from "date-fns";
+import { every, isNull, isUndefined, reduce, some, sortBy } from "lodash";
 
 import type { ClassValue } from "clsx";
 import type { Interval } from "date-fns";
@@ -24,41 +25,38 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type IntervalTuple = [Interval[], Interval["end"]];
-
 export function flattenIntervals(intervals: Interval[]): Interval[] {
-  return intervals.reduce<IntervalTuple>(
-    ([res, end], interval, i) => {
-      if (isAfter(interval.start, end)) {
-        // Booking starts after the last endDate
-        return [
-          [...res, { start: interval.start, end: interval.end }],
-          interval.end,
-        ];
+  const sorted = sortBy(intervals, (o) => getTime(o.start));
+
+  return reduce(
+    sorted,
+    // @ts-ignore
+    (acc: Interval[], curr: Interval) => {
+      if (acc.length === 0) return [curr];
+
+      const prev = acc.pop();
+
+      // Current range is completely inside previous:
+      if (isBefore(curr.end, prev!.end) || isSameDay(curr.end, prev!.end)) {
+        return [...acc, prev];
       }
 
-      if (isBefore(interval.start, end) || isSameDay(interval.start, end)) {
-        // Booking starts during our current period or exactly at the end
-
-        if (isAfter(interval.end, end)) {
-          // Booking lasts longer than our current endDate
-          return [
-            [
-              ...res.slice(0, -1),
-              {
-                start: res.slice(-1)[0].start,
-                end: interval.end,
-              },
-            ],
-            interval.end,
-          ];
-        }
+      // Current range overlaps previous. Merges overlapping (<),
+      // contiguous (==), and adjacent ranges:
+      if (
+        isBefore(curr.start, prev!.end) ||
+        isSameDay(curr.start, prev!.end) ||
+        isSameDay(curr.start, addDays(prev!.end, 1))
+      ) {
+        return [...acc, { start: prev?.start, end: curr.end }];
       }
 
-      return [res, end];
+      // Ranges do not overlap:
+
+      return [...acc, prev, curr];
     },
-    [[], new Date("1970-01-01")]
-  )[0];
+    []
+  );
 }
 
 type FormatOptions = {
