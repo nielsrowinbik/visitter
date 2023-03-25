@@ -61,7 +61,7 @@ export function DateRangeInput({
           readOnly: true,
           type: "text",
           value: !isNull(range.start)
-            ? formatDate(range.start, { includeMonth: true })
+            ? formatDate(range.start, { includeMonth: true, includeYear: true })
             : "",
         },
         endDateProps: {
@@ -73,7 +73,7 @@ export function DateRangeInput({
           required: true,
           type: "text",
           value: !isNull(range.end)
-            ? formatDate(range.end, { includeMonth: true })
+            ? formatDate(range.end, { includeMonth: true, includeYear: true })
             : "",
         },
       })}

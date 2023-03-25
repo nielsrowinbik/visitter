@@ -98,11 +98,10 @@ export function formatNullableInterval(interval: Nullable<Interval>): string {
     });
     const formattedEnd = formatDate(end!, {
       includeMonth: !isSameMonth(start!, end!),
-      includeYear:
-        !isSameYear(start!, end!) || every(interval as Interval, isNotThisYear),
+      includeYear: true,
     });
 
-    return [formattedStart, "until", formattedEnd]
+    return [formattedStart, "-", formattedEnd]
       .join(" ")
       .replace(/\s(?=\s)/g, "");
   }
