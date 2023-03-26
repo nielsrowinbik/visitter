@@ -1,24 +1,19 @@
 "use client";
 
 import { Menu, Transition } from "@headlessui/react";
+import { SessionProvider, signOut, useSession } from "next-auth/react";
 
 import { Fragment } from "react";
-import type { HTMLAttributes } from "react";
 import Link from "next/link";
-import { User } from "next-auth";
 import { UserAvatar } from "@/components/UserAvatar";
-import { cn } from "@/lib/utils";
-import { signOut } from "next-auth/react";
 
-interface UserAccountNavProps extends HTMLAttributes<HTMLDivElement> {
-  user: User;
-}
-
-export function UserAccountNav({ user }: UserAccountNavProps) {
+export function UserAccountNav() {
   return (
     <Menu as="div" className="relative">
       <Menu.Button>
-        <UserAvatar user={user} />
+        <SessionProvider>
+          <UserAvatar />
+        </SessionProvider>
       </Menu.Button>
       <Transition
         as={Fragment}

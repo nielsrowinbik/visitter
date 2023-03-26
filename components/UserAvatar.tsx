@@ -1,12 +1,19 @@
+"use client";
+
 import { Icon } from "@/components/Icon";
 import Image from "next/image";
 import type { User } from "next-auth";
+import { useSession } from "next-auth/react";
 
-interface UserAvatarProps {
-  user: User;
-}
+export function UserAvatar() {
+  const { data: session, status } = useSession();
 
-export function UserAvatar({ user, ...props }: UserAvatarProps) {
+  if (status !== "authenticated") {
+    return null;
+  }
+
+  const user = session?.user;
+
   return (
     <div className="flex h-[32px] w-[32px] items-center justify-center overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-700">
       {user.image && <Image alt="Profile picture" src={user.image} />}

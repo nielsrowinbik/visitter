@@ -4,13 +4,11 @@ import type { ReactNode } from "react";
 import { UserAccountNav } from "@/components/UserAccountNav";
 import { getCurrentUser } from "@/lib/session";
 
-interface DashboardLayoutProps {
-  children?: ReactNode;
-}
-
 export default async function DashboardLayout({
   children,
-}: DashboardLayoutProps) {
+}: {
+  children: ReactNode;
+}) {
   const user = await getCurrentUser();
 
   return (
@@ -20,7 +18,7 @@ export default async function DashboardLayout({
           <Icon.Logo className="box-content h-6 w-6 p-1" />
           <span className="font-bold">Visitter</span>
         </Link>
-        <UserAccountNav user={user!} />
+        <UserAccountNav />
       </header>
       <main className="flex w-full flex-1 flex-col">{children}</main>
     </div>
