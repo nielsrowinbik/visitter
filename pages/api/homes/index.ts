@@ -11,6 +11,7 @@ import { getCurrentUser } from "@/lib/session";
 import { homeCreateSchema } from "@/lib/validations/home";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
+import { stringify } from "superjson";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError,
@@ -23,7 +24,7 @@ handler.get(async (req, res) => {
 
   const homes = await findHomesByUserId(user!.id);
 
-  return res.json(homes);
+  return res.send(stringify(homes));
 });
 
 handler.post(async (req, res) => {
@@ -44,7 +45,7 @@ handler.post(async (req, res) => {
 
   const home = await createHome(user!.id, body);
 
-  return res.status(201).json(home);
+  return res.status(201).send(stringify(home));
 });
 
 export default handler;

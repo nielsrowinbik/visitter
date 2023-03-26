@@ -5,6 +5,7 @@ import { authentication } from "@/lib/api-middlewares/authentication";
 import { getCurrentUser } from "@/lib/session";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
+import { stringify } from "superjson";
 import { stripe } from "@/lib/stripe";
 import { userPatchSchema } from "@/lib/validations/user";
 
@@ -33,7 +34,7 @@ handler.get(async (req, res) => {
 
   const user = await findUserById(userId);
 
-  return res.json(user);
+  return res.send(stringify(user));
 });
 
 handler.patch(async (req, res) => {

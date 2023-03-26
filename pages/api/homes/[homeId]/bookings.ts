@@ -5,6 +5,7 @@ import { authentication } from "@/lib/api-middlewares/authentication";
 import { bookingCreateSchema } from "@/lib/validations/booking";
 import nc from "next-connect";
 import { onError } from "@/lib/api-middlewares/on-error";
+import { stringify } from "superjson";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError,
@@ -17,7 +18,7 @@ handler.get(async (req, res) => {
 
   const bookings = await findBookingsByHomeId(homeId);
 
-  return res.json(bookings);
+  return res.send(stringify(bookings));
 });
 
 handler.post(async (req, res) => {
@@ -27,7 +28,7 @@ handler.post(async (req, res) => {
 
   const booking = await createBooking(body, homeId);
 
-  return res.status(201).json(booking);
+  return res.status(201).send(stringify(booking));
 });
 
 export default handler;
