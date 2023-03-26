@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { absoluteUrl } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/session";
 import { premiumPlan } from "@/config/subscriptions";
-import stripe from "stripe";
+import { stripe } from "@/lib/stripe";
 
 const billingUrl = absoluteUrl("/account");
 

@@ -3,7 +3,7 @@ import { deleteUser, findUserById, updateUser } from "@/lib/users";
 
 import { getCurrentUser } from "@/lib/session";
 import { stringify } from "superjson";
-import stripe from "stripe";
+import { stripe } from "@/lib/stripe";
 import { userPatchSchema } from "@/lib/validations/user";
 
 type RouteParams = {
