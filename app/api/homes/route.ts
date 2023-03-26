@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const body = homeCreateSchema.parse(req.body);
+  const body = homeCreateSchema.parse(await req.json());
 
   const home = await createHome(user!.id, body);
 

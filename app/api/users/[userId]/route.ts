@@ -12,6 +12,8 @@ type RouteParams = {
   };
 };
 
+export const revalidate = 0;
+
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
   const { userId } = params;
   const user = await getCurrentUser();
