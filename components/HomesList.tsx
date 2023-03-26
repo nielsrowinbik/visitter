@@ -1,14 +1,21 @@
+"use client";
+
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
+import type { Home } from "@prisma/client";
 import { HomeCreateButton } from "@/components/HomeCreateButton";
 import { HomeItem } from "@/components/HomeItem";
-import { findHomesByUserId } from "@/lib/homes";
-import { findSubscriptionByUserId } from "@/lib/subscription";
-import { getCurrentUser } from "@/lib/session";
+import type { UserSubscriptionPlan } from "types";
+import { fetcher } from "@/lib/fetcher";
+import useSWR from "swr";
 
-export async function HomesList() {
-  const user = await getCurrentUser();
-  const subscriptionPlan = await findSubscriptionByUserId(user!.id);
-  const homes = await findHomesByUserId(user!.id);
+type HomesListProps = {
+  fallbackData: [Home[], UserSubscriptionPlan];
+};
+
+export function HomesList({ fallbackData }: HomesListProps) {
+  const { data: homes, isLoading } = useSWR<Home[]>("/api/homes", fetcher, {
+    fallbackData: fallbackData[0],
+  });
 
   return homes?.length ? (
     <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -25,23 +32,11 @@ export async function HomesList() {
       </EmptyPlaceholder.Description>
       <EmptyPlaceholder.Actions>
         <HomeCreateButton
-          homeCount={homes?.length}
-          isPaying={subscriptionPlan.isPremium}
+          homeCount={homes!.length}
+          isPaying={fallbackData[1].isPremium}
           variant="outline"
         />
       </EmptyPlaceholder.Actions>
     </EmptyPlaceholder>
   );
 }
-
-HomesList.Skeleton = function HomesListSkeleton() {
-  return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-      <HomeItem.Skeleton />
-      <HomeItem.Skeleton />
-      <HomeItem.Skeleton />
-      <HomeItem.Skeleton />
-      <HomeItem.Skeleton />
-    </div>
-  );
-};

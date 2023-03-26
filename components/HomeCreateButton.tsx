@@ -16,6 +16,7 @@ import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import useSWRMutation from "swr/mutation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -34,7 +35,6 @@ export function HomeCreateButton({
   isPaying,
   ...props
 }: HomeCreateButtonProps) {
-  const router = useRouter();
   const [isOpen, setOpen] = useState(false);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
@@ -47,16 +47,13 @@ export function HomeCreateButton({
   });
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  async function onSubmit(data: FormData) {
+  async function createHome(url: string, { arg }: { arg: FormData }) {
     try {
       setIsSaving(true);
-
-      const res = await superagent.post(`/api/homes`).send(data);
-      const { id } = res.body as Home;
-
-      router.push(`/home/${id}`);
-      router.refresh();
+      await superagent.post(`/api/homes`).send(arg);
     } catch (error) {
+      console.log(error);
+
       toast.error(
         "Something went wrong.",
         "Your vacation home was not created. Please try again."
@@ -65,6 +62,12 @@ export function HomeCreateButton({
       setIsSaving(false);
       closeModal();
     }
+  }
+
+  const { trigger } = useSWRMutation("/api/homes", createHome);
+
+  function onSubmit(data: FormData) {
+    trigger(data);
   }
 
   if (homeCount >= 1 && !isPaying)
