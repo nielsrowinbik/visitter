@@ -5,15 +5,38 @@ import { DashboardHeader } from "@/components/DashboardHeader";
 import { DashboardShell } from "@/components/DashboardShell";
 import { HomeShareWidget } from "@/components/HomeShareWidget";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { findHomeById } from "@/lib/homes";
 import { notFound } from "next/navigation";
 
-interface PageProps {
+// TODO: Refactor to be fully static with fallback data and SWR to keep stuff up to date
+// TODO: When user adds, removes, or updates a booking: update the UI optimistically
+
+type PageProps = {
   params: {
     homeId: string;
   };
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata | undefined> {
+  const home = await findHomeById(params.homeId);
+
+  if (!home) {
+    return;
+  }
+
+  return {
+    title: home.name,
+    alternates: {
+      canonical: `https://nielsbik.nl/home/${home.id}`,
+    },
+  };
 }
+
+export const revalidate = 60;
 
 export default async function HomeDetailPage({ params }: PageProps) {
   const home = await findHomeById(params.homeId);

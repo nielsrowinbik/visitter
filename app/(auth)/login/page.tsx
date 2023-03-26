@@ -1,7 +1,11 @@
-import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { UserAuthForm } from "@/components/UserAuthForm";
+
+export const metadata: Metadata = {
+  title: "Sign in",
+};
 
 export default function LoginPage() {
   return (

@@ -8,7 +8,7 @@ import { getSession } from "@/lib/session";
 
 export default async function IndexPage() {
   return (
-    <main className="prose prose-lg prose-zinc mt-56 space-y-56 text-center prose-p:font-medium prose-ul:font-medium dark:prose-invert sm:prose-xl md:prose-2xl">
+    <main className="prose prose-lg prose-zinc mt-56 space-y-56 text-center dark:prose-invert sm:prose-xl md:prose-2xl prose-p:font-medium prose-ul:font-medium">
       <section>
         <h1>The easiest way to run your vacation home</h1>
         <p>

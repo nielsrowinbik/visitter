@@ -2,11 +2,7 @@ import { Icon } from "@/components/Icon";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-interface MarketingLayoutProps {
-  children: ReactNode;
-}
-
-export default function SharingLayout({ children }: MarketingLayoutProps) {
+export default function SharingLayout({ children }: { children: ReactNode }) {
   return (
     <div className="relative mx-auto max-w-5xl space-y-6 px-4 sm:px-6 lg:px-8">
       <header className="mx-auto flex max-w-[1440px] items-center justify-between py-4">

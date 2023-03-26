@@ -4,15 +4,36 @@ import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { findBookingsByHomeId } from "@/lib/bookings";
 import { findHomeByShareKey } from "@/lib/homes";
 import { flattenIntervals } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 
-interface PageProps {
+// TODO: Refactor to be fully static with fallback data and SWR to keep stuff up to date
+// TODO: The banner about the user being signed in and stuff should be done on the client side
+
+type PageProps = {
   params: {
     key: ShareKey["id"];
+  };
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata | undefined> {
+  const home = await findHomeByShareKey(params.key);
+
+  if (!home) {
+    return;
+  }
+
+  return {
+    title: home.name,
+    alternates: {
+      canonical: `https://nielsbik.nl/availability/${params.key}`,
+    },
   };
 }
 

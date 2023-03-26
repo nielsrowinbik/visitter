@@ -1,6 +1,11 @@
 import { Icon } from "@/components/Icon";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { UserAuthForm } from "@/components/UserAuthForm";
+
+export const metadata: Metadata = {
+  title: "Get Started",
+};
 
 export default async function RegisterPage() {
   return (
