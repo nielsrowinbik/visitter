@@ -1,34 +1,27 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import {
   createHome,
   findHomesByUserId,
   findHomesCountByUserId,
 } from "@/lib/homes";
 
-import { authentication } from "@/lib/api-middlewares/authentication";
 import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
 import { homeCreateSchema } from "@/lib/validations/home";
-import nc from "next-connect";
-import { onError } from "@/lib/api-middlewares/on-error";
 import { stringify } from "superjson";
 
-const handler = nc<NextApiRequest, NextApiResponse>({
-  onError,
-});
+export const revalidate = 0;
 
-handler.use(authentication());
-
-handler.get(async (req, res) => {
-  const user = await getCurrentUser(req, res);
+export async function GET() {
+  const user = await getCurrentUser();
 
   const homes = await findHomesByUserId(user!.id);
 
-  return res.send(stringify(homes));
-});
+  return new NextResponse(stringify(homes));
+}
 
-handler.post(async (req, res) => {
-  const user = await getCurrentUser(req, res);
+export async function POST(req: NextRequest) {
+  const user = await getCurrentUser();
   const { isPremium } = await findSubscriptionByUserId(user!.id);
 
   if (!isPremium) {
@@ -37,7 +30,7 @@ handler.post(async (req, res) => {
     const count = await findHomesCountByUserId(user!.id);
 
     if (count >= 1) {
-      return res.status(402).end();
+      return new NextResponse(undefined, { status: 402 });
     }
   }
 
@@ -45,7 +38,5 @@ handler.post(async (req, res) => {
 
   const home = await createHome(user!.id, body);
 
-  return res.status(201).send(stringify(home));
-});
-
-export default handler;
+  return new NextResponse(stringify(home), { status: 201 });
+}

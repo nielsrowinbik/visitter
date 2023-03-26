@@ -1,24 +1,16 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 import { absoluteUrl } from "@/lib/utils";
-import { authentication } from "@/lib/api-middlewares/authentication";
-import { findSubscriptionByUserId } from "@/lib/subscription";
 import { getCurrentUser } from "@/lib/session";
-import nc from "next-connect";
-import { onError } from "@/lib/api-middlewares/on-error";
 import { premiumPlan } from "@/config/subscriptions";
-import { stripe } from "@/lib/stripe";
+import stripe from "stripe";
 
 const billingUrl = absoluteUrl("/account");
 
-const handler = nc<NextApiRequest, NextApiResponse>({
-  onError,
-});
+export const revalidate = 0;
 
-handler.use(authentication());
-
-handler.get(async (req, res) => {
-  const user = await getCurrentUser(req, res);
+export async function GET(req: NextRequest) {
+  const user = await getCurrentUser();
   // const subscriptionPlan = await getUserSubscriptionPlan(user.id);
 
   if (user!.stripeSubscriptionId) {
@@ -28,7 +20,7 @@ handler.get(async (req, res) => {
       return_url: billingUrl,
     });
 
-    return res.status(200).json({ redirectUrl: stripeSession.url });
+    return NextResponse.json({ redirectUrl: stripeSession.url });
   }
 
   // The user is on the free plan, create a checkout session to upgrade:
@@ -50,7 +42,5 @@ handler.get(async (req, res) => {
     },
   });
 
-  return res.status(200).json({ redirectUrl: stripeSession.url });
-});
-
-export default handler;
+  return NextResponse.json({ redirectUrl: stripeSession.url });
+}
