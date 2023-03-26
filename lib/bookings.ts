@@ -21,8 +21,10 @@ export async function findBookingById(id: Booking["id"]) {
   return await db.booking.findUnique({ where: { id } });
 }
 
-export async function findBookingsByHomeId(homeId: Home["id"]) {
-  return await db.booking.findMany({ where: { homeId } });
+export async function findBookingsByHomeId(homeId: Home["id"], from?: Date) {
+  return await db.booking.findMany({
+    where: { homeId, endDate: { gte: from } },
+  });
 }
 
 export async function updateBooking(

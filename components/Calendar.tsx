@@ -6,6 +6,7 @@ import {
   endOfMonth,
   format,
   getDay,
+  isSameDay,
   startOfMonth,
 } from "date-fns";
 
@@ -24,6 +25,7 @@ type CalendarProps = {
   children(props: InjectedProps): ReactNode;
   className?: string;
   monthsToShow?: 1 | 2;
+  showHistory?: boolean;
 };
 
 function toUTC(date: Date) {
@@ -34,8 +36,10 @@ export function Calendar({
   children,
   className,
   monthsToShow = 1,
+  showHistory = true,
 }: CalendarProps) {
-  const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
+  const startOfCurrentMonth = startOfMonth(new Date());
+  const [currentMonth, setCurrentMonth] = useState(startOfCurrentMonth);
 
   const months = Array.from({ length: monthsToShow }, (_, i) => {
     const start = add(currentMonth, { months: i });
@@ -57,7 +61,16 @@ export function Calendar({
   return (
     <div className={cn("space-y-3", className)}>
       <div className="flex items-center justify-between">
-        <Button square type="button" onClick={previousMonth} variant="subtle">
+        <Button
+          disabled={
+            isSameDay(startOfCurrentMonth, currentMonth) &&
+            showHistory === false
+          }
+          onClick={previousMonth}
+          square
+          type="button"
+          variant="subtle"
+        >
           <Icon.ChevronLeft className="h-5 w-5" />
           <span className="sr-only">Previous month</span>
         </Button>

@@ -7,15 +7,17 @@ import { findBookingsByHomeId } from "@/lib/bookings";
 import { findHomeByShareKey } from "@/lib/homes";
 import { flattenIntervals } from "@/lib/utils";
 import { notFound } from "next/navigation";
-
-// TODO: Refactor to be fully static with fallback data and SWR to keep stuff up to date
-// TODO: The banner about the user being signed in and stuff should be done on the client side
+import { startOfMonth } from "date-fns";
 
 type PageProps = {
   params: {
     key: ShareKey["id"];
   };
 };
+
+export const dynamic = "force-static";
+export const dynamicParams = true;
+export const revalidate = 60 * 5;
 
 export async function generateMetadata({
   params,
@@ -34,8 +36,6 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 60;
-
 export default async function HomeAvailabilityPage({
   params: { key },
 }: PageProps) {
@@ -43,7 +43,8 @@ export default async function HomeAvailabilityPage({
 
   if (!home) return notFound();
 
-  const bookings = await findBookingsByHomeId(home.id);
+  const startOfCurrentMonth = startOfMonth(new Date());
+  const bookings = await findBookingsByHomeId(home.id, startOfCurrentMonth);
   const intervals = bookings.map(toInterval);
   const flattened = flattenIntervals(intervals);
 

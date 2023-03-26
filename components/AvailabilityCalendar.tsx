@@ -13,7 +13,11 @@ type AvailabilityCalendarProps = {
 
 export function AvailabilityCalendar({ bookings }: AvailabilityCalendarProps) {
   return (
-    <Calendar className="max-w-3xl space-y-6" monthsToShow={2}>
+    <Calendar
+      className="max-w-3xl space-y-6"
+      monthsToShow={2}
+      showHistory={false}
+    >
       {({ className, day, ...props }) => {
         const isWithinAnInterval = isWithinIntervals(day, bookings);
         const { isIntervalStart, isIntervalEnd } = isIntervalStartOrEnd(

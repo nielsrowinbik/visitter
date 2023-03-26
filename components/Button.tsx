@@ -46,7 +46,8 @@ export const Button = forwardRef(function renderButton(
             variant === "danger",
         },
         {
-          "hover:bg-zinc-50 dark:hover:bg-zinc-800": variant === "subtle",
+          "enabled:hover:bg-zinc-50 disabled:text-zinc-300 enabled:dark:hover:bg-zinc-800 dark:disabled:text-zinc-600":
+            variant === "subtle",
         },
         className
       )}
