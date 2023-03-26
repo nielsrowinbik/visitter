@@ -52,6 +52,7 @@
     "stripe": "^11.1.0",
     "superagent": "^8.0.3",
     "superjson": "^1.12.1",
+    "swr": "^2.1.1",
     "tailwind-merge": "^1.8.0",
     "vfile": "^5.3.6",
     "vfile-matter": "^4.0.0",

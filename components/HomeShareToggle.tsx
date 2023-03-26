@@ -4,18 +4,20 @@ import type { Home, ShareKey } from "@prisma/client";
 
 import { Button } from "@/components/Button";
 import type { HTMLAttributes } from "react";
+import { mutate } from "swr";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface HomeShareToggleProps extends HTMLAttributes<HTMLButtonElement> {
-  home: Pick<Home, "id">;
-  key?: ShareKey["id"];
+  homeId: Home["id"];
+  shareKey?: ShareKey["id"];
 }
 
-export function HomeShareToggle({ home, key: key }: HomeShareToggleProps) {
-  const router = useRouter();
+export function HomeShareToggle({
+  homeId,
+  shareKey: key,
+}: HomeShareToggleProps) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const isShared = !!key;
 
@@ -26,10 +28,10 @@ export function HomeShareToggle({ home, key: key }: HomeShareToggleProps) {
       if (isShared === true) {
         await superagent.delete(`/api/keys/${key}`);
       } else {
-        await superagent.post(`/api/homes/${home.id}/keys`);
+        await superagent.post(`/api/homes/${homeId}/keys`);
       }
 
-      router.refresh();
+      await mutate(`/api/homes/${homeId}/keys`);
     } catch (error) {
       toast.error(
         "Something went wrong.",

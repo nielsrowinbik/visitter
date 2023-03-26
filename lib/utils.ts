@@ -90,6 +90,13 @@ export function formatNullableInterval(interval: Nullable<Interval>): string {
   const isFull = !some(interval, isNull);
   const { start, end } = interval;
 
+  // const start =
+  //   typeof interval.start === "string"
+  //     ? parseISO(interval.start)
+  //     : interval.start;
+  // const end =
+  //   typeof interval.end === "string" ? parseISO(interval.end) : interval.end;
+
   // Both ends of the interval defined, return a formatted string:
   if (isFull) {
     const formattedStart = formatDate(start!, {

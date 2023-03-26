@@ -1,16 +1,24 @@
+"use client";
+
+import type { Booking, Home } from "@prisma/client";
+
 import { BookingCreateButton } from "@/components/BookingCreateButton";
 import { BookingItem } from "@/components/BookingItem";
 import { EmptyPlaceholder } from "@/components/EmptyPlaceholder";
-import type { HTMLAttributes } from "react";
-import type { Home } from "@prisma/client";
-import { findBookingsByHomeId } from "@/lib/bookings";
+import { fetcher } from "@/lib/fetcher";
+import useSWR from "swr";
 
-interface BookingsListProps extends HTMLAttributes<HTMLDivElement> {
-  home: Pick<Home, "id">;
-}
+type BookingsListProps = {
+  fallbackData: Booking[];
+  homeId: Home["id"];
+};
 
-export async function BookingsList({ home }: BookingsListProps) {
-  const bookings = await findBookingsByHomeId(home.id);
+export function BookingsList({ fallbackData, homeId }: BookingsListProps) {
+  const { data: bookings } = useSWR<Booking[]>(
+    `/api/homes/${homeId}/bookings`,
+    fetcher,
+    { fallbackData }
+  );
 
   return bookings?.length ? (
     <ul className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
@@ -26,19 +34,8 @@ export async function BookingsList({ home }: BookingsListProps) {
         bookings.
       </EmptyPlaceholder.Description>
       <EmptyPlaceholder.Actions>
-        <BookingCreateButton homeId={home.id} variant="outline" />
+        <BookingCreateButton homeId={homeId} variant="outline" />
       </EmptyPlaceholder.Actions>
     </EmptyPlaceholder>
   );
 }
-
-BookingsList.Skeleton = function BookingsListSkeleton() {
-  return (
-    <div className="divide-y divide-zinc-400/20 rounded-md ring-1 ring-zinc-400/20 ">
-      <BookingItem.Skeleton />
-      <BookingItem.Skeleton />
-      <BookingItem.Skeleton />
-      <BookingItem.Skeleton />
-    </div>
-  );
-};

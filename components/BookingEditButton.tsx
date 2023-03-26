@@ -11,6 +11,7 @@ import { Button } from "@/components/Button";
 import type { ButtonProps } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { bookingCreateSchema } from "@/lib/validations/booking";
+import { mutate } from "swr";
 import superagent from "superagent";
 import { toast } from "@/components/Toast";
 import { useRouter } from "next/navigation";
@@ -38,7 +39,7 @@ export function BookingEditButton({
 
       await superagent.patch(`/api/bookings/${booking.id}`).send(data);
 
-      router.refresh();
+      await mutate(`/api/homes/${booking.homeId}/bookings`);
     } catch (error) {
       toast.error(
         "Something went wrong.",

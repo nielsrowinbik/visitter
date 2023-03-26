@@ -1,12 +1,13 @@
-import type { Booking } from "@prisma/client";
+import type { Booking, Home } from "@prisma/client";
+
 import { BookingDeleteButton } from "@/components/BookingDeleteButton";
 import { BookingEditButton } from "./BookingEditButton";
 import { Skeleton } from "@/components/Skeleton";
 import { formatNullableInterval } from "@/lib/utils";
 
-interface BookingItemProps {
+type BookingItemProps = {
   booking: Booking;
-}
+};
 
 export function BookingItem({ booking }: BookingItemProps) {
   return (

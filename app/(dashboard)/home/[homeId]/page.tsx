@@ -7,11 +7,10 @@ import { HomeShareWidget } from "@/components/HomeShareWidget";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { findBookingsByHomeId } from "@/lib/bookings";
 import { findHomeById } from "@/lib/homes";
+import { findKeysByHomeId } from "@/lib/keys";
 import { notFound } from "next/navigation";
-
-// TODO: Refactor to be fully static with fallback data and SWR to keep stuff up to date
-// TODO: When user adds, removes, or updates a booking: update the UI optimistically
 
 type PageProps = {
   params: {
@@ -36,12 +35,16 @@ export async function generateMetadata({
   };
 }
 
+export const dynamic = "force-static";
 export const revalidate = 60;
 
 export default async function HomeDetailPage({ params }: PageProps) {
   const home = await findHomeById(params.homeId);
 
   if (!home) return notFound();
+
+  const bookings = await findBookingsByHomeId(home.id);
+  const keys = await findKeysByHomeId(home.id);
 
   return (
     <DashboardShell>
@@ -53,16 +56,14 @@ export default async function HomeDetailPage({ params }: PageProps) {
       </DashboardHeader>
       <div className="mb-10 space-y-6 lg:flex lg:space-y-0">
         <div className="flex-1 lg:mr-10">
-          <Suspense fallback={<BookingsList.Skeleton />}>
-            {/* @ts-expect-error Async Server Component */}
-            <BookingsList home={home} />
-          </Suspense>
+          <BookingsList
+            fallbackData={bookings}
+            homeId={home.id}
+            data-superjson
+          />
         </div>
         <div className="lg:max-w-[35%]">
-          <Suspense fallback={<HomeShareWidget.Skeleton />}>
-            {/* @ts-expect-error Async Server Component */}
-            <HomeShareWidget home={home} />
-          </Suspense>
+          <HomeShareWidget fallbackData={keys} homeId={home.id} />
         </div>
       </div>
     </DashboardShell>
