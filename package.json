@@ -27,7 +27,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.7.0",
-    "@stripe/react-stripe-js": "^1.15.0",
+    "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.44.1",
     "@vercel/analytics": "^0.1.4",
     "clsx": "^1.2.1",
