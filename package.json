@@ -43,6 +43,7 @@
     "libphonenumber-js": "^1.10.26",
     "nodemailer": "^6.9.1",
     "react": "^18.2.0",
+    "react-aria-components": "1.0.0-alpha.3",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "^18.2.0",
     "react-email": "^1.9.0",
