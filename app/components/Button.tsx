@@ -1,7 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ButtonHTMLAttributes } from "react";
 import { cn } from "~/utils";
 import { Icon } from "~/components/Icon";
+import { Button as AriaButton } from "react-aria-components";
+import type { ButtonProps as AriaButtonProps } from "react-aria-components";
+
+// TODO: Use React Aria's attributes for things like hover and focus changes
 
 const button = cva(
   cn(
@@ -32,10 +35,10 @@ const button = cva(
   }
 );
 
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof button> {
-  loading?: boolean;
+export interface ButtonProps extends AriaButtonProps, VariantProps<typeof button> {
+  className?: string;
+  disabled?: boolean; // TODO: Remove and move to `isDisabled`
+  loading?: boolean; // TODO: Remove and move to `isLoading`
 }
 
 export function Button({
@@ -48,13 +51,17 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <button
+    <AriaButton
       className={cn(button({ className, size, variant }))}
-      disabled={loading || disabled}
+      isDisabled={loading || disabled}
       {...props}
     >
-      {loading ? <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" /> : null}
-      {children}
-    </button>
+      <>
+        {loading ? (
+          <Icon.Spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : null}
+        {children}
+      </>
+    </AriaButton>
   );
 }
