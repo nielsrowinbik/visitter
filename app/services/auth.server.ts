@@ -29,7 +29,7 @@ auth.use(
       async sendCode({ email, code, user, form, request }) {
         await sendMail({
           to: email,
-          subject: `Sign in to Visitter using code ${code}`,
+          subject: "Your login code for Visitter",
           from: "noreply@visitter.app",
           sender: "Visitter",
           html: otpEmail({ code }),

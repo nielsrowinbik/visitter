@@ -8,7 +8,7 @@ specifiers:
   '@radix-ui/react-avatar': ^1.0.2
   '@radix-ui/react-dropdown-menu': ^2.0.4
   '@radix-ui/react-tabs': ^1.0.3
-  '@react-email/components': ^0.0.4
+  '@react-email/components': ^0.0.5
   '@react-email/html': ^0.0.4
   '@react-email/render': ^0.0.6
   '@react-email/tailwind': ^0.0.7
@@ -61,7 +61,7 @@ dependencies:
   '@radix-ui/react-avatar': 1.0.2_biqbaboplfbrettd7655fr4n2y
   '@radix-ui/react-dropdown-menu': 2.0.4_puuzjadfv64tjpjwi3qllwuniy
   '@radix-ui/react-tabs': 1.0.3_biqbaboplfbrettd7655fr4n2y
-  '@react-email/components': 0.0.4
+  '@react-email/components': 0.0.5
   '@react-email/html': 0.0.4
   '@react-email/render': 0.0.6
   '@react-email/tailwind': 0.0.7
@@ -3619,8 +3619,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@react-email/button/0.0.7:
-    resolution: {integrity: sha512-TMcy5p+XBArufjtmrYOkFFRtiVegrvz3BeynvvHlsvlJImDy6az2+NLvkuSghG0hgOs1t5otD0Bn2PBVZhx/wA==}
+  /@react-email/button/0.0.8:
+    resolution: {integrity: sha512-EOIX/ewPgn/CXUvaAbR92jfWC8EXTSRBafpKtIbxchMcx/iIEG7/JqUndJdZ7BqgON1o6GLm3xP2+AtXtTZJkg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       react: 18.2.0
@@ -3633,12 +3633,12 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@react-email/components/0.0.4:
-    resolution: {integrity: sha512-vJZ9P/ixOcrtMnUV11oe/3ci7yRKZyIzcjnxmu4yCYuZBV3zgHdvieUmgSeNGcW7sP140foJavGJNFu3ePUrrA==}
+  /@react-email/components/0.0.5:
+    resolution: {integrity: sha512-y2tyxF2Uz7qIJrIN/4mmQoDELrmNhB+Js6SBlhdf3RJVMFtTAxQUCF3U7zorMSOmUXNL5YZURRPKSwURZn3lcw==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@react-email/body': 0.0.2
-      '@react-email/button': 0.0.7
+      '@react-email/button': 0.0.8
       '@react-email/column': 0.0.7
       '@react-email/container': 0.0.8
       '@react-email/font': 0.0.1
@@ -3648,8 +3648,8 @@ packages:
       '@react-email/html': 0.0.4
       '@react-email/img': 0.0.5
       '@react-email/link': 0.0.5
-      '@react-email/preview': 0.0.5
-      '@react-email/render': 0.0.6
+      '@react-email/preview': 0.0.6
+      '@react-email/render': 0.0.7
       '@react-email/row': 0.0.5
       '@react-email/section': 0.0.9
       '@react-email/tailwind': 0.0.7
@@ -3713,8 +3713,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@react-email/preview/0.0.5:
-    resolution: {integrity: sha512-3OwWQvuxqi8MdJ1PZHH6XLrG9N8Z3uAN9cVWOlqb4WuhR1KwTVPgZwSy/zuzTiuhhejpO8/ctC7tMfZSpXdThg==}
+  /@react-email/preview/0.0.6:
+    resolution: {integrity: sha512-mXDCc3NGpm/4W7gowBtjsTxYXowLNOLsJsYhIfrsjNJWGlVhVFB9uEHm55LjBLpxSG020g6/8LIrpJU6g22qvg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       react: 18.2.0
@@ -3722,6 +3722,16 @@ packages:
 
   /@react-email/render/0.0.6:
     resolution: {integrity: sha512-6zs7WZbd37TcPT1OmMPH/kcBpv0QSi+k3om7LyDnbdIcrbwOO/OstVwUaa/6zgvDvnq9Y2wOosbru7j5kUrW9A==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      html-to-text: 9.0.3
+      pretty: 2.0.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@react-email/render/0.0.7:
+    resolution: {integrity: sha512-hMMhxk6TpOcDC5qnKzXPVJoVGEwfm+U5bGOPH+MyTTlx0F02RLQygcATBKsbP7aI/mvkmBAZoFbgPIHop7ovug==}
     engines: {node: '>=16.0.0'}
     dependencies:
       html-to-text: 9.0.3
