@@ -8,6 +8,7 @@ import {
   updateBooking,
 } from "~/services/bookings.server";
 import { json, useActionData, useLoaderData } from "~/utils/superjson";
+import { useEffect, useState } from "react";
 
 import type { Booking } from "@prisma/client";
 import { Button } from "~/components/Button";
@@ -16,14 +17,15 @@ import { Dashboard } from "~/components/Dashboard";
 import { FormField } from "~/components/FormField";
 import { bookingPutSchema } from "~/validations/booking";
 import { redirect } from "@remix-run/node";
-import { useState } from "react";
+import toast from "react-hot-toast";
 import type { z } from "zod";
 
 export default function BookingEditPage() {
   const navigate = useNavigate();
   const { formMethod, state } = useNavigation();
   const { booking } = useLoaderData<LoaderData>();
-  const errors = useActionData<ActionData>();
+  const actionData = useActionData<ActionData>();
+  const { formErrors, submitError } = actionData!;
 
   const isDeleting = state !== "idle" && formMethod === "DELETE";
   const isSaving = state !== "idle" && formMethod === "PUT";
@@ -36,6 +38,12 @@ export default function BookingEditPage() {
     booking.startDate.toISOString().split("T")[0]
   );
 
+  useEffect(() => {
+    if (submitError) {
+      toast.error(submitError);
+    }
+  }, [submitError]);
+
   return (
     <Dashboard>
       <Dashboard.Header title="Edit booking" />
@@ -45,7 +53,7 @@ export default function BookingEditPage() {
             defaultValue={booking.name}
             description="You can use the booking's name to indicate who or what the booking is for."
             disabled={isSaving}
-            error={errors?.name}
+            error={formErrors?.name}
             htmlFor="name"
             label="Name"
             required
@@ -53,7 +61,7 @@ export default function BookingEditPage() {
           />
           <FormField
             disabled={isSaving}
-            error={errors?.startDate}
+            error={formErrors?.startDate}
             htmlFor="startDate"
             label="Start date"
             onChange={(e) => setStartDate(e.target.value)}
@@ -63,7 +71,7 @@ export default function BookingEditPage() {
           />
           <FormField
             disabled={isSaving}
-            error={errors?.endDate}
+            error={formErrors?.endDate}
             htmlFor="endDate"
             label="End date"
             min={startDate}
@@ -115,7 +123,10 @@ export default function BookingEditPage() {
   );
 }
 
-type ActionData = z.ZodFormattedError<z.infer<typeof bookingPutSchema>>;
+type ActionData = {
+  formErrors?: z.ZodFormattedError<z.infer<typeof bookingPutSchema>>;
+  submitError?: string;
+};
 
 export async function action({ request, params }: ActionArgs) {
   const { method } = request;
@@ -123,8 +134,14 @@ export async function action({ request, params }: ActionArgs) {
 
   switch (method) {
     case "DELETE":
-      await deleteBooking(bookingId!);
-      return redirect(`/${homeId}`);
+      try {
+        await deleteBooking(bookingId!);
+        return redirect(`/${homeId}`);
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong deleting this booking",
+        });
+      }
 
     case "PUT":
       const parsed = bookingPutSchema.safeParse(
@@ -134,11 +151,17 @@ export async function action({ request, params }: ActionArgs) {
       if (!parsed.success) {
         // FIXME: type error below
         // @ts-expect-error
-        return json<ActionData>(parsed.error.format());
+        return json<ActionData>({ formErrors: parsed.error.format() });
       }
 
-      await updateBooking(bookingId!, parsed.data);
-      return redirect(`/${homeId}`);
+      try {
+        await updateBooking(bookingId!, parsed.data);
+        return redirect(`/${homeId}`);
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong updating this booking",
+        });
+      }
 
     default:
       throw badRequest("Unsupported Method");

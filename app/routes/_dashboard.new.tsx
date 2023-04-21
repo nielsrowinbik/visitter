@@ -11,6 +11,8 @@ import { createHome } from "~/services/homes.server";
 import { homeCreateSchema } from "~/validations/home";
 import { redirect } from "@remix-run/node";
 import { toObject } from "~/utils";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import type { z } from "zod";
 
@@ -21,17 +23,24 @@ export function meta(): V2_MetaDescriptor[] {
 export default function NewHomePage() {
   const navigate = useNavigate();
   const { formMethod, state } = useNavigation();
-  const errors = useActionData<ActionData>();
+  const actionData = useActionData<ActionData>();
+  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "POST";
+
+  useEffect(() => {
+    if (submitError) {
+      toast.error(submitError);
+    }
+  }, [submitError]);
 
   return (
     <Dashboard>
       <Dashboard.Header title="New home" />
-      <Form className="space-y-6 max-w-md" method="POST">
+      <Form className="max-w-md space-y-6" method="POST">
         <FormField
           disabled={isSaving}
-          error={errors?.name}
+          error={formErrors?.name}
           htmlFor="name"
           label="Name"
           placeholder="Fanta Sea"
@@ -51,7 +60,10 @@ export default function NewHomePage() {
   );
 }
 
-type ActionData = z.ZodFormattedError<z.infer<typeof homeCreateSchema>>;
+type ActionData = {
+  formErrors?: z.ZodFormattedError<z.infer<typeof homeCreateSchema>>;
+  submitError?: string;
+};
 
 export async function action({ request }: ActionArgs) {
   const sessionUser = await auth.isAuthenticated(request);
@@ -64,11 +76,17 @@ export async function action({ request }: ActionArgs) {
       );
 
       if (!parsed.success) {
-        return json<ActionData>(parsed.error.format());
+        return json<ActionData>({ formErrors: parsed.error.format() });
       }
 
-      const home = await createHome(sessionUser!.id, parsed.data);
-      return redirect(`/${home.id}`);
+      try {
+        const home = await createHome(sessionUser!.id, parsed.data);
+        return redirect(`/${home.id}`);
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong creating your vacation home",
+        });
+      }
 
     default:
       throw badRequest("Unsupported Method");

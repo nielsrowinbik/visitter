@@ -15,6 +15,8 @@ import { FormField } from "~/components/FormField";
 import type { User } from "@prisma/client";
 import { auth } from "~/services/auth.server";
 import { badRequest } from "remix-utils";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 import { userPatchSchema } from "~/validations/user";
 import type { z } from "zod";
 
@@ -25,11 +27,18 @@ export function meta(): V2_MetaDescriptor[] {
 export default function AccountPage() {
   const { formMethod, state } = useNavigation();
   const { user } = useLoaderData<LoaderData>();
-  const errors = useActionData<ActionData>();
+  const actionData = useActionData<ActionData>();
+  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "PATCH";
   const isDeleting = state !== "idle" && formMethod === "DELETE";
   const isBusy = isSaving || isDeleting;
+
+  useEffect(() => {
+    if (submitError) {
+      toast.error(submitError);
+    }
+  }, [submitError]);
 
   return (
     <Dashboard>
@@ -41,7 +50,7 @@ export default function AccountPage() {
             defaultValue={user.name || ""}
             description="Enter your full name or a display name you are comfortable with."
             disabled={isBusy}
-            error={errors?.name}
+            error={formErrors?.name}
             htmlFor="name"
             label="Name"
             required
@@ -52,7 +61,7 @@ export default function AccountPage() {
             defaultValue={user.email}
             description="Support for changing your e-mail address is coming soon. For now, this field is read-only."
             disabled={isBusy}
-            // error={errors?.email}
+            // error={formErrors?.email}
             htmlFor="email"
             label="Email address"
             required
@@ -64,7 +73,7 @@ export default function AccountPage() {
             defaultValue={user.phone || ""}
             description="Enter your phone number including country code. We will never share your phone number without your permission."
             disabled={isBusy}
-            error={errors?.phone}
+            error={formErrors?.phone}
             htmlFor="phone"
             label="Phone number"
             type="tel"
@@ -104,7 +113,10 @@ export default function AccountPage() {
   );
 }
 
-type ActionData = z.ZodFormattedError<z.infer<typeof userPatchSchema>>;
+type ActionData = {
+  formErrors?: z.ZodFormattedError<z.infer<typeof userPatchSchema>>;
+  submitError?: string;
+};
 
 export async function action({ request }: ActionArgs) {
   const { method } = request;
@@ -112,9 +124,14 @@ export async function action({ request }: ActionArgs) {
 
   switch (method) {
     case "DELETE":
-      await deleteUser(user!.id);
-      await auth.logout(request, { redirectTo: "/" });
-      return null;
+      try {
+        await deleteUser(user!.id);
+        await auth.logout(request, { redirectTo: "/" });
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong deleting your account",
+        });
+      }
 
     case "PATCH":
       const parsed = userPatchSchema.safeParse(
@@ -122,11 +139,17 @@ export async function action({ request }: ActionArgs) {
       );
 
       if (!parsed.success) {
-        return json<ActionData>(parsed.error.format());
+        return json<ActionData>({ formErrors: parsed.error.format() });
       }
 
-      await updateUser(user!.id, parsed.data);
-      return null;
+      try {
+        await updateUser(user!.id, parsed.data);
+        return {};
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong updating your account settings",
+        });
+      }
 
     default:
       throw badRequest("Unsupported Method");
