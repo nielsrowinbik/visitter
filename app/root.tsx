@@ -35,7 +35,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <Toaster position="bottom-right" />
+        <Toaster position="bottom-right" toastOptions={{ duration: 5000 }} />
       </body>
     </html>
   );

@@ -3,7 +3,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import type { ActionArgs, LoaderArgs, V2_MetaArgs } from "@remix-run/node";
 import type { Booking, Home, ShareKey } from "@prisma/client";
 import { createKey, deleteKey, findKeyByHomeId } from "~/services/keys.server";
-import { json, parse, useLoaderData } from "~/utils/superjson";
+import { json, parse, useActionData, useLoaderData } from "~/utils/superjson";
 
 import { BookingRequestsList } from "~/components/BookingRequestsList";
 import { BookingsCalendar } from "~/components/BookingsCalendar";
@@ -15,6 +15,8 @@ import { ShareToggle } from "~/components/ShareToggle";
 import { findBookingsByHomeId } from "~/services/bookings.server";
 import { findHomeById } from "~/services/homes.server";
 import { notFound } from "remix-utils";
+import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 
 export function meta({ data }: V2_MetaArgs) {
   const { home } = parse<LoaderData>(data);
@@ -24,7 +26,15 @@ export function meta({ data }: V2_MetaArgs) {
 
 export default function HomeDetailPage() {
   const { home, bookings, shareKey, baseUrl } = useLoaderData<LoaderData>();
+  const data = useActionData<ActionData>();
+  const { submitError } = data!;
   const requests: unknown[] = []; // stub
+
+  useEffect(() => {
+    if (submitError) {
+      toast.error(submitError);
+    }
+  }, [submitError]);
 
   return (
     <Dashboard>
@@ -82,20 +92,31 @@ export default function HomeDetailPage() {
   );
 }
 
+type ActionData = {
+  submitError?: string;
+};
+
 export async function action({ params }: ActionArgs) {
   const { homeId } = params;
 
   const shareKey = await findKeyByHomeId(homeId!);
 
-  if (shareKey) {
-    // If the home is shared, unshare it by deleting its key:
-    await deleteKey(shareKey.id);
-  } else {
-    // If the home is not shared, share it by creating a key:
-    await createKey(homeId!);
+  try {
+    if (shareKey) {
+      // If the home is shared, unshare it by deleting its key:
+      await deleteKey(shareKey.id);
+    } else {
+      // If the home is not shared, share it by creating a key:
+      await createKey(homeId!);
+    }
+  } catch (error) {
+    return json<ActionData>({
+      submitError:
+        "Something went wrong updating your vacation home's sharing settings",
+    });
   }
 
-  return null;
+  return {};
 }
 
 type LoaderData = {

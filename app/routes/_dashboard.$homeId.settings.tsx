@@ -18,6 +18,8 @@ import type { Home } from "@prisma/client";
 import { deserialize } from "superjson";
 import { homePatchSchema } from "~/validations/home";
 import { redirect } from "@remix-run/node";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 import type { z } from "zod";
 
 export function meta({ data }: V2_MetaArgs): V2_MetaDescriptor[] {
@@ -28,11 +30,18 @@ export function meta({ data }: V2_MetaArgs): V2_MetaDescriptor[] {
 export default function HomeSettings() {
   const { formMethod, state } = useNavigation();
   const { home } = useLoaderData<LoaderData>();
-  const errors = useActionData<ActionData>();
+  const actionData = useActionData<ActionData>();
+  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "PATCH";
   const isDeleting = state !== "idle" && formMethod === "DELETE";
   const isBusy = isSaving || isDeleting;
+
+  useEffect(() => {
+    if (submitError) {
+      toast.error(submitError);
+    }
+  }, [submitError]);
 
   return (
     <Dashboard>
@@ -43,7 +52,7 @@ export default function HomeSettings() {
             defaultValue={home.name}
             description="Enter a name for your vacation home."
             disabled={isBusy}
-            error={errors?.name}
+            error={formErrors?.name}
             htmlFor="name"
             label="Name"
             required
@@ -83,7 +92,10 @@ export default function HomeSettings() {
   );
 }
 
-type ActionData = z.ZodFormattedError<z.infer<typeof homePatchSchema>>;
+type ActionData = {
+  formErrors?: z.ZodFormattedError<z.infer<typeof homePatchSchema>>;
+  submitError?: string;
+};
 
 export async function action({ request, params }: ActionArgs) {
   const { method } = request;
@@ -91,8 +103,14 @@ export async function action({ request, params }: ActionArgs) {
 
   switch (method) {
     case "DELETE":
-      await deleteHome(homeId!);
-      return redirect("/homes");
+      try {
+        await deleteHome(homeId!);
+        return redirect("/homes");
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong deleting your vacation home",
+        });
+      }
 
     case "PATCH":
       const parsed = homePatchSchema.safeParse(
@@ -100,11 +118,18 @@ export async function action({ request, params }: ActionArgs) {
       );
 
       if (!parsed.success) {
-        return json<ActionData>(parsed.error.format());
+        return json<ActionData>({ formErrors: parsed.error.format() });
       }
 
-      await updateHome(homeId!, parsed.data);
-      return null;
+      try {
+        await updateHome(homeId!, parsed.data);
+        return {};
+      } catch (error) {
+        return json<ActionData>({
+          submitError:
+            "Something went wrong updating your vacation home's settings",
+        });
+      }
 
     default:
       throw badRequest("Unsupported Method");

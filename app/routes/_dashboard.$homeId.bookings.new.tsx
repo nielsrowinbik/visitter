@@ -1,5 +1,6 @@
 import { Form, useNavigation } from "@remix-run/react";
 import { json, useActionData } from "~/utils/superjson";
+import { useEffect, useState } from "react";
 
 import type { ActionArgs } from "@remix-run/node";
 import { Button } from "~/components/Button";
@@ -10,19 +11,26 @@ import { bookingPostSchema } from "~/validations/booking";
 import { createBooking } from "~/services/bookings.server";
 import { redirect } from "@remix-run/node";
 import { toObject } from "~/utils";
+import toast from "react-hot-toast";
 import { useNavigate } from "@remix-run/react";
-import { useState } from "react";
 import type { z } from "zod";
 
 export default function NewBookingPage() {
   const navigate = useNavigate();
   const { formMethod, state } = useNavigation();
-  const errors = useActionData<ActionData>();
+  const actionData = useActionData<ActionData>();
+  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "POST";
 
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
+
+  useEffect(() => {
+    if (submitError) {
+      toast.error(submitError);
+    }
+  }, [submitError]);
 
   return (
     <Dashboard>
@@ -31,7 +39,7 @@ export default function NewBookingPage() {
         <FormField
           description="You can use the booking's name to indicate who or what the booking is for."
           disabled={isSaving}
-          error={errors?.name}
+          error={formErrors?.name}
           htmlFor="name"
           label="Name"
           required
@@ -39,7 +47,7 @@ export default function NewBookingPage() {
         />
         <FormField
           disabled={isSaving}
-          error={errors?.startDate}
+          error={formErrors?.startDate}
           htmlFor="startDate"
           label="Start date"
           onChange={(e) => setStartDate(e.target.value)}
@@ -49,7 +57,7 @@ export default function NewBookingPage() {
         />
         <FormField
           disabled={isSaving}
-          error={errors?.endDate}
+          error={formErrors?.endDate}
           htmlFor="endDate"
           label="End date"
           min={startDate}
@@ -76,7 +84,10 @@ export default function NewBookingPage() {
   );
 }
 
-type ActionData = z.ZodFormattedError<z.infer<typeof bookingPostSchema>>;
+type ActionData = {
+  formErrors?: z.ZodFormattedError<z.infer<typeof bookingPostSchema>>;
+  submitError?: string;
+};
 
 export async function action({ request, params }: ActionArgs) {
   const { method } = request;
@@ -91,11 +102,17 @@ export async function action({ request, params }: ActionArgs) {
       if (!parsed.success) {
         // FIXME: type error below
         // @ts-expect-error
-        return json<ActionData>(parsed.error.format());
+        return json<ActionData>({ formErrors: parsed.error.format() });
       }
 
-      await createBooking(parsed.data, homeId!);
-      return redirect(`/${homeId}`);
+      try {
+        await createBooking(parsed.data, homeId!);
+        return redirect(`/${homeId}`);
+      } catch (error) {
+        return json<ActionData>({
+          submitError: "Something went wrong creating this booking",
+        });
+      }
 
     default:
       throw badRequest("Unsupported Method");
