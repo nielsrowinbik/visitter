@@ -35,9 +35,13 @@ const button = cva(
   }
 );
 
-export interface ButtonProps extends AriaButtonProps, VariantProps<typeof button> {
+export interface ButtonProps
+  extends AriaButtonProps,
+    VariantProps<typeof button> {
   className?: string;
   disabled?: boolean; // TODO: Remove and move to `isDisabled`
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onClick?: any; // TODO: Update this handler to something that is supported by React Aria
   loading?: boolean; // TODO: Remove and move to `isLoading`
 }
 
