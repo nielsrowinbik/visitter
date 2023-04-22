@@ -25,7 +25,6 @@ export default function BookingEditPage() {
   const { formMethod, state } = useNavigation();
   const { booking } = useLoaderData<LoaderData>();
   const actionData = useActionData<ActionData>();
-  const { formErrors, submitError } = actionData!;
 
   const isDeleting = state !== "idle" && formMethod === "DELETE";
   const isSaving = state !== "idle" && formMethod === "PUT";
@@ -39,10 +38,10 @@ export default function BookingEditPage() {
   );
 
   useEffect(() => {
-    if (submitError) {
-      toast.error(submitError);
+    if (actionData?.submitError) {
+      toast.error(actionData?.submitError);
     }
-  }, [submitError]);
+  }, [actionData?.submitError]);
 
   return (
     <Dashboard>
@@ -53,7 +52,7 @@ export default function BookingEditPage() {
             defaultValue={booking.name}
             description="You can use the booking's name to indicate who or what the booking is for."
             disabled={isSaving}
-            error={formErrors?.name}
+            error={actionData?.formErrors?.name}
             htmlFor="name"
             label="Name"
             required
@@ -61,7 +60,7 @@ export default function BookingEditPage() {
           />
           <FormField
             disabled={isSaving}
-            error={formErrors?.startDate}
+            error={actionData?.formErrors?.startDate}
             htmlFor="startDate"
             label="Start date"
             onChange={(e) => setStartDate(e.target.value)}
@@ -71,7 +70,7 @@ export default function BookingEditPage() {
           />
           <FormField
             disabled={isSaving}
-            error={formErrors?.endDate}
+            error={actionData?.formErrors?.endDate}
             htmlFor="endDate"
             label="End date"
             min={startDate}

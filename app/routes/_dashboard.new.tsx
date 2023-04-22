@@ -24,15 +24,14 @@ export default function NewHomePage() {
   const navigate = useNavigate();
   const { formMethod, state } = useNavigation();
   const actionData = useActionData<ActionData>();
-  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "POST";
 
   useEffect(() => {
-    if (submitError) {
-      toast.error(submitError);
+    if (actionData?.submitError) {
+      toast.error(actionData?.submitError);
     }
-  }, [submitError]);
+  }, [actionData?.submitError]);
 
   return (
     <Dashboard>
@@ -40,7 +39,7 @@ export default function NewHomePage() {
       <Form className="max-w-md space-y-6" method="POST">
         <FormField
           disabled={isSaving}
-          error={formErrors?.name}
+          error={actionData?.formErrors?.name}
           htmlFor="name"
           label="Name"
           placeholder="Fanta Sea"

@@ -28,17 +28,16 @@ export default function AccountPage() {
   const { formMethod, state } = useNavigation();
   const { user } = useLoaderData<LoaderData>();
   const actionData = useActionData<ActionData>();
-  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "PATCH";
   const isDeleting = state !== "idle" && formMethod === "DELETE";
   const isBusy = isSaving || isDeleting;
 
   useEffect(() => {
-    if (submitError) {
-      toast.error(submitError);
+    if (actionData?.submitError) {
+      toast.error(actionData?.submitError);
     }
-  }, [submitError]);
+  }, [actionData?.submitError]);
 
   return (
     <Dashboard>
@@ -50,7 +49,7 @@ export default function AccountPage() {
             defaultValue={user.name || ""}
             description="Enter your full name or a display name you are comfortable with."
             disabled={isBusy}
-            error={formErrors?.name}
+            error={actionData?.formErrors?.name}
             htmlFor="name"
             label="Name"
             required
@@ -61,7 +60,7 @@ export default function AccountPage() {
             defaultValue={user.email}
             description="Support for changing your e-mail address is coming soon. For now, this field is read-only."
             disabled={isBusy}
-            // error={formErrors?.email}
+            // error={actionData?.formErrors?.email}
             htmlFor="email"
             label="Email address"
             required
@@ -73,7 +72,7 @@ export default function AccountPage() {
             defaultValue={user.phone || ""}
             description="Enter your phone number including country code. We will never share your phone number without your permission."
             disabled={isBusy}
-            error={formErrors?.phone}
+            error={actionData?.formErrors?.phone}
             htmlFor="phone"
             label="Phone number"
             type="tel"
