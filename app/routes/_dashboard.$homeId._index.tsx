@@ -26,15 +26,14 @@ export function meta({ data }: V2_MetaArgs) {
 
 export default function HomeDetailPage() {
   const { home, bookings, shareKey, baseUrl } = useLoaderData<LoaderData>();
-  const data = useActionData<ActionData>();
-  const { submitError } = data!;
+  const actionData = useActionData<ActionData>();
   const requests: unknown[] = []; // stub
 
   useEffect(() => {
-    if (submitError) {
-      toast.error(submitError);
+    if (actionData?.submitError) {
+      toast.error(actionData?.submitError);
     }
-  }, [submitError]);
+  }, [actionData?.submitError]);
 
   return (
     <Dashboard>
@@ -116,7 +115,7 @@ export async function action({ params }: ActionArgs) {
     });
   }
 
-  return {};
+  return json<ActionData>({});
 }
 
 type LoaderData = {

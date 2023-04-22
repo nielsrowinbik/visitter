@@ -31,17 +31,16 @@ export default function HomeSettings() {
   const { formMethod, state } = useNavigation();
   const { home } = useLoaderData<LoaderData>();
   const actionData = useActionData<ActionData>();
-  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "PATCH";
   const isDeleting = state !== "idle" && formMethod === "DELETE";
   const isBusy = isSaving || isDeleting;
 
   useEffect(() => {
-    if (submitError) {
-      toast.error(submitError);
+    if (actionData?.submitError) {
+      toast.error(actionData?.submitError);
     }
-  }, [submitError]);
+  }, [actionData?.submitError]);
 
   return (
     <Dashboard>
@@ -52,7 +51,7 @@ export default function HomeSettings() {
             defaultValue={home.name}
             description="Enter a name for your vacation home."
             disabled={isBusy}
-            error={formErrors?.name}
+            error={actionData?.formErrors?.name}
             htmlFor="name"
             label="Name"
             required

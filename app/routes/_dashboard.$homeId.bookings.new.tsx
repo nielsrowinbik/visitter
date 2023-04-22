@@ -19,7 +19,6 @@ export default function NewBookingPage() {
   const navigate = useNavigate();
   const { formMethod, state } = useNavigation();
   const actionData = useActionData<ActionData>();
-  const { formErrors, submitError } = actionData!;
 
   const isSaving = state !== "idle" && formMethod === "POST";
 
@@ -27,10 +26,10 @@ export default function NewBookingPage() {
   const [endDate, setEndDate] = useState<string>();
 
   useEffect(() => {
-    if (submitError) {
-      toast.error(submitError);
+    if (actionData?.submitError) {
+      toast.error(actionData?.submitError);
     }
-  }, [submitError]);
+  }, [actionData?.submitError]);
 
   return (
     <Dashboard>
@@ -39,7 +38,7 @@ export default function NewBookingPage() {
         <FormField
           description="You can use the booking's name to indicate who or what the booking is for."
           disabled={isSaving}
-          error={formErrors?.name}
+          error={actionData?.formErrors?.name}
           htmlFor="name"
           label="Name"
           required
@@ -47,7 +46,7 @@ export default function NewBookingPage() {
         />
         <FormField
           disabled={isSaving}
-          error={formErrors?.startDate}
+          error={actionData?.formErrors?.startDate}
           htmlFor="startDate"
           label="Start date"
           onChange={(e) => setStartDate(e.target.value)}
@@ -57,7 +56,7 @@ export default function NewBookingPage() {
         />
         <FormField
           disabled={isSaving}
-          error={formErrors?.endDate}
+          error={actionData?.formErrors?.endDate}
           htmlFor="endDate"
           label="End date"
           min={startDate}
