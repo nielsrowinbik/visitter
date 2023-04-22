@@ -47,6 +47,6 @@ test("Users can delete a vacation home", async ({ page }) => {
 
   await page.getByRole("button").filter({ hasText: "Delete home" }).click();
 
-  await expect(page).toHaveURL("/homes");
+  await page.waitForURL("/homes");
   await expect(home).not.toBeVisible();
 });
