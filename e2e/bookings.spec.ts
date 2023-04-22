@@ -1,4 +1,4 @@
-import { endOfWeek, format, startOfToday, startOfWeek } from "date-fns";
+import { add, endOfWeek, format, startOfToday, startOfWeek } from "date-fns";
 import { expect, test } from "@playwright/test";
 
 import { db } from "~/utils/prisma.server";
@@ -6,10 +6,12 @@ import { db } from "~/utils/prisma.server";
 const BOOKING_ADD_NAME = "E2E Booking Add";
 const BOOKING_DELETE_NAME = "E2E Booking Delete";
 
+const TODAY = startOfToday();
+const BOOKING_START = startOfWeek(TODAY);
+const BOOKING_END = add(endOfWeek(TODAY), { days: 7 });
+
 // Before these run, insert a home into the DB that we can add our bookings to
 test.beforeAll(async () => {
-  const today = startOfToday();
-
   await db.home.create({
     data: {
       id: "e2e_bookings",
@@ -19,8 +21,8 @@ test.beforeAll(async () => {
         create: [
           {
             name: BOOKING_DELETE_NAME,
-            startDate: startOfWeek(today),
-            endDate: endOfWeek(today),
+            startDate: BOOKING_START,
+            endDate: BOOKING_END,
           },
         ],
       },
@@ -40,13 +42,9 @@ test("Users can add a booking to a vacation home", async ({ page }) => {
 
   await page.waitForURL("/e2e_bookings/bookings/new");
 
-  const today = startOfToday();
-  const start = startOfWeek(today);
-  const end = endOfWeek(today);
-
   await page.getByLabel("Name").fill(BOOKING_ADD_NAME);
-  await page.getByLabel("Start date").fill(format(start, "yyyy-MM-dd"));
-  await page.getByLabel("End date").fill(format(end, "yyyy-MM-dd"));
+  await page.getByLabel("Start date").fill(format(BOOKING_START, "yyyy-MM-dd"));
+  await page.getByLabel("End date").fill(format(BOOKING_END, "yyyy-MM-dd"));
   await page.getByRole("button", { name: "Create booking" }).click();
 
   await page.waitForURL("/e2e_bookings");
