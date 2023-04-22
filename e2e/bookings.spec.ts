@@ -57,14 +57,16 @@ test("Users can add a booking to a vacation home", async ({ page }) => {
 });
 
 test("Users can delete a booking from a vacation home", async ({ page }) => {
-  // Make sure to accept any confirm dialogs:
-  page.on("dialog", (dialog) => dialog.accept());
-
   await page.goto("/e2e_bookings");
 
   const booking = page
     .getByRole("listitem")
     .filter({ hasText: BOOKING_DELETE_NAME });
+
+  page.on("dialog", async (dialog) => {
+    expect(dialog.type()).toContain("confirm");
+    await dialog.accept();
+  });
 
   // TODO: Improve
   await booking.locator("form").getByRole("button").click();
