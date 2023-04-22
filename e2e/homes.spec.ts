@@ -35,15 +35,17 @@ test("Users can create a new vacation home", async ({ page }) => {
 });
 
 test("Users can delete a vacation home", async ({ page }) => {
-  // Make sure to accept any confirm dialogs:
-  page.on("dialog", (dialog) => dialog.accept());
-
   await page.goto("/homes");
 
   const home = page.getByRole("listitem").filter({ hasText: HOME_DELETE_NAME });
   await home.click();
 
   await page.getByRole("button").filter({ hasText: "Settings" }).click();
+
+  page.on("dialog", async (dialog) => {
+    expect(dialog.type()).toContain("confirm");
+    await dialog.accept();
+  });
 
   await page.getByRole("button").filter({ hasText: "Delete home" }).click();
 
